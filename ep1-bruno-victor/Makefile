@@ -65,12 +65,10 @@ organize: delete configure
 .PHONY: delete
 delete:
 	@echo "Deleting empty dirs..."
-	@find $(ASTDIR)/ -type d -empty -delete
 	@find $(INCDIR)/ -type d -empty -delete
 	@find $(SRCDIR)/ -type d -empty -delete
 	@find $(OBJDIR)/ -type d -empty -delete
 	@find $(BINDIR)/ -type d -empty -delete
-	@find $(DEPDIR)/ -type d -empty -delete
 	@find $(EXECSRC)/ -type d -empty -delete
 	@find $(TESTSRC)/ -type d -empty -delete
 	@find $(TESTBIN)/ -type d -empty -delete
