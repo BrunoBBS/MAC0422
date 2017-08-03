@@ -78,17 +78,13 @@ delete:
 .PHONY: configure
 configure: clang
 	@echo "Configuring directories..."
-	@mkdir -p $(ASTDIR)
 	@mkdir -p $(INCDIR)
 	@mkdir -p $(SRCDIR)
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(BINDIR)
-	@mkdir -p $(DEPDIR)
 	@mkdir -p $(EXECSRC)
 	@mkdir -p $(TESTSRC)
 	@mkdir -p $(TESTBIN)
-	@[ ! -h "$(BINDIR)/$(ASTDIR)" ] && ln -s ../$(ASTDIR) $(BINDIR)/$(ASTDIR) || true
-	@[ ! -h "$(TESTBIN)/$(ASTDIR)" ] && ln -s ../$(ASTDIR) $(TESTBIN)/$(ASTDIR) || true
 
 
 clang:
