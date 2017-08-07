@@ -12,7 +12,6 @@ INCDIR:=include
 SRCDIR:=src
 OBJDIR:=obj
 BINDIR:=bin
-DEPDIR:=deps
 
 EXECSRC:=execsrc
 TESTSRC:=testsrc
@@ -36,9 +35,6 @@ SRCS+=$(shell find $(EXECDIR) -type f -name '*.$(CEXT)')
 .PRECIOUS: $(OBJDIR)/%$(RELEASE_POST).o
 .PRECIOUS: $(OBJDIR)/%$(DEBUG_POST).o
 
-.PRECIOUS: $(DEPDIR)/%$(RELEASE_POST).d
-.PRECIOUS: $(DEPDIR)/%$(DEBUG_POST).d
-
 # Make rules
 
 release: CFLAGS+=$(RELEASEF)
@@ -58,7 +54,6 @@ debug: tests$(DEBUG_POST)
 organize: delete configure
 	@echo "Organizing..."
 	@mkdir -p $(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(shell find $(SRCDIR)/ -type d -not -empty)) .
-	@mkdir -p $(patsubst $(SRCDIR)/%, $(DEPDIR)/%, $(shell find $(SRCDIR)/ -type d -not -empty)) .
 	@mkdir -p $(patsubst $(EXECSRC)/%, $(BINDIR)/%, $(shell find $(EXECSRC)/ -type d -not -empty)) .
 	@mkdir -p $(patsubst $(TESTSRC)/%, $(TESTBIN)/%, $(shell find $(TESTSRC)/ -type d -not -empty)) .
 
@@ -143,19 +138,6 @@ $(OBJDIR)/%$(DEBUG_POST).o: $(TESTSRC)/%.$(CEXT)
 
 $(OBJDIR)/%$(DEBUG_POST).o: $(EXECSRC)/%.$(CEXT)
 	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCDIR)
-
-# For dependencies
-
-$(DEPDIR)/%.d: $(SRCDIR)/%.$(CEXT)
-	$(CC) $(CFLAGS) $< -MM -MT $(OBJDIR)/$(patsubst $(DEPDIR)/%.d,%,$@).o -o $@ -I$(INCDIR)
-
-$(DEPDIR)/%.d: $(TESTSRC)/%.$(CEXT)
-	$(CC) $(CFLAGS) $< -MM -MT $(OBJDIR)/$(patsubst $(DEPDIR)/%.d,%,$@).o -o $@ -I$(INCDIR)
-
-$(DEPDIR)/%.d: $(EXECSRC)/%.$(CEXT)
-	$(CC) $(CFLAGS) $< -MM -MT $(OBJDIR)/$(patsubst $(DEPDIR)/%.d,%,$@).o -o $@ -I$(INCDIR)
-
-# Including dependencies
 
 # Helpers
 
