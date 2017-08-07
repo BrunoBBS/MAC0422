@@ -3,18 +3,9 @@
 
 #define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/syscall.h>
 #include <unistd.h>
-
-char weekdays[7][4] = {
-    "Qui",
-    "Sex",
-    "Sab",
-    "Dom",
-    "Seg",
-    "Ter",
-    "Qua",
-};
 
 typedef struct
 {
