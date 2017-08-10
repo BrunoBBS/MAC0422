@@ -2,8 +2,7 @@
 typedef char* string;
 typedef struct
 {
-    string command;
-    int argn;
-    string* args;
+    int argc;
+    string* argv;
 } command;
 
