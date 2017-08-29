@@ -6,12 +6,7 @@
 #include <stdlib.h>
 #include <sys/syscall.h>
 #include <unistd.h>
-
-typedef struct
-{
-    long unsigned int tv_sec;
-    long unsigned int tv_usec;
-} timeval;
+#include <time.h>
 
 int date_c ();
 
