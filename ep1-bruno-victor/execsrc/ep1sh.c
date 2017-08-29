@@ -1,3 +1,4 @@
+#include "ep1sh/commands/chown.h"
 #include "ep1sh/commands/date.h"
 #include "ep1sh/typedef.h"
 #include <readline/history.h>
@@ -52,12 +53,14 @@ int main()
             input = 0;
         else if (!strcmp(cmd.argv[0], "date"))
             date_c();
+        else if (!strcmp(cmd.argv[0], "chown"))
+            chown_c(cmd.argv[1], cmd.argv[2]);
         else
         {
             int pid = fork();
             if (!pid)
             {
-                int res = execv(cmd.argv[0], cmd.argv);
+                int res = execvp(cmd.argv[0], cmd.argv);
                 if (res == -1)
                 {
                     printf("Failed to run program %s\n", cmd.argv[0]);

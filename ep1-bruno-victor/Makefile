@@ -151,6 +151,6 @@ upload: clean
 # Clean binaries
 
 clean:
-	rm -rf $(OBJDIR)/*.o
+	rm -rf $(OBJDIR)/*
 	rm -rf $(BINDIR)/*
 	rm -rf $(TESTBIN)/*
