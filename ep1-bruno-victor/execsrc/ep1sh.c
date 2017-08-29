@@ -54,10 +54,10 @@ int main()
         free(wd);
         if (input)
         {
-            add_history(input);
             command* cmdptr = parser(input);
             if (cmdptr)
             {
+                add_history(input);
                 command cmd = *cmdptr;
                 free (cmdptr);
                 if (!strcmp(cmd.argv[0], "exit"))
