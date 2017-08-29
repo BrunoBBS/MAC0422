@@ -19,14 +19,14 @@ command* parser(string line)
     int length = 2;
 
     token = strtok(line, " ");
-    if (token) 
+    if (token)
     {
         com = malloc(sizeof(command));
         com->argv = malloc(length * sizeof(string));
         com->argv[0] = token;
         com->argc = 1;
 
-        while (token = strtok(NULL, " "))
+        while ((token = strtok(NULL, " ")))
         {
             if (com->argc >= length - 1)
             {
