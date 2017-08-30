@@ -67,7 +67,7 @@ int main()
                 }
                 else if (!strcmp(cmd.argv[0], "date")) date_c();
                 else if (!strcmp(cmd.argv[0], "chown"))
-                    chown_c(cmd.argv[1], cmd.argv[2]);
+                    chown_c(&cmd.argv[1][1], cmd.argv[2]);
                 else
                 {
                     int pid = fork();
