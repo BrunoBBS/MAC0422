@@ -1,6 +1,6 @@
 #include "ep1sh/commands/date.h"
-
-typedef unsigned int uint;
+#include <stdio.h>
+#include <time.h>
 
 int date_c ()
 {
