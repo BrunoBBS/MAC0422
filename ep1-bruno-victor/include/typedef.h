@@ -17,6 +17,7 @@ typedef struct
     unsigned int dt_dec;
     unsigned int dl_dec;
     string name;
+    int trace_line;
     sem_t sem;
 } process;
 
