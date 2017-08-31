@@ -1,6 +1,6 @@
 #include "ep1sh/commands/chown.h"
 #include "ep1sh/commands/date.h"
-#include "ep1sh/typedef.h"
+#include "typedef.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>

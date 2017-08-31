@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ep1sh/typedef.h"
+#include "typedef.h"
 
 #define MAX_PROCESS_LINE 100
 #define MAX_PROCESS_NAME 80

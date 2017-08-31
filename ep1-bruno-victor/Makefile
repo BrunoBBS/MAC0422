@@ -1,5 +1,5 @@
 CC:=gcc
-CFLAGS=-Wall -std=c11 -lreadline
+CFLAGS=-Wall -std=c11 -lreadline -lpthread
 DEBUGF:=-g
 RELEASEF:=-O2
 
