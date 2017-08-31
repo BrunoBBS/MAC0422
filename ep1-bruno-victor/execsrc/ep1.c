@@ -37,7 +37,8 @@ int order_by_t0(const void *el1, const void *el2)
 int get_processes(string filename, process **processes)
 {
     FILE *file = fopen(filename, "r");
-    if (!file) {
+    if (!file)
+    {
         printf("File '%s' could not be opened!\n", filename);
         return -1;
     }

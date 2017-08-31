@@ -1,7 +1,7 @@
 #ifndef __TYPEDEF_H__
 #define __TYPEDEF_H__
 
-#include <pthread.h>
+#include <semaphore.h>
 
 typedef char *string;
 
@@ -19,5 +19,10 @@ typedef struct
     string name;
     sem_t sem;
 } process;
+
+typedef struct
+{
+    unsigned int cpu_count;
+} scheduler_def;
 
 #endif
