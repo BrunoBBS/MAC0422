@@ -3,12 +3,12 @@
 typedef struct rusage rusage;
 typedef struct timeval timeval;
 
-void process_t(void* args)
+void* process_t(void* args)
 {
     // We receive a process struct from the scheduler
     process *proc = (process*) args;
     if (!proc)
-        return;
+        return 0;
 
     // Here we initialize some variables (time is translated to milliseconds)
     sem_t *semaphore = &(proc->sem);
@@ -39,4 +39,6 @@ void process_t(void* args)
 
     // Signals scheduler that the process has ended running
     proc->dt_dec = -1;
+
+    return 0;
 }
