@@ -154,3 +154,8 @@ clean:
 	rm -rf $(OBJDIR)/*
 	rm -rf $(BINDIR)/*
 	rm -rf $(TESTBIN)/*
+
+# Reset changes to last commit
+reset:
+	git clean -fd :/
+	git reset --hard
