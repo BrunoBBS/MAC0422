@@ -1,6 +1,6 @@
 #ifndef __TYPEDEF_H__
 #define __TYPEDEF_H__
-
+#define _GNU_SOURCE
 #include <semaphore.h>
 
 typedef char *string;
@@ -13,9 +13,9 @@ typedef struct
 
 typedef struct
 {
-    unsigned int t0_dec;
-    unsigned int dt_dec;
-    unsigned int dl_dec;
+    int t0_dec;
+    int dt_dec;
+    int dl_dec;
     string name;
     int trace_line;
     sem_t sem;
