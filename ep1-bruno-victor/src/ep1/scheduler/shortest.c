@@ -40,40 +40,68 @@ process *lq_get(linked_queue *queue)
 
 void* sjf(void *sch_init)
 {
+    scheduler_def *def = (scheduler_def*)sch_init;
+
     // Initializes a linked list
     ll = 0;
 
     // Initialized the semaphore
     sem_init(&ll_s, 0, 1);
 
-    // This is the currently running process
-    pthread_t running_t;
-    process *running = 0;
+    // This is the currently running processes
+    unsigned int cpu_cnt = def->cpu_count;
+    int *free_cpu_stack = malloc(cpu_cnt * sizeof(int));
+    process **running_p = malloc(cpu_cnt * sizeof(process*));
+
+    for (int i = 0; i < cpu_cnt; i++)
+        running_p[i] = 0;
 
     // Runs indefinitely
     while (1)
     {
-        // Wait until there is a process to be run
+        // Wait for free cpu
+        unsigned int free_cpu_cnt = 0;
         do {
-            sem_wait(&ll_s);
-            running = lq_get(&ll);
-            sem_post(&ll_s);
-        } while (!running);
+            for (int i = 0; i < cpu_cnt; i++)
+            {
+                // If process has ended
+                if (running_p[i]->dt_dec == -1)
+                {
+                    // Free semaphore and set running_p as 0
+                    sem_close(&running_p[i]->sem);
+                    running_p[i] = 0;
+                }
 
-        // Initialized process semaphore
-        sem_init(&(running->sem), 0, 1);
+                // Add cpu to free cpu list
+                if (!running_p[i])
+                    free_cpu_stack[free_cpu_cnt++] = i;
+            }
+        } while (!free_cpu_cnt);
 
-        // Creates process
-        pthread_create(&running_t, 0, &process_t, (void*) running);
+        // Get next job from the queue
+        sem_wait(&ll_s);
+        process *to_run = lq_get(&ll);
+        sem_post(&ll_s);
 
-        // Waits for it to finish
-        while (running->dt_dec != -1);
+        // If there is something to run
+        if (to_run)
+        {
+            // Initialize process semaphore
+            sem_init(&(to_run->sem), 0, 1);
 
-        // Frees semaphore
-        sem_close(&(running->sem));
+            // Get core
+            int core = free_cpu_stack[--free_cpu_cnt];
 
-        // Now no process ir running
-        running = 0;
+            // Binds process to core
+            running_p[core] = to_run;
+
+            // Creates process
+            pthread_create(
+                    &(running_p[core]->thread),
+                    0,
+                    &process_t,
+                    (void*) running_p[core]);
+        }
     }
 
     sem_close(&ll_s);

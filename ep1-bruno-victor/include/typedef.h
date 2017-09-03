@@ -1,6 +1,7 @@
 #ifndef __TYPEDEF_H__
 #define __TYPEDEF_H__
 #define _GNU_SOURCE
+#include <pthread.h>
 #include <semaphore.h>
 
 typedef char *string;
@@ -19,6 +20,7 @@ typedef struct
     string name;
     int trace_line;
     sem_t sem;
+    pthread_t thread;
 } process;
 
 typedef struct
