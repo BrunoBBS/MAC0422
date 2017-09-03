@@ -5,11 +5,14 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "ep1/scheduler/shortest.h"
 #include "typedef.h"
 
 #define MAX_PROCESS_LINE 100
 #define MAX_PROCESS_NAME 80
 #define MAX_NUMBER_CHARS 10
+
+clock_t syst0;
 
 int convert_time(string time_str)
 {
@@ -82,28 +85,33 @@ int get_processes(string filename, process **processes)
 
 void user(int pc, process *pv, int (*add_job)(process *))
 {
-    clock_t systime = clock();
+    //sysdt is an integer where the last digit is a decimal
+    int sysdt = 0;
+
     //for each process
     for (int i = 0; i < pc; i++)
     {
-        while (systime < (float)pv[i].t0_dec / 10)
-            sleep(1);
-        add_job(&pv[i]);
+        sysdt = (((float)clock() - (float)syst0) / CLOCKS_PER_SEC) * 10;
+        while (sysdt < pv[i].t0_dec)
+        {
+            sysdt = (((float)clock() - (float)syst0) / CLOCKS_PER_SEC) * 10;
+        }
+        //add_job(&pv[i]);
+        fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
-    fprintf(stderr, "");
 }
 
 int main(int argc, string *argv)
 {
     if (argc < 2)
     {
-        printf("Usage: ep1 <processes file>\n");
+        printf("Usage: ep1 <scheduler> <trace file> <output file>\n");
         exit(0);
     }
 
     process *processes;
     int proc_cnt;
-    proc_cnt = get_processes(argv[1], &processes);
+    proc_cnt = get_processes(argv[2], &processes);
 
     //print process list
     for (int i = 0; i < proc_cnt; i++)
@@ -116,13 +124,27 @@ int main(int argc, string *argv)
             ((float)processes[i].dl_dec) / 10);
     }
 
-    //creates scheduler thread
     pthread_t *scheduler;
-    pthread_create(scheduler, 0, &sjf, scheduler);
+
+    syst0 = clock();
+
+    switch (atoi(argv[1]))
+    {
+    //creates scheduler thread
+    case 1:
+        //shortest job first
+        pthread_create(scheduler, 0, &sjf, scheduler);
+        break;
+    case 2:
+        //round robin
+        break;
+    case 3:
+        //priority scheduler
+        break;
+    }
     user(proc_cnt, processes, &sjf_add_job);
 
     //cleans everything
     if (proc_cnt > 0)
         free(processes);
 }
-
