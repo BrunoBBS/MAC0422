@@ -42,6 +42,7 @@ void* sjf(void *sch_init)
     ll = 0;
     sem_init(&ll_s, 0, 1);
     sem_close(&ll_s);
+    return 0;
 }
 
 int sjf_add_job(process *job)
