@@ -1,6 +1,7 @@
 #ifndef __TYPEDEF_H__
 #define __TYPEDEF_H__
 #define _GNU_SOURCE
+#include <stdio.h>
 #include <semaphore.h>
 
 typedef char *string;

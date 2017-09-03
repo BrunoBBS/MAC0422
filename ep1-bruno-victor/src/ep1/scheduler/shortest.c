@@ -38,14 +38,17 @@ process *lq_get(linked_queue *queue)
     return ret;
 }
 
-void* sjf(void *sch_init)
+void sjf_init(void *sch_init)
 {
     // Initializes a linked list
     ll = 0;
-
-    // Initialized the semaphore
+    
+    // Initializes semaphore
     sem_init(&ll_s, 0, 1);
+}
 
+void* sjf(void *sch_init)
+{
     // This is the currently running process
     pthread_t running_t;
     process *running = 0;
