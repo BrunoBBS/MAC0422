@@ -3,7 +3,7 @@
 #include "typedef.h"
 
 
-void rr(void*);
+void* rr(void*);
 int rr_add_job(process*);
 
 #endif

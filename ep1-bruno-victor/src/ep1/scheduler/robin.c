@@ -38,7 +38,7 @@ process *lq_get(linked_queue *queue)
     return ret;
 }
 
-void rr(void *sch_init)
+void* rr(void *sch_init)
 {
     //initializes a linked list
     ll = 0;

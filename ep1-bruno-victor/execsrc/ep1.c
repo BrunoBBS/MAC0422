@@ -125,7 +125,7 @@ int main(int argc, string *argv)
             ((float)processes[i].dl_dec) / 10);
     }
 
-    pthread_t *scheduler;
+    pthread_t scheduler;
     syst0 = clock();
     scheduler_def defs;
     defs.cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
@@ -136,12 +136,12 @@ int main(int argc, string *argv)
     //creates scheduler thread
     case 1:
         //shortest job first
-        pthread_create(scheduler, 0, &sjf, defs);
+        pthread_create(&scheduler, 0, &sjf, (void*) &defs);
         user(proc_cnt, processes, &sjf_add_job);
         break;
     case 2:
         //round robin
-        pthread_create(scheduler, 0, &rr, defs);
+        pthread_create(&scheduler, 0, &rr, (void*) &defs);
         user(proc_cnt, processes, &rr_add_job);
         break;
     case 3:

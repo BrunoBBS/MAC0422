@@ -36,7 +36,7 @@ process *lq_get(linked_queue *queue)
     return ret;
 }
 
-void sjf(void *sch_init)
+void* sjf(void *sch_init)
 {
     //initializes a linked list
     ll = 0;
