@@ -4,6 +4,6 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 
-void process_t(void*);
+void* process_t(void*);
 
 #endif
