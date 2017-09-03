@@ -13,8 +13,6 @@
 #define MAX_PROCESS_NAME 80
 #define MAX_NUMBER_CHARS 10
 
-clock_t syst0;
-
 int convert_time(string time_str)
 {
     char *dot_loc;
@@ -84,7 +82,7 @@ int get_processes(string filename, process **processes)
     }
 }
 
-void user(int pc, process *pv, int (*add_job)(process *))
+void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
 {
     //sysdt is an integer where the last digit is a decimal
     int sysdt = 0;
@@ -92,11 +90,11 @@ void user(int pc, process *pv, int (*add_job)(process *))
     //for each process
     for (int i = 0; i < pc; i++)
     {
-        sysdt = (((float)clock() - (float)syst0) / CLOCKS_PER_SEC) * 10;
-        while (sysdt < pv[i].t0_dec)
+        do
         {
-            sysdt = (((float)clock() - (float)syst0) / CLOCKS_PER_SEC) * 10;
-        }
+            sysdt = ((float)time(NULL) - (float)syst0) * 10;
+        } while (sysdt < pv[i].t0_dec);
+
         //add_job(&pv[i]);
         fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
@@ -126,7 +124,7 @@ int main(int argc, string *argv)
     }
 
     pthread_t scheduler;
-    syst0 = clock();
+    time_t syst0 = time(NULL);
     scheduler_def defs;
     defs.cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
     defs.syst0 = syst0;
@@ -136,13 +134,13 @@ int main(int argc, string *argv)
     //creates scheduler thread
     case 1:
         //shortest job first
-        pthread_create(&scheduler, 0, &sjf, (void*) &defs);
-        user(proc_cnt, processes, &sjf_add_job);
+        pthread_create(&scheduler, 0, &sjf, (void *)&defs);
+        user(proc_cnt, processes, &sjf_add_job, syst0);
         break;
     case 2:
         //round robin
-        pthread_create(&scheduler, 0, &rr, (void*) &defs);
-        user(proc_cnt, processes, &rr_add_job);
+        pthread_create(&scheduler, 0, &rr, (void *)&defs);
+        user(proc_cnt, processes, &rr_add_job, syst0);
         break;
     case 3:
         //priority scheduler
