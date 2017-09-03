@@ -1,6 +1,6 @@
 #include "ep1/scheduler/shortest.h"
-#include <stdlib.h>
 #include <semaphore.h>
+#include <stdlib.h>
 
 //semaphore for athe linked list
 sem_t ll_s;
@@ -10,11 +10,13 @@ void lq_insert(linked_queue *queue, process *proc)
 {
     linked_queue ptr = *queue;
     for (; ptr->next &&
-            ptr->next->proc->dt_dec <= proc->dt_dec; ptr = ptr->next);
+           ptr->next->proc->dt_dec <= proc->dt_dec;
+         ptr = ptr->next)
+        ;
     lq_item *new_item = malloc(sizeof(struct lq_item));
     if (*queue && (*queue)->proc->dt_dec <= proc->dt_dec)
     {
-        ptr->next      = new_item;
+        ptr->next = new_item;
         new_item->next = ptr->next;
     }
     else
@@ -36,7 +38,7 @@ process *lq_get(linked_queue *queue)
     return ret;
 }
 
-void sjf(void *sch_init)
+void rr(void *sch_init)
 {
     //initializes a linked list
     ll = 0;
@@ -44,7 +46,7 @@ void sjf(void *sch_init)
     sem_close(&ll_s);
 }
 
-int sjf_add_job(process *job)
+int rr_add_job(process *job)
 {
     int code;
     if (sem_getvalue(&ll_s, &code))

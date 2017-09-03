@@ -5,6 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
 #include "typedef.h"
 
@@ -125,24 +126,28 @@ int main(int argc, string *argv)
     }
 
     pthread_t *scheduler;
-
     syst0 = clock();
+    scheduler_def defs;
+    defs.cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
+    defs.syst0 = syst0;
 
     switch (atoi(argv[1]))
     {
     //creates scheduler thread
     case 1:
         //shortest job first
-        pthread_create(scheduler, 0, &sjf, scheduler);
+        pthread_create(scheduler, 0, &sjf, defs);
+        user(proc_cnt, processes, &sjf_add_job);
         break;
     case 2:
         //round robin
+        pthread_create(scheduler, 0, &rr, defs);
+        user(proc_cnt, processes, &rr_add_job);
         break;
     case 3:
         //priority scheduler
         break;
     }
-    user(proc_cnt, processes, &sjf_add_job);
 
     //cleans everything
     if (proc_cnt > 0)

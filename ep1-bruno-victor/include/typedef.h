@@ -23,7 +23,9 @@ typedef struct
 
 typedef struct
 {
+    clock_t syst0;
     unsigned int cpu_count;
 } scheduler_def;
+
 
 #endif
