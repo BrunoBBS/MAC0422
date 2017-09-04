@@ -11,18 +11,20 @@ linked_queue ll = 0;
 void lq_insert(linked_queue *queue, process *proc)
 {
     linked_queue ptr = *queue;
-    for (; ptr->next &&
+
+    for (; ptr && ptr->next &&
             ptr->next->proc->dt_dec <= proc->dt_dec; ptr = ptr->next);
     lq_item *new_item = malloc(sizeof(struct lq_item));
-    if (*queue && (*queue)->proc->dt_dec <= proc->dt_dec)
-    {
-        ptr->next      = new_item;
-        new_item->next = ptr->next;
-    }
-    else
+    
+    if (!*queue || (*queue)->proc->dt_dec > proc->dt_dec)
     {
         new_item->next = *queue;
         *queue = new_item;
+    }
+    else
+    {
+        new_item->next = ptr->next;
+        ptr->next      = new_item;
     }
     new_item->proc = proc;
 }
