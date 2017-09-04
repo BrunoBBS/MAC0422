@@ -100,12 +100,11 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
             getrusage(RUSAGE_THREAD, &usage);
             timeradd(&usage.ru_utime, &usage.ru_stime, &time_spent);
             int millis = (time_spent.tv_sec * 1000) + (time_spent.tv_usec / 1000);
-            int systnow = millis / 1000;
-            sysdt = (systnow - syst0)*10;
+            sysdt = millis / 100;
             //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
-        add_job(&pv[i]);
+        //add_job(&pv[i]);
         fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
 }
