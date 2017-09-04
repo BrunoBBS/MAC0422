@@ -71,7 +71,7 @@ void* sjf(void *sch_init)
             for (int i = 0; i < cpu_cnt; i++)
             {
                 // If process has ended
-                if (running_p[i]->dt_dec == -1)
+                if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
                     // Free semaphore and set running_p as 0
                     sem_close(&running_p[i]->sem);

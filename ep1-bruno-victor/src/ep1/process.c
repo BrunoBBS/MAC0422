@@ -5,9 +5,11 @@ typedef struct timeval timeval;
 
 void* process_t(void* args)
 {
-    printf("Started process %s\n", ((process*)args)->name);
     // We receive a process struct from the scheduler
     process *proc = (process*) args;
+    
+    printf("Process %s started!\n", proc->name);
+    
     if (!proc)
         return 0;
 
@@ -39,5 +41,7 @@ void* process_t(void* args)
 
     // Signals scheduler that the process has ended running
     proc->dt_dec = -1;
+    
+    printf("Process %s ended!\n", proc->name);
     return 0;
 }
