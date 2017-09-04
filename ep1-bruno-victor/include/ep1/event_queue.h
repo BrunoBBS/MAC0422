@@ -20,6 +20,11 @@ typedef struct scheduler_event
     int core;
     process *proc;
     unsigned int timestamp_millis;
+    union {
+        unsigned int u;
+        int i;
+        float f;
+    } extra_data;
 } scheduler_event;
 
 // Item of event queue
@@ -41,6 +46,6 @@ void eq_notify(ev_queue *queue, scheduler_event event);
 void eq_destroy(ev_queue *queue);
 
 // Runs a function for all items until return is different from 0
-void eq_forall(ev_queue *queue, int (*action) (scheduler_event *));
+void eq_forall(ev_queue *queue, int (*action) (scheduler_event *, void*), void*);
 
 #endif

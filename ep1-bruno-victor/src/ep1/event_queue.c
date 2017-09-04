@@ -4,7 +4,7 @@ void eq_notify(ev_queue *queue, scheduler_event event)
 {
     ev_queue ptr = *queue;
     for (; ptr && ptr->next; ptr = ptr->next);
-    
+
     ev_item *item = malloc(sizeof(struct event_queue_item));
     item->next = 0;
     item->event = event;
@@ -27,9 +27,12 @@ void eq_destroy(ev_queue *queue)
     }
 }
 
-void eq_forall(ev_queue *queue, int (*action) (scheduler_event *))
+void eq_forall(ev_queue *queue,
+        int (*action) (scheduler_event *, void*),
+        void *args)
 {
     ev_queue ptr = *queue;
     for (; ptr; ptr = ptr->next)
-        action(&ptr->event);
+        if(action(&ptr->event, args))
+            break;
 }

@@ -1,0 +1,2 @@
+#!/bin/bash
+make && ./bin/ep1 1 teste out de

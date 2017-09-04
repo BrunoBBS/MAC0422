@@ -1,4 +1,5 @@
 #include "typedef.h"
+#include "ep1/event_queue.h"
 #include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
 
@@ -99,6 +100,52 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, schedule
     def->ended = 1;
 }
 
+int output_event(scheduler_event *event, void *args)
+{
+    FILE *file = (FILE*) args;
+    if (event->event_t == PROCESS_ENDED)
+    {
+        fprintf(file, "%s %.1f %.1f\n",
+                event->proc->name,
+                (float) event->timestamp_millis / 1000,
+                (float) (event->timestamp_millis - event->extra_data.u) / 1000);
+    }
+
+    return 0;
+}
+
+int print_event(scheduler_event *event, void *args)
+{
+    printf("\n[EVN ] Event type   : ");
+    switch (event->event_t)
+    {
+        case PROCESS_ADDED:
+            printf("PROCESS_ADDED");
+            break;
+        case PROCESS_PAUSED:
+            printf("PROCESS_PAUSED");
+            break;
+        case PROCESS_RESUMED:
+            printf("PROCESS_RESUMED");
+            break;
+        case PROCESS_ENDED:
+            printf("PROCESS_ENDED");
+            break;
+        case PROCESS_STARTED:
+            printf("PROCESS_STARTED");
+            break;
+        default:
+            printf("UNKNOWN");
+    }
+    printf("\n");
+    printf("[EVN ] Event process: %s\n", event->proc->name);
+    printf("[EVN ] Event core   : %d\n", event->core);
+    printf("[EVN ] Event time   : %.1f\n",
+            (float) event->timestamp_millis / 1000);
+
+    return 0;
+}
+
 int main(int argc, string *argv)
 {
     if (argc < 4)
@@ -133,6 +180,8 @@ int main(int argc, string *argv)
     process *processes;
     int proc_cnt;
     proc_cnt = get_processes(argv[2], &processes);
+    if (proc_cnt < 0)
+        exit(-1);
 
     //print process list
     for (int i = 0; i < proc_cnt; i++)
@@ -192,8 +241,28 @@ int main(int argc, string *argv)
         break;
     }
 
-    pthread_join(scheduler, NULL);
+    ev_queue events;
 
+    pthread_join(scheduler, (void**)&events);
+
+    if (globals.extra)
+        eq_forall(&events, &print_event, NULL);
+
+    // Write to output file
+    FILE *file = fopen(argv[3], "w");
+    if (!file)
+    {
+        fprintf(stderr, "File '%s' could not be opened!\n", argv[3]);
+    }
+    else
+    {
+        if (globals.extra)
+            printf("[MAIN] Writing output file '%s'\n", argv[3]);
+        eq_forall(&events, &output_event, (void*) file);
+        fclose(file);
+    }
+
+    eq_destroy(&events);
     //cleans everything
     if (proc_cnt > 0)
         free(processes);
