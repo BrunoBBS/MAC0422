@@ -104,7 +104,7 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
             //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
-        //add_job(&pv[i]);
+        add_job(&pv[i]);
         fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
 }
@@ -167,6 +167,8 @@ int main(int argc, string *argv)
         //priority scheduler
         break;
     }
+
+    pthread_join(scheduler, NULL);
 
     //cleans everything
     if (proc_cnt > 0)

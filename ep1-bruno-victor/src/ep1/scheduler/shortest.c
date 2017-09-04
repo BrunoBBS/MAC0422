@@ -110,7 +110,7 @@ void* sjf(void *sch_init)
         }
     }
 
-    sem_close(&ll_s);
+    sem_destroy(&ll_s);
     return 0;
 }
 
