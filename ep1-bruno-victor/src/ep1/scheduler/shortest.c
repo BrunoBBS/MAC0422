@@ -12,7 +12,7 @@ void lq_insert(linked_queue *queue, process *proc)
     for (; ptr && ptr->next &&
             ptr->next->proc->dt_dec <= proc->dt_dec; ptr = ptr->next);
     lq_item *new_item = malloc(sizeof(struct lq_item));
-    
+
     if (!*queue || (*queue)->proc->dt_dec > proc->dt_dec)
     {
         new_item->next = *queue;
@@ -44,7 +44,7 @@ void sjf_init(void *sch_init)
 
     // Initializes a linked list
     ll = 0;
-    
+
     // Initializes semaphore
     sem_init(&ll_s, 0, 1);
 }
@@ -88,7 +88,8 @@ void* sjf(void *sch_init)
                                 (float) running_p[i]->dl_dec / 10,
                                 (end_time / 100) < running_p[i]->dl_dec ?
                                 "\e[32mOK\e[0m" :
-                                "\e[31mnot OK\e[0m");
+                                "\e[31mNOT OK\e[0m");
+                        printf("[SJF ] Core \e[34m%d\e[0m freed!\n", i);
                     }
 
                     // Free semaphore and set running_p as 0
@@ -125,13 +126,18 @@ void* sjf(void *sch_init)
                     0,
                     &process_t,
                     (void*) running_p[core]);
-            
+
             if (globals.extra)
+            {
                 printf("[SJF ] Process %s \e[32mstarted\e[0m at \e[34m%.1f\e[0m\n",
                         to_run->name,
                         (float) getttime() / 1000);
+                printf("[SJF ] Process %s running at core \e[34m%d\e[0m\n",
+                        to_run->name,
+                        core);
+            }
         }
-        
+
         // If there is nothing to run, all cpus are free (there is nothing
         // running), and user thread has ended inserting processes, stop
         // scheduler
