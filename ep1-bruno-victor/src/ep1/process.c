@@ -1,14 +1,12 @@
 #include "ep1/process.h"
 
-typedef struct rusage rusage;
-typedef struct timeval timeval;
-
 void* process_t(void* args)
 {
     // We receive a process struct from the scheduler
     process *proc = (process*) args;
     
-    printf("Process %s started!\n", proc->name);
+    if (globals.extra)
+        printf("[PROC] Process %s started!\n", proc->name);
     
     if (!proc)
         return 0;
@@ -18,7 +16,6 @@ void* process_t(void* args)
     unsigned int dt_mil = proc->dt_dec*100;
 
     // Some variables we will need for time calculation
-    rusage usage_info;
     unsigned int millis;
 
     do {
@@ -31,17 +28,16 @@ void* process_t(void* args)
         for (int i = 0; i < 100; i++)
             j++;
 
-        // Calculates user land time the process thread has spent
-        getrusage(RUSAGE_THREAD, &usage_info);
-        timeval time_spent = usage_info.ru_utime;
-        timeradd(&usage_info.ru_utime, &usage_info.ru_stime, &time_spent);
-        millis = (time_spent.tv_sec * 1000) + (time_spent.tv_usec / 1000);
+        // Calculates time the process thread has spent
+        millis = getttime();
+
         // Stops running when process has run for enough time
     } while (millis < dt_mil);
 
     // Signals scheduler that the process has ended running
     proc->dt_dec = -1;
-    
-    printf("Process %s ended!\n", proc->name);
+   
+    if (globals.extra)
+        printf("[PROC] Process %s ended!\n", proc->name);
     return 0;
 }

@@ -1,13 +1,4 @@
 #include "typedef.h"
-
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/resource.h>
-#include <sys/time.h>
-#include <unistd.h>
-
 #include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
 
@@ -84,7 +75,7 @@ int get_processes(string filename, process **processes)
     }
 }
 
-void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
+void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, scheduler_def *def)
 {
     //sysdt is an integer where the last digit is a decimal
     int sysdt = 0;
@@ -95,26 +86,48 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
         do
         {
             //sets the tnow for the simulation
-            struct rusage usage;
-            struct timeval time_spent;
-            getrusage(RUSAGE_THREAD, &usage);
-            timeradd(&usage.ru_utime, &usage.ru_stime, &time_spent);
-            int millis = (time_spent.tv_sec * 1000) + (time_spent.tv_usec / 1000);
-            sysdt = millis / 100;
+            sysdt = getttime() / 100;
             //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
         add_job(&pv[i]);
-        fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
+        if (globals.extra)
+            printf("[USER] Process %s added at \e[34m%.1f\e[0m\n", pv[i].name, (float)sysdt / 10);
     }
+
+    // Notify scheduler it has finished inserting processes
+    def->ended = 1;
 }
 
 int main(int argc, string *argv)
 {
-    if (argc < 2)
+    if (argc < 4)
     {
         printf("Usage: ep1 <scheduler> <trace file> <output file>\n");
         exit(0);
+    }
+
+    globals.debug = 0;
+    globals.extra = 0;
+
+    if (argc == 5)
+    {
+        char *options = argv[4];
+        int option_cnt = strlen(options);
+        for (int option = 0; option < option_cnt; option++)
+        {
+            switch(options[option])
+            {
+                case 'd':
+                    globals.debug = 1;
+                    break;
+                case 'e':
+                    globals.extra = 1;
+                    break;
+                default:
+                    printf("Unrecognized option '%c'\n", options[option]);
+            }
+        }
     }
 
     process *processes;
@@ -145,25 +158,36 @@ int main(int argc, string *argv)
 
     //creates the scheduler definitions struct
     scheduler_def defs;
+    defs.ended = 0;
     defs.cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
     defs.syst0 = syst0;
+
+    if (globals.extra)
+        printf("[MAIN] Detected \e[34m%d\e[0m cores in this machine!\n",
+                defs.cpu_count);
 
     switch (atoi(argv[1]))
     {
     //creates scheduler thread
     case 1:
         //shortest job first
+        if (globals.extra)
+            printf ("[MAIN] Using \e[34mShortest Job First\e[0m Scheduler\n");
         sjf_init(&defs);
         pthread_create(&scheduler, 0, &sjf, (void *)&defs);
-        user(proc_cnt, processes, &sjf_add_job, syst0);
+        user(proc_cnt, processes, &sjf_add_job, syst0, &defs);
         break;
     case 2:
+        if (globals.extra)
+            printf ("[MAIN] Using \e[34mRound Robin\e[0m Scheduler\n");
         //round robin
         rr_init(&defs);
         pthread_create(&scheduler, 0, &rr, (void *)&defs);
-        user(proc_cnt, processes, &rr_add_job, syst0);
+        user(proc_cnt, processes, &rr_add_job, syst0, &defs);
         break;
     case 3:
+        if (globals.extra)
+            printf ("[MAIN] Using \e[34mPriority\e[0m Scheduler\n");
         //priority scheduler
         break;
     }

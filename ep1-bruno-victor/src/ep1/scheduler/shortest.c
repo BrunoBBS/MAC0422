@@ -1,8 +1,5 @@
 #include "ep1/scheduler/shortest.h"
 #include "ep1/process.h"
-#include <stdlib.h>
-#include <pthread.h>
-#include <semaphore.h>
 
 //semaphore for athe linked list
 sem_t ll_s;
@@ -42,6 +39,9 @@ process *lq_get(linked_queue *queue)
 
 void sjf_init(void *sch_init)
 {
+    if (globals.extra)
+        printf("[SJF ] Initializing Scheduler...\n");
+
     // Initializes a linked list
     ll = 0;
     
@@ -53,6 +53,9 @@ void* sjf(void *sch_init)
 {
     // Get definition
     scheduler_def *def = (scheduler_def*)sch_init;
+
+    if (globals.extra)
+        printf("[SJF ] Scheduler has started!\n");
 
     // This is the currently running processes
     unsigned int cpu_cnt = def->cpu_count;
@@ -73,6 +76,21 @@ void* sjf(void *sch_init)
                 // If process has ended
                 if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
+                    if (globals.extra)
+                    {
+                        unsigned int end_time = getttime();
+                        printf("[SJF ] Process %s \e[31mended\e[0m at \e[34m%.1f\e[0m\n",
+                                running_p[i]->name,
+                                (float) end_time / 1000);
+
+                        printf("[SJF ] Deadline for %s was \e[34m%.1f\e[0m: %s\n",
+                                running_p[i]->name,
+                                (float) running_p[i]->dl_dec / 10,
+                                (end_time / 100) < running_p[i]->dl_dec ?
+                                "\e[32mOK\e[0m" :
+                                "\e[31mnot OK\e[0m");
+                    }
+
                     // Free semaphore and set running_p as 0
                     sem_close(&running_p[i]->sem);
                     running_p[i] = 0;
@@ -107,7 +125,18 @@ void* sjf(void *sch_init)
                     0,
                     &process_t,
                     (void*) running_p[core]);
+            
+            if (globals.extra)
+                printf("[SJF ] Process %s \e[32mstarted\e[0m at \e[34m%.1f\e[0m\n",
+                        to_run->name,
+                        (float) getttime() / 1000);
         }
+        
+        // If there is nothing to run, all cpus are free (there is nothing
+        // running), and user thread has ended inserting processes, stop
+        // scheduler
+        if (!to_run && free_cpu_cnt == cpu_cnt && def->ended)
+            break;
     }
 
     sem_destroy(&ll_s);
