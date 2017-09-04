@@ -72,16 +72,16 @@ void* sjf(void *sch_init)
         pthread_create(&running_t, 0, &process_t, (void*) running);
 
         // Waits for it to finish
-        while (running->dt_dec != -1);
+        pthread_join(running_t, NULL);
 
         // Frees semaphore
-        sem_close(&(running->sem));
+        sem_destroy(&(running->sem));
 
         // Now no process ir running
         running = 0;
     }
 
-    sem_close(&ll_s);
+    sem_destroy(&ll_s);
     return 0;
 }
 
