@@ -1,13 +1,15 @@
+#include "typedef.h"
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
-#include "typedef.h"
 
 #define MAX_PROCESS_LINE 100
 #define MAX_PROCESS_NAME 80
@@ -92,10 +94,17 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
     {
         do
         {
-            sysdt = ((float)time(NULL) - (float)syst0) * 10;
+            //sets the tnow for the simulation
+            struct rusage usage;
+            struct timeval time_spent;
+            getrusage(RUSAGE_THREAD, &usage);
+            timeradd(&usage.ru_utime, &usage.ru_stime, &time_spent);
+            int millis = (time_spent.tv_sec * 1000) + (time_spent.tv_usec / 1000);
+            sysdt = millis / 100;
+            //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
-        add_job(&pv[i]);
+        //add_job(&pv[i]);
         fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
 }
@@ -123,8 +132,18 @@ int main(int argc, string *argv)
             ((float)processes[i].dl_dec) / 10);
     }
 
+    //creates the thread for the scheduler
     pthread_t scheduler;
-    time_t syst0 = time(NULL);
+
+    //sets the t0 for the simulation
+    struct rusage usage;
+    struct timeval time_spent;
+    getrusage(RUSAGE_THREAD, &usage);
+    timeradd(&usage.ru_utime, &usage.ru_stime, &time_spent);
+    int millis = (time_spent.tv_sec * 1000) + (time_spent.tv_usec / 1000);
+    int syst0 = millis * 1000;
+
+    //creates the scheduler definitions struct
     scheduler_def defs;
     defs.cpu_count = sysconf(_SC_NPROCESSORS_ONLN);
     defs.syst0 = syst0;
