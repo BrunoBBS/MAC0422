@@ -105,8 +105,8 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0)
             //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
-        //add_job(&pv[i]);
-        fprintf(stdout, "Process %s added at %d ->  %.1f\n", pv[i].name, sysdt, (float)sysdt / 10);
+        add_job(&pv[i]);
+        fprintf(stderr, "Process %s added at %.1f\n", pv[i].name, (float)sysdt / 10);
     }
 }
 
@@ -154,11 +154,13 @@ int main(int argc, string *argv)
     //creates scheduler thread
     case 1:
         //shortest job first
+        sjf_init(&defs);
         pthread_create(&scheduler, 0, &sjf, (void *)&defs);
         user(proc_cnt, processes, &sjf_add_job, syst0);
         break;
     case 2:
         //round robin
+        rr_init(&defs);
         pthread_create(&scheduler, 0, &rr, (void *)&defs);
         user(proc_cnt, processes, &rr_add_job, syst0);
         break;
