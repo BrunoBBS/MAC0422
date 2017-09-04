@@ -11,18 +11,20 @@ linked_queue ll = 0;
 void lq_insert(linked_queue *queue, process *proc)
 {
     linked_queue ptr = *queue;
-    for (; ptr->next &&
+
+    for (; ptr && ptr->next &&
             ptr->next->proc->dt_dec <= proc->dt_dec; ptr = ptr->next);
     lq_item *new_item = malloc(sizeof(struct lq_item));
-    if (*queue && (*queue)->proc->dt_dec <= proc->dt_dec)
-    {
-        ptr->next      = new_item;
-        new_item->next = ptr->next;
-    }
-    else
+    
+    if (!*queue || (*queue)->proc->dt_dec > proc->dt_dec)
     {
         new_item->next = *queue;
         *queue = new_item;
+    }
+    else
+    {
+        new_item->next = ptr->next;
+        ptr->next      = new_item;
     }
     new_item->proc = proc;
 }
@@ -38,15 +40,19 @@ process *lq_get(linked_queue *queue)
     return ret;
 }
 
-void* sjf(void *sch_init)
+void sjf_init(void *sch_init)
 {
-    scheduler_def *def = (scheduler_def*)sch_init;
-
     // Initializes a linked list
     ll = 0;
-
-    // Initialized the semaphore
+    
+    // Initializes semaphore
     sem_init(&ll_s, 0, 1);
+}
+
+void* sjf(void *sch_init)
+{
+    // Get definition
+    scheduler_def *def = (scheduler_def*)sch_init;
 
     // This is the currently running processes
     unsigned int cpu_cnt = def->cpu_count;

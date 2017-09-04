@@ -2,6 +2,7 @@
 #define __TYPEDEF_H__
 #define _GNU_SOURCE
 #include <pthread.h>
+#include <stdio.h>
 #include <semaphore.h>
 
 typedef char *string;
