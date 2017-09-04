@@ -111,6 +111,8 @@ void* sjf(void *sch_init)
     }
 
     sem_destroy(&ll_s);
+    free(free_cpu_stack);
+    free(running_p);
     return 0;
 }
 
