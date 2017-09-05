@@ -10,7 +10,7 @@
 //semaphore for the linked list
 sem_t queue_s;
 c_ll_item *queue;
-int proc_count, t_elapsed;
+int proc_count;
 const int QUANTUM = 200; //in milliseconds
 
 void c_ll_insert(c_ll_item **root, process *proc)
@@ -42,7 +42,7 @@ void c_ll_insert(c_ll_item **root, process *proc)
 
 int rr_add_job(process *job)
 {
-    sem_init(&(job->sem), 0, 1);
+    sem_init(&(job->sem), 0, 0);
     pthread_create(&(job->thread), 0, &process_t, (void *)job);
     sem_wait(&queue_s);
     c_ll_insert(&queue, job);
@@ -83,15 +83,19 @@ void *rr(void *sch_init)
     /*int *free_cpu_stack = malloc(cpu_cnt * sizeof(int));*/
     /*unsigned int *startt = malloc(cpu_cnt * sizeof(unsigned int));*/
     /*process **running_p = malloc(cpu_cnt * sizeof(process *));*/
-
-    while (!def->ended)
+    // Waits until first process arrive
+    while (1)
     {
         if (proc_count > 0)
         {
             // Unlocks current thread
             sem_post(&(p_pointer->proc->sem));
-            // Wait fo one QUANTUM
-            while ((getttime() - def->syst0) % QUANTUM > 0.001)
+            if (globals.extra)
+                printf("[RR ] A process has started\n");
+            // Wait for one QUANTUM
+            unsigned int before_quantum = getttime();
+            unsigned int curr_time;
+            while (((curr_time = getttime()) - before_quantum) < QUANTUM)
             {
                 // If the current process has ended
                 if (p_pointer->proc->dt_dec == -1)
@@ -100,7 +104,7 @@ void *rr(void *sch_init)
                         printf("[RR ] A process has finished\n");
                     unsigned int end_time = getttime();
                     // frees semaphore
-                    sem_close(&(p_pointer->proc->sem));
+                    sem_destroy(&(p_pointer->proc->sem));
                     // Removes from list
                     pp_pointer->next = p_pointer->next;
                     proc_count--;
@@ -118,5 +122,7 @@ void *rr(void *sch_init)
             p_pointer = p_pointer->next;
             sem_post(&queue_s);
         }
+        else if (def->ended)
+            break;
     }
 }
