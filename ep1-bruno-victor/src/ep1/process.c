@@ -27,7 +27,6 @@ void* process_t(void* args)
         int j = 0;
         for (int i = 0; i < 100; i++)
             j++;
-        printf("Sou um processo q roda!\n");
 
         // Calculates time the process thread has spent
         millis = getttime();

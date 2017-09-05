@@ -5,8 +5,6 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
-//TODO: preciso de uma linked list pra guardar a lista de processos DONE
-//TODO: preciso que o scheduler marque o tempo DONE
 //TODO: preciso definir quanto é um quantum
 
 //semaphore for the linked list
@@ -44,7 +42,7 @@ void c_ll_insert(c_ll_item **root, process *proc)
 
 int rr_add_job(process *job)
 {
-    sem_init(&(job->sem), 0, 0);
+    sem_init(&(job->sem), 0, 1);
     pthread_create(&(job->thread), 0, &process_t, (void *)job);
     sem_wait(&queue_s);
     c_ll_insert(&queue, job);
