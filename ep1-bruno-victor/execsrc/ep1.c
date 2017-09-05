@@ -1,7 +1,7 @@
-#include "typedef.h"
 #include "ep1/event_queue.h"
 #include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
+#include "typedef.h"
 
 #define MAX_PROCESS_LINE 100
 #define MAX_PROCESS_NAME 80
@@ -88,7 +88,6 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, schedule
         {
             //sets the tnow for the simulation
             sysdt = getttime() / 100;
-            //printf("%d é menor que %d\n", sysdt, pv[i].t0_dec);
         } while (sysdt < pv[i].t0_dec);
 
         add_job(&pv[i]);
@@ -102,13 +101,13 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, schedule
 
 int output_event(scheduler_event *event, void *args)
 {
-    FILE *file = (FILE*) args;
+    FILE *file = (FILE *)args;
     if (event->event_t == PROCESS_ENDED)
     {
         fprintf(file, "%s %.1f %.1f\n",
                 event->proc->name,
-                (float) event->timestamp_millis / 1000,
-                (float) (event->timestamp_millis - event->extra_data.u) / 1000);
+                (float)event->timestamp_millis / 1000,
+                (float)(event->timestamp_millis - event->extra_data.u) / 1000);
     }
 
     return 0;
@@ -119,29 +118,29 @@ int print_event(scheduler_event *event, void *args)
     printf("\n[EVN ] Event type   : ");
     switch (event->event_t)
     {
-        case PROCESS_ADDED:
-            printf("PROCESS_ADDED");
-            break;
-        case PROCESS_PAUSED:
-            printf("PROCESS_PAUSED");
-            break;
-        case PROCESS_RESUMED:
-            printf("PROCESS_RESUMED");
-            break;
-        case PROCESS_ENDED:
-            printf("PROCESS_ENDED");
-            break;
-        case PROCESS_STARTED:
-            printf("PROCESS_STARTED");
-            break;
-        default:
-            printf("UNKNOWN");
+    case PROCESS_ADDED:
+        printf("PROCESS_ADDED");
+        break;
+    case PROCESS_PAUSED:
+        printf("PROCESS_PAUSED");
+        break;
+    case PROCESS_RESUMED:
+        printf("PROCESS_RESUMED");
+        break;
+    case PROCESS_ENDED:
+        printf("PROCESS_ENDED");
+        break;
+    case PROCESS_STARTED:
+        printf("PROCESS_STARTED");
+        break;
+    default:
+        printf("UNKNOWN");
     }
     printf("\n");
     printf("[EVN ] Event process: %s\n", event->proc->name);
     printf("[EVN ] Event core   : %d\n", event->core);
     printf("[EVN ] Event time   : %.1f\n",
-            (float) event->timestamp_millis / 1000);
+           (float)event->timestamp_millis / 1000);
 
     return 0;
 }
@@ -163,16 +162,16 @@ int main(int argc, string *argv)
         int option_cnt = strlen(options);
         for (int option = 0; option < option_cnt; option++)
         {
-            switch(options[option])
+            switch (options[option])
             {
-                case 'd':
-                    globals.debug = 1;
-                    break;
-                case 'e':
-                    globals.extra = 1;
-                    break;
-                default:
-                    printf("Unrecognized option '%c'\n", options[option]);
+            case 'd':
+                globals.debug = 1;
+                break;
+            case 'e':
+                globals.extra = 1;
+                break;
+            default:
+                printf("Unrecognized option '%c'\n", options[option]);
             }
         }
     }
@@ -213,7 +212,7 @@ int main(int argc, string *argv)
 
     if (globals.extra)
         printf("[MAIN] Detected \e[34m%d\e[0m cores in this machine!\n",
-                defs.cpu_count);
+               defs.cpu_count);
 
     switch (atoi(argv[1]))
     {
@@ -221,14 +220,14 @@ int main(int argc, string *argv)
     case 1:
         //shortest job first
         if (globals.extra)
-            printf ("[MAIN] Using \e[34mShortest Job First\e[0m Scheduler\n");
+            printf("[MAIN] Using \e[34mShortest Job First\e[0m Scheduler\n");
         sjf_init(&defs);
         pthread_create(&scheduler, 0, &sjf, (void *)&defs);
         user(proc_cnt, processes, &sjf_add_job, syst0, &defs);
         break;
     case 2:
         if (globals.extra)
-            printf ("[MAIN] Using \e[34mRound Robin\e[0m Scheduler\n");
+            printf("[MAIN] Using \e[34mRound Robin\e[0m Scheduler\n");
         //round robin
         rr_init(&defs);
         pthread_create(&scheduler, 0, &rr, (void *)&defs);
@@ -236,14 +235,14 @@ int main(int argc, string *argv)
         break;
     case 3:
         if (globals.extra)
-            printf ("[MAIN] Using \e[34mPriority\e[0m Scheduler\n");
+            printf("[MAIN] Using \e[34mPriority\e[0m Scheduler\n");
         //priority scheduler
         break;
     }
 
     ev_queue events;
 
-    pthread_join(scheduler, (void**)&events);
+    pthread_join(scheduler, (void **)&events);
 
     if (globals.extra)
         eq_forall(&events, &print_event, NULL);
@@ -258,7 +257,7 @@ int main(int argc, string *argv)
     {
         if (globals.extra)
             printf("[MAIN] Writing output file '%s'\n", argv[3]);
-        eq_forall(&events, &output_event, (void*) file);
+        eq_forall(&events, &output_event, (void *)file);
         fclose(file);
     }
 

@@ -33,7 +33,7 @@ typedef struct process
 typedef struct scheduler_def
 {
     char ended;
-    clock_t syst0;
+    int syst0;
     unsigned int cpu_count;
 } scheduler_def;
 
