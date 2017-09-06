@@ -248,10 +248,10 @@ void *rr(void *sch_init)
 
             if (globals.extra)
             {
-                printf("[SJF ] Process %s \e[32mresumed\e[0m at \e[34m%.1f\e[0m\n",
+                printf("[RR  ] Process %s \e[32mresumed\e[0m at \e[34m%.1f\e[0m\n",
                         to_resume->name,
                         (float) event.timestamp_millis / 1000);
-                printf("[SJF ] Process %s running at core \e[34m%d\e[0m\n",
+                printf("[RR  ] Process %s running at core \e[34m%d\e[0m\n",
                         to_resume->name,
                         core);
             }
