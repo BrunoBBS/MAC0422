@@ -28,6 +28,7 @@ typedef struct process
     int trace_line;
     sem_t sem;
     pthread_t thread;
+    int state;
 } process;
 
 typedef struct scheduler_def
