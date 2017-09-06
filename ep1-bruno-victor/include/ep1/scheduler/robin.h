@@ -2,14 +2,14 @@
 #define __SCH_ROBIN_H__
 #include "typedef.h"
 
-typedef struct c_ll_item
+typedef struct rr_ll_item
 {
     process *proc;
-    struct c_ll_item *next;
-} c_ll_item;
+    struct rr_ll_item *next;
+} rr_ll_item;
 
-void c_ll_insert(c_ll_item **, process *);
-process *c_ll_get(c_ll_item **);
+void rr_ll_insert(rr_ll_item **, process *);
+void rr_ll_remove(rr_ll_item **, process *);
 
 void rr_init(void *);
 void *rr(void *);

@@ -64,7 +64,6 @@ void* sjf(void *sch_init)
     // This is the currently running processes
     unsigned int cpu_cnt = def->cpu_count;
     int *free_cpu_stack = malloc(cpu_cnt * sizeof(int));
-    unsigned int *startt = malloc(cpu_cnt * sizeof(unsigned int));
     process **running_p = malloc(cpu_cnt * sizeof(process*));
 
     for (int i = 0; i < cpu_cnt; i++)
@@ -103,11 +102,11 @@ void* sjf(void *sch_init)
                     event.core = i;
                     event.proc = running_p[i];
                     event.timestamp_millis = end_time;
-                    event.extra_data.u = startt[i];
+                    event.extra_data.u = running_p[i]->t0_dec * 100;
                     eq_notify(&events, event);
 
                     // Free semaphore and set running_p as 0
-                    sem_close(&running_p[i]->sem);
+                    sem_destroy(&running_p[i]->sem);
                     running_p[i] = 0;
                 }
 
@@ -134,9 +133,6 @@ void* sjf(void *sch_init)
             // Binds process to core
             running_p[core] = to_run;
 
-            // Adds start time to list
-            startt[core] = getttime();
-
             // Creates process
             pthread_create(
                     &(running_p[core]->thread),
@@ -149,7 +145,7 @@ void* sjf(void *sch_init)
             event.event_t = PROCESS_STARTED;
             event.core = core;
             event.proc = to_run;
-            event.timestamp_millis = startt[core];
+            event.timestamp_millis = getttime();
             eq_notify(&events, event);
 
             if (globals.extra)
@@ -172,7 +168,6 @@ void* sjf(void *sch_init)
 
     sem_destroy(&ll_s);
     free(free_cpu_stack);
-    free(startt);
     free(running_p);
     return events;
 }
