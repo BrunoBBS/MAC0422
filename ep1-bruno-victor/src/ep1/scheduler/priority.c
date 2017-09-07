@@ -266,7 +266,7 @@ void *priority(void *sch_init)
                 printf("[PRIO] Process %s has now priority \e[34m%.3f\e[0m - Quantum of \e[34m%.1f\e[0m\n",
                         to_resume->name,
                         priorities[core],
-                        PQUANTUM * priorities[core]);
+                        (PQUANTUM * priorities[core]) / 1000);
                 printf("[PRIO] Process %s running at core \e[34m%d\e[0m\n",
                        to_resume->name,
                        core);
