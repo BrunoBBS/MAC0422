@@ -237,8 +237,8 @@ void *priority(void *sch_init)
                 (((float) to_resume->dl_dec * 100) - curr_time);
 
             priorities[core] =
-                perc < min_r ? min_p :
-                perc > max_r ? max_p :
+                perc < min_r && perc > 0 ? min_p :
+                perc > max_r || perc < 0 ? max_p :
                 (perc - min_r) / (max_r - min_r) * (max_p - min_p) + min_p;
 
             // Unlock process' semaphore
