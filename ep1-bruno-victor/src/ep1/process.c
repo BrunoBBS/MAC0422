@@ -14,6 +14,7 @@ void* process_t(void* args)
     // Here we initialize some variables (time is translated to milliseconds)
     sem_t *semaphore = &(proc->sem);
     unsigned int dt_mil = proc->dt_dec*100;
+    proc->rem_milli = proc->dt_dec * 100;
 
     // Some variables we will need for time calculation
     unsigned int millis;
@@ -30,6 +31,9 @@ void* process_t(void* args)
 
         // Calculates time the process thread has spent
         millis = getttime();
+
+        // Set remaining time
+        proc->rem_milli = (proc->dt_dec * 100) - millis;
 
         // Stops running when process has run for enough time
     } while (millis < dt_mil);

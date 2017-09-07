@@ -5,8 +5,6 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
-// TODO: preciso definir quanto é um quantum
-
 // semaphore for the linked list
 sem_t queue_s;
 priority_ll_item *queue;
@@ -21,7 +19,7 @@ void priority_ll_insert(priority_ll_item **root, process *proc)
 {
     priority_ll_item *item = malloc(sizeof(priority_ll_item));
     item->next = *root;
-    proc->rm_milli = ((float)proc->dt_dec / 10) * 1000;
+    proc->rem_milli = proc->dt_dec * 100;
     item->proc = proc;
     *root = item;
 }
@@ -106,6 +104,7 @@ void *priority(void *sch_init)
     int *free_cpu_stack = malloc(cpu_cnt * sizeof(int));
     unsigned int *startt = malloc(cpu_cnt * sizeof(unsigned int));
     process **running_p = malloc(cpu_cnt * sizeof(process *));
+    float *priorities = malloc(cpu_cnt * sizeof(float));
 
     for (int i = 0; i < cpu_cnt; i++)
         running_p[i] = 0;
@@ -158,13 +157,9 @@ void *priority(void *sch_init)
                 }
 
                 // If prioritized ammount of quantums has ended
-                else if (running_p[i] && curr_time - startt[i] >= running_p[i]->priority * PQUANTUM)
+                else if (running_p[i] && curr_time - startt[i] >=
+                        priorities[i] * PQUANTUM)
                 {
-                    // Recalculates remaining time
-                    running_p[i]->rm_milli -= (running_p[i]->priority * PQUANTUM);
-                    if (globals.extra)
-                        printf("[PRIO] New priority for process %d is %f\n", i, running_p[i]->priority);
-
                     if (globals.extra)
                     {
                         printf("[PRIO] Process %s \e[33mpaused\e[0m at \e[34m%.1f\e[0m\n",
@@ -234,9 +229,17 @@ void *priority(void *sch_init)
             // Get free core
             int core = free_cpu_stack[--free_cpu_cnt];
 
-            // calculates priotiry
-            float perc = (float)to_resume->rm_milli / (((float)(to_resume->dl_dec / 10) * 1000) - getttime());
-            to_resume->priority = perc < min_r ? min_p : (perc > max_r ? max_p : ((perc - min_r) / (max_r - min_r) * (max_p - min_p) + min_p));
+            // Get current time
+            unsigned int curr_time = getttime();
+
+            // Calculates priority
+            float perc = (float)to_resume->rem_milli /
+                (((float) to_resume->dl_dec * 100) - curr_time);
+
+            priorities[core] =
+                perc < min_r ? min_p :
+                perc > max_r ? max_p :
+                (perc - min_r) / (max_r - min_r) * (max_p - min_p) + min_p;
 
             // Unlock process' semaphore
             sem_post(&to_resume->sem);
@@ -245,7 +248,7 @@ void *priority(void *sch_init)
             running_p[core] = to_resume;
 
             // Set start time
-            startt[core] = getttime();
+            startt[core] = curr_time;
 
             // Add event to queue
             scheduler_event event;
@@ -259,7 +262,11 @@ void *priority(void *sch_init)
             {
                 printf("[PRIO] Process %s \e[32mresumed\e[0m at \e[34m%.1f\e[0m\n",
                        to_resume->name,
-                       (float)event.timestamp_millis / 1000);
+                       (float) event.timestamp_millis / 1000);
+                printf("[PRIO] Process %s has now priority \e[34m%.3f\e[0m - Quantum of \e[34m%.1f\e[0m\n",
+                        to_resume->name,
+                        priorities[core],
+                        PQUANTUM * priorities[core]);
                 printf("[PRIO] Process %s running at core \e[34m%d\e[0m\n",
                        to_resume->name,
                        core);
@@ -274,6 +281,7 @@ void *priority(void *sch_init)
 
     free(free_cpu_stack);
     free(curr_round_p);
+    free(priorities);
     sem_destroy(&queue_s);
     return events;
 }

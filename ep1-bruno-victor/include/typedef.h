@@ -24,12 +24,11 @@ typedef struct process
     int t0_dec;
     int dt_dec;
     int dl_dec;
-    int rm_milli;
+    int rem_milli;
     string name;
     int trace_line;
     sem_t sem;
     pthread_t thread;
-    float priority;
 } process;
 
 typedef struct scheduler_def
