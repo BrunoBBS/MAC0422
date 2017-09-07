@@ -82,13 +82,23 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, schedule
     //sysdt is an integer where the last digit is a decimal
     int sysdt = 0;
 
+    // Reference t0
+    struct timeval t0;
+    gettimeofday(&t0, NULL);
+
     //for each process
     for (int i = 0; i < pc; i++)
     {
         do
         {
+            // Get time delta
+            struct timeval curr_time, delta;
+
+            gettimeofday(&curr_time, NULL);
+            timersub(&curr_time, &t0, &delta);
+
             //sets the tnow for the simulation
-            sysdt = getttime() / 100;
+            sysdt = delta.tv_sec * 10 + delta.tv_usec / 100000;
         } while (sysdt < pv[i].t0_dec);
 
         add_job(&pv[i]);
