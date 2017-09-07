@@ -1,4 +1,5 @@
 #include "ep1/event_queue.h"
+#include "ep1/scheduler/priority.h"
 #include "ep1/scheduler/robin.h"
 #include "ep1/scheduler/shortest.h"
 #include "typedef.h"
@@ -237,6 +238,9 @@ int main(int argc, string *argv)
         if (globals.extra)
             printf("[MAIN] Using \e[34mPriority\e[0m Scheduler\n");
         //priority scheduler
+        priority_init(&defs);
+        pthread_create(&scheduler, 0, &priority, (void *)&defs);
+        user(proc_cnt, processes, &priority_add_job, syst0, &defs);
         break;
     }
 
