@@ -1,2 +1,2 @@
 #!/bin/bash
-make && ./bin/ep1 1 teste out de
+make && ./bin/ep1 1 yay out de
