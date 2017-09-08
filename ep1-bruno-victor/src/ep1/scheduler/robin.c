@@ -10,7 +10,7 @@
 // semaphore for the linked list
 sem_t queue_s;
 rr_ll_item *queue;
-const int QUANTUM = 2000; // in milliseconds
+const int QUANTUM = 200; // in milliseconds
 
 void rr_ll_insert(rr_ll_item **root, process *proc)
 {

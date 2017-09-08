@@ -1,5 +1,5 @@
 #!/bin/bash
-cpu_cnt=$(grep ^processor /proc/cpuinfo)
+cpu_cnt="$(grep -c ^processor /proc/cpuinfo)"
 make
 if [ "$#" -ne 1 ];
 then
@@ -8,9 +8,11 @@ then
 fi
 
 file="$1"
-num_proc=$(cat $file | wc -l)
-
+num_proc="$(cat $file | wc -l)"
+echo "Machine has ${cpu_cnt} processors"
 echo "Will run for ${num_proc} processes in file '${file}'!"
+
+echo "Outfiles will be: <scheduler>_out_${cpu_cnt}_cpu_${num_proc}_proc"
 
 echo "Starting SJF..."
 ./bin/ep1 1 $file sjf_out_${cpu_cnt}_cpu_${num_proc}_proc

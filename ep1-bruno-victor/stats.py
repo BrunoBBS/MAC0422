@@ -20,6 +20,7 @@ class Process():
         self.t0 = t0
         self.dt = dt
         self.dl = dl
+        self.late = 0
 
 processes = {}
 
@@ -80,9 +81,22 @@ for line in out:
     print ("{}Process {} run from {:.1f} to {:.1f} when it should have ended at {:.1f}\033[0m".
             format('\033[32m' if tf <= proc_obj.dl else '\033[31m', name,
                 proc_obj.t0, tf, proc_obj.dl))
-    print ("Process {} had a delta of {:.1f}\033[0m".
+    if tf > proc_obj.dl:
+        proc_obj.late = tf - proc_obj.dl
+        print ("Process {} was late by {:.1f}".
+                format(name, proc_obj.late))
+    print ("Process {} had a delta of {:.1f}".
             format(name, tf - proc_obj.t0))
 
+print ("Processes were late by a total of {:.1f} seconds".
+        format(sum([processes[name].late for name in processes])))
+
+print ("The process that was late the most was late by {:.1f} seconds".
+        format(max([processes[name].late for name in processes])))
+
+print ("Processes were late by average an {:.1f} seconds average".
+        format(sum([processes[name].late for name in processes]) /
+            len([0 for proc in processes if processes[proc].late > 0])))
 inp.close()
 out.close()
 
