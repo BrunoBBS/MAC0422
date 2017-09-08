@@ -1,2 +1,25 @@
 #!/bin/bash
-make && ./bin/ep1 1 yay out de
+cpu_cnt=$(grep ^processor /proc/cpuinfo)
+make
+if [ "$#" -ne 1 ];
+then
+    echo "Usage: $0 <filename>"
+    exit 0
+fi
+
+file="$1"
+num_proc=$(cat $file | wc -l)
+
+echo "Will run for ${num_proc} processes in file '${file}'!"
+
+echo "Starting SJF..."
+./bin/ep1 1 $file sjf_out_${cpu_cnt}_cpu_${num_proc}_proc
+echo "Ended SJF..."
+sleep 10
+echo "Starting RR..."
+./bin/ep1 2 $file rr_out_${cpu_cnt}_cpu_${num_proc}_proc
+echo "Ended RR..."
+sleep 10
+echo "Starting Priority..."
+./bin/ep1 3 $file pri_out_${cpu_cnt}_cpu_${num_proc}_proc
+echo "Ended Priority..."

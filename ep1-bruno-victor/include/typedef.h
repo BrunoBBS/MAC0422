@@ -42,9 +42,11 @@ typedef struct scheduler_def
 struct globals {
     char debug;
     char extra;
+    struct timeval t0;
 } globals;
 
 // Some very useful functions
 unsigned int getttime ();
+unsigned int getwtime ();
 
 #endif

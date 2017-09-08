@@ -80,7 +80,7 @@ void* sjf(void *sch_init)
                 // If process has ended
                 if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
-                    unsigned int end_time = getttime();
+                    unsigned int end_time = getwtime();
                     if (globals.extra)
                     {
                         printf("[SJF ] Process %s \e[31mended\e[0m at \e[34m%.1f\e[0m\n",
@@ -145,7 +145,7 @@ void* sjf(void *sch_init)
             event.event_t = PROCESS_STARTED;
             event.core = core;
             event.proc = to_run;
-            event.timestamp_millis = getttime();
+            event.timestamp_millis = getwtime();
             eq_notify(&events, event);
 
             if (globals.extra)

@@ -109,7 +109,7 @@ void *rr(void *sch_init)
         // Wait for free cpu
         unsigned int free_cpu_cnt = 0;
         do {
-            unsigned int curr_time = getttime();
+            unsigned int curr_time = getwtime();
             for (int i = 0; i < cpu_cnt; i++)
             {
                 // If process has ended
@@ -236,7 +236,7 @@ void *rr(void *sch_init)
             running_p[core] = to_resume;
 
             // Set start time
-            startt[core] = getttime();
+            startt[core] = getwtime();
 
             // Add event to queue
             scheduler_event event;

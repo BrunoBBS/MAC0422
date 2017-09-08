@@ -116,7 +116,7 @@ void *priority(void *sch_init)
         unsigned int free_cpu_cnt = 0;
         do
         {
-            unsigned int curr_time = getttime();
+            unsigned int curr_time = getwtime();
             for (int i = 0; i < cpu_cnt; i++)
             {
                 // If process has ended
@@ -230,7 +230,7 @@ void *priority(void *sch_init)
             int core = free_cpu_stack[--free_cpu_cnt];
 
             // Get current time
-            unsigned int curr_time = getttime();
+            unsigned int curr_time = getwtime();
 
             // Calculates priority
             float perc = (float)to_resume->rem_milli /

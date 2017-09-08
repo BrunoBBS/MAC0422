@@ -82,23 +82,12 @@ void user(int pc, process *pv, int (*add_job)(process *), time_t syst0, schedule
     //sysdt is an integer where the last digit is a decimal
     int sysdt = 0;
 
-    // Reference t0
-    struct timeval t0;
-    gettimeofday(&t0, NULL);
-
     //for each process
     for (int i = 0; i < pc; i++)
     {
-        do
-        {
-            // Get time delta
-            struct timeval curr_time, delta;
-
-            gettimeofday(&curr_time, NULL);
-            timersub(&curr_time, &t0, &delta);
-
-            //sets the tnow for the simulation
-            sysdt = delta.tv_sec * 10 + delta.tv_usec / 100000;
+        // Wait to add next process
+        do {
+            sysdt = getwtime() / 100;
         } while (sysdt < pv[i].t0_dec);
 
         add_job(&pv[i]);
@@ -194,16 +183,18 @@ int main(int argc, string *argv)
         exit(-1);
 
     //print process list
-    for (int i = 0; i < proc_cnt; i++)
+    if (globals.extra)
     {
-        printf(
-            "process: %s\nt0: %f\ndt: %f\ndeadline: %f\n\n",
-            processes[i].name,
-            ((float)processes[i].t0_dec) / 10,
-            ((float)processes[i].dt_dec) / 10,
-            ((float)processes[i].dl_dec) / 10);
+        for (int i = 0; i < proc_cnt; i++)
+        {
+            printf(
+                "process: %s\nt0: %f\ndt: %f\ndeadline: %f\n\n",
+                processes[i].name,
+                ((float)processes[i].t0_dec) / 10,
+                ((float)processes[i].dt_dec) / 10,
+                ((float)processes[i].dl_dec) / 10);
+        }
     }
-
     //creates the thread for the scheduler
     pthread_t scheduler;
 
@@ -225,6 +216,9 @@ int main(int argc, string *argv)
         printf("[MAIN] Detected \e[34m%d\e[0m cores in this machine!\n",
                defs.cpu_count);
 
+    // Reference t0
+    gettimeofday(&globals.t0, NULL);
+    
     switch (atoi(argv[1]))
     {
     //creates scheduler thread
