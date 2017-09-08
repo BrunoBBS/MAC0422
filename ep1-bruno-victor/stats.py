@@ -93,10 +93,10 @@ print ("Processes were late by a total of {:.1f} seconds".
 
 print ("The process that was late the most was late by {:.1f} seconds".
         format(max([processes[name].late for name in processes])))
-
-print ("Processes were late by average an {:.1f} seconds average".
-        format(sum([processes[name].late for name in processes]) /
-            len([0 for proc in processes if processes[proc].late > 0])))
+if len([0 for proc in processes if processes[proc].late > 0]) != 0:
+    print ("Processes were late by average an {:.1f} seconds average".
+            format(sum([processes[name].late for name in processes]) /
+                len([0 for proc in processes if processes[proc].late > 0])))
 inp.close()
 out.close()
 
