@@ -9,7 +9,7 @@ def generate_proc(pid):
     return (t0 / 10, dt / 10, dl / 10, 'process_' + str(pid))
 
 if len(sys.argv) < 3:
-    print ("Usage: python stats.py <input> <out>")
+    print ("Usage: python stats.py <input> <out> [verbose]")
     sys.exit(0)
 
 inp = open(sys.argv[1], 'r')
@@ -78,16 +78,21 @@ for line in out:
         sys.exit(-1)
 
     proc_obj = processes[name]
-    print ("{}Process {} run from {:.1f} to {:.1f} when it should have ended at {:.1f}\033[0m".
-            format('\033[32m' if tf <= proc_obj.dl else '\033[31m', name,
-                proc_obj.t0, tf, proc_obj.dl))
     if tf > proc_obj.dl:
         proc_obj.late = tf - proc_obj.dl
-        print ("Process {} was late by {:.1f}".
-                format(name, proc_obj.late))
-    print ("Process {} had a delta of {:.1f}".
-            format(name, tf - proc_obj.t0))
 
+    if len(sys.argv) > 3:
+        print ("{}Process {} run from {:.1f} to {:.1f} when it should have ended at {:.1f}\033[0m".
+                format('\033[32m' if tf <= proc_obj.dl else '\033[31m', name,
+                    proc_obj.t0, tf, proc_obj.dl))
+        if tf > proc_obj.dl:
+            print ("Process {} was late by {:.1f}".
+                    format(name, proc_obj.late))
+        print ("Process {} had a delta of {:.1f}".
+                format(name, tf - proc_obj.t0))
+
+print ("There were {:d} processes that missed the deadline".
+        format(len([0 for proc in processes if processes[proc].late > 0])))
 print ("Processes were late by a total of {:.1f} seconds".
         format(sum([processes[name].late for name in processes])))
 
@@ -96,6 +101,11 @@ print ("The process that was late the most was late by {:.1f} seconds".
 if len([0 for proc in processes if processes[proc].late > 0]) != 0:
     print ("Processes were late by average an {:.1f} seconds average".
             format(sum([processes[name].late for name in processes]) /
+                len([0 for proc in processes if processes[proc].late > 0])))
+
+if len([0 for proc in processes if processes[proc].late > 0]) != 0:
+    print ("How much processes were late has a variance of {:f}".
+            format(sum([processes[name].late**2 for name in processes]) /
                 len([0 for proc in processes if processes[proc].late > 0])))
 inp.close()
 out.close()

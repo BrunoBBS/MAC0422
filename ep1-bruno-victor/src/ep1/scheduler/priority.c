@@ -11,7 +11,7 @@ priority_ll_item *queue;
 const int PQUANTUM = 200; // in milliseconds
 // Constatnts for  priority calculations
 const float min_p = 1;   //minimum priority multiplier
-const float max_p = 20;   //maximum priority multiplier
+const float max_p = 5;   //maximum priority multiplier
 const float min_r = 0.1; //minimum threshold for minimum priority
 const float max_r = 0.9; //maximum threshold for maximum priotiry
 
