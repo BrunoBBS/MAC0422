@@ -1,27 +1,85 @@
 #!/bin/bash
 cpu_cnt="$(grep -c ^processor /proc/cpuinfo)"
 make
-if [ "$#" -ne 1 ];
+if [ "$#" -ne 3 ];
 then
-    echo "Usage: $0 <filename>"
+    echo "Usage: $0 <few> <mid> <many>"
     exit 0
 fi
 
-file="$1"
-num_proc="$(cat $file | wc -l)"
+echo "Generating input and output directories..."
+mkdir -p inputs
+mkdir -p outputs
+rm -rf inputs/*
+rm -rf outputs/*
+echo "Generated!"
+
+few="$1"
+mid="$2"
+many="$3"
+
+runs=30
 echo "Machine has ${cpu_cnt} processors"
-echo "Will run for ${num_proc} processes in file '${file}'!"
 
-echo "Outfiles will be: <scheduler>_out_${cpu_cnt}_cpu_${num_proc}_proc"
+echo "Generating input files..."
+echo "Input files will be: in_${cpu_cnt}_cpu_<num of processes>_proc_<run>"
 
-echo "Starting SJF..."
-./bin/ep1 1 $file sjf_out_${cpu_cnt}_cpu_${num_proc}_proc
-echo "Ended SJF..."
-sleep 10
-echo "Starting RR..."
-./bin/ep1 2 $file rr_out_${cpu_cnt}_cpu_${num_proc}_proc
-echo "Ended RR..."
-sleep 10
-echo "Starting Priority..."
-./bin/ep1 3 $file pri_out_${cpu_cnt}_cpu_${num_proc}_proc
-echo "Ended Priority..."
+for run in $(seq 1 ${runs})
+do
+    echo "Generating input files - run ${run}"
+    echo "Generating few processes file"
+    python3 generator.py inputs/in_${cpu_cnt}_cpu_${few}_proc_${run} ${few}
+    echo "Generating average processes file"
+    python3 generator.py inputs/in_${cpu_cnt}_cpu_${mid}_proc_${run} ${mid}
+    echo "Generating many processes file"
+    python3 generator.py inputs/in_${cpu_cnt}_cpu_${many}_proc_${run} ${many}
+done
+
+echo "Outfiles will be: <scheduler>_out_${cpu_cnt}_cpu_<num of processes>_proc_<run>"
+
+
+for run in $(seq 1 ${runs})
+do
+    echo "Running schedulers for run ${run}"
+    few_file="inputs/in_${cpu_cnt}_cpu_${few}_proc_${run}"
+    mid_file="inputs/in_${cpu_cnt}_cpu_${mid}_proc_${run}"
+    many_file="inputs/in_${cpu_cnt}_cpu_${many}_proc_${run}"
+
+    echo "We have files:"
+    echo " - $few_file"
+    echo " - $mid_file"
+    echo " - $many_file"
+
+    echo "Running SJF for few processes"
+    ./bin/ep1 1 $few_file outputs/sjf_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    sleep 5
+    echo "Running SJF for average processes"
+    ./bin/ep1 1 $mid_file outputs/sjf_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    sleep 5
+    echo "Running SJF for many processes"
+    ./bin/ep1 1 $many_file outputs/sjf_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    sleep 5
+    echo "Ended SJF..."
+
+    echo "Running RR for few processes"
+    ./bin/ep1 2 $few_file outputs/rr_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    sleep 5
+    echo "Running RR for average processes"
+    ./bin/ep1 2 $mid_file outputs/rr_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    sleep 5
+    echo "Running RR for many processes"
+    ./bin/ep1 2 $many_file outputs/rr_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    sleep 5
+    echo "Ended RR..."
+
+    echo "Running Priority for few processes"
+    ./bin/ep1 3 $few_file outputs/pri_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    sleep 5
+    echo "Running Priority for average processes"
+    ./bin/ep1 3 $mid_file outputs/pri_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    sleep 5
+    echo "Running Priority for many processes"
+    ./bin/ep1 3 $many_file outputs/pri_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    sleep 5
+    echo "Ended Priority..."
+done

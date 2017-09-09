@@ -29,7 +29,8 @@ if proc_cnt < 0:
 for i in range(proc_cnt):
     process = generate_proc(i + 1)
     line = ' '.join([str(item) for item in process])
-    print (line)
+    if len(sys.argv) == 4:
+        print (line)
     f.write(line + '\n')
 
 f.close()
