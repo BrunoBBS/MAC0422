@@ -51,35 +51,35 @@ do
     echo " - $many_file"
 
     echo "Running SJF for few processes"
-    ./bin/ep1 1 $few_file outputs/sjf_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 1 $few_file outputs/sjf_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running SJF for average processes"
-    ./bin/ep1 1 $mid_file outputs/sjf_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 1 $mid_file outputs/sjf_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running SJF for many processes"
-    ./bin/ep1 1 $many_file outputs/sjf_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 1 $many_file outputs/sjf_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended SJF..."
 
     echo "Running RR for few processes"
-    ./bin/ep1 2 $few_file outputs/rr_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 2 $few_file outputs/rr_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running RR for average processes"
-    ./bin/ep1 2 $mid_file outputs/rr_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 2 $mid_file outputs/rr_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running RR for many processes"
-    ./bin/ep1 2 $many_file outputs/rr_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 2 $many_file outputs/rr_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended RR..."
 
     echo "Running Priority for few processes"
-    ./bin/ep1 3 $few_file outputs/pri_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 3 $few_file outputs/pri_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running Priority for average processes"
-    ./bin/ep1 3 $mid_file outputs/pri_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 3 $mid_file outputs/pri_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running Priority for many processes"
-    ./bin/ep1 3 $many_file outputs/pri_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 3 $many_file outputs/pri_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended Priority..."
     estim_t=$((($(date +%s) - ${init_l}) * (${runs} - ${run}) + $(date +%s)))
