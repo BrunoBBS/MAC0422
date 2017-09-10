@@ -4,7 +4,7 @@ import random as rd
 
 def generate_proc(pid):
     t0 = rd.randint(0, 1200)
-    dt = rd.randint(1, 300)
+    dt = rd.randint(1, 150)
     dl = t0 + dt + rd.randint(100, 300)
     return (t0 / 10, dt / 10, dl / 10, 'process_' + str(pid))
 
