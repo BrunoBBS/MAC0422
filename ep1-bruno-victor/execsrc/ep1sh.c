@@ -67,7 +67,13 @@ int main()
                 }
                 else if (!strcmp(cmd.argv[0], "date")) date_c();
                 else if (!strcmp(cmd.argv[0], "chown"))
-                    chown_c(&cmd.argv[1][1], cmd.argv[2]);
+                {
+                    // PRint usage
+                    if (cmd.argc < 3)
+                        printf("Usage: chown :<group> <File>\n");
+                    else
+                        chown_c(&cmd.argv[1][1], cmd.argv[2]);
+                }
                 else
                 {
                     int pid = fork();
