@@ -113,6 +113,14 @@ int output_event(scheduler_event *event, void *args)
     return 0;
 }
 
+int count_resumes(scheduler_event *event, void *args)
+{
+    if (event->event_t == PROCESS_RESUMED)
+        (*(unsigned int *) args)++;
+
+    return 0;
+}
+
 int print_event(scheduler_event *event, void *args)
 {
     printf("\n[EVN ] Event type   : ");
@@ -218,7 +226,7 @@ int main(int argc, string *argv)
 
     // Reference t0
     gettimeofday(&globals.t0, NULL);
-    
+
     switch (atoi(argv[1]))
     {
     //creates scheduler thread
@@ -268,6 +276,13 @@ int main(int argc, string *argv)
         eq_forall(&events, &output_event, (void *)file);
         fclose(file);
     }
+    unsigned int resume_cnt;
+
+    eq_forall(&events, &count_resumes, (void *)&resume_cnt);
+
+    if (globals.debug)
+        fprintf(stderr, "[MAIN] Quantidade final de mudanças de contexto: %u\n",
+                resume_cnt);
 
     eq_destroy(&events);
     //cleans everything
