@@ -287,5 +287,13 @@ int main(int argc, string *argv)
     eq_destroy(&events);
     //cleans everything
     if (proc_cnt > 0)
+    {
+        for (int i = 0; i < proc_cnt; i++)
+        {
+            free(processes[i].name);
+            processes[i].name = NULL;
+        }
         free(processes);
+        processes = NULL;
+    }
 }

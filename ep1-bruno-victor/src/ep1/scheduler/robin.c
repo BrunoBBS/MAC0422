@@ -5,8 +5,6 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
-// TODO: preciso definir quanto é um quantum
-
 // semaphore for the linked list
 sem_t queue_s;
 rr_ll_item *queue;
@@ -264,7 +262,13 @@ void *rr(void *sch_init)
     }
 
     free(free_cpu_stack);
+    free_cpu_stack = NULL;
     free(curr_round);
+    curr_round = NULL;
+    free(startt);
+    startt = NULL;
+    free(running_p);
+    running_p = NULL;
     sem_destroy(&queue_s);
     return events;
 }

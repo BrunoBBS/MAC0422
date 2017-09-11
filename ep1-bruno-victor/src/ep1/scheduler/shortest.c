@@ -35,6 +35,7 @@ process *lq_get(linked_queue *queue)
     linked_queue ptr = *queue;
     *queue = (*queue)->next;
     free(ptr);
+    ptr = NULL;
     return ret;
 }
 
@@ -168,7 +169,9 @@ void* sjf(void *sch_init)
 
     sem_destroy(&ll_s);
     free(free_cpu_stack);
+    free_cpu_stack = NULL;
     free(running_p);
+    running_p = NULL;
     return events;
 }
 

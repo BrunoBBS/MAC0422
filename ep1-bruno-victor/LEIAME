@@ -1,0 +1,19 @@
+Para compilar o binário e movê-lo para o diretório atual (Diretório em que esse arquivo se encontra), basta usar os dois comandos:
+
+$ make
+$ make move
+
+Para executar a shell basta usar:
+
+$ ./ep1sh
+
+E se quiser executar o ep
+
+Pelo ep1sh:
+
+$ ./ep1sh
+[/currdir]$ ./ep1 <args>
+
+
+Pela shell normal:
+./ep1 <args>

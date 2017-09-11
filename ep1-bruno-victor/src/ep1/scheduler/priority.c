@@ -280,8 +280,15 @@ void *priority(void *sch_init)
     }
 
     free(free_cpu_stack);
+    free_cpu_stack = NULL;
     free(curr_round_p);
+    curr_round_p = NULL;
     free(priorities);
+    priorities = NULL;
+    free(startt);
+    startt = NULL;
+    free(running_p);
+    running_p = NULL;
     sem_destroy(&queue_s);
     return events;
 }
