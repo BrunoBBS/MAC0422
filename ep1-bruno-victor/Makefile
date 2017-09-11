@@ -141,6 +141,10 @@ $(OBJDIR)/%$(DEBUG_POST).o: $(EXECSRC)/%.$(CEXT)
 
 # Helpers
 
+# Move binaries to current folder
+move:
+	cp $(BINDIR)/* .
+
 # Upload to git
 
 upload: clean
