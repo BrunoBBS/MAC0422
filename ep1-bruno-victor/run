@@ -10,8 +10,6 @@ fi
 echo "Generating input and output directories..."
 mkdir -p inputs
 mkdir -p outputs
-rm -rf inputs/*
-rm -rf outputs/*
 echo "Generated!"
 
 few="$1"
@@ -37,9 +35,11 @@ done
 
 echo "Outfiles will be: <scheduler>_out_${cpu_cnt}_cpu_<num of processes>_proc_<run>"
 
-
+init_t=$(date +%s)
+echo "Started at $(date -d @${init_t})"
 for run in $(seq 1 ${runs})
 do
+    init_l=$(date +%s)
     echo "Running schedulers for run ${run}"
     few_file="inputs/in_${cpu_cnt}_cpu_${few}_proc_${run}"
     mid_file="inputs/in_${cpu_cnt}_cpu_${mid}_proc_${run}"
@@ -51,35 +51,37 @@ do
     echo " - $many_file"
 
     echo "Running SJF for few processes"
-    ./bin/ep1 1 $few_file outputs/sjf_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 1 $few_file outputs/sjf_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running SJF for average processes"
-    ./bin/ep1 1 $mid_file outputs/sjf_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 1 $mid_file outputs/sjf_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running SJF for many processes"
-    ./bin/ep1 1 $many_file outputs/sjf_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 1 $many_file outputs/sjf_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended SJF..."
 
     echo "Running RR for few processes"
-    ./bin/ep1 2 $few_file outputs/rr_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 2 $few_file outputs/rr_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running RR for average processes"
-    ./bin/ep1 2 $mid_file outputs/rr_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 2 $mid_file outputs/rr_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running RR for many processes"
-    ./bin/ep1 2 $many_file outputs/rr_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 2 $many_file outputs/rr_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended RR..."
 
     echo "Running Priority for few processes"
-    ./bin/ep1 3 $few_file outputs/pri_out_${cpu_cnt}_cpu_${few}_proc_${run}
+    ./bin/ep1 3 $few_file outputs/pri_out_${cpu_cnt}_cpu_${few}_proc_${run} d
     sleep 5
     echo "Running Priority for average processes"
-    ./bin/ep1 3 $mid_file outputs/pri_out_${cpu_cnt}_cpu_${mid}_proc_${run}
+    ./bin/ep1 3 $mid_file outputs/pri_out_${cpu_cnt}_cpu_${mid}_proc_${run} d
     sleep 5
     echo "Running Priority for many processes"
-    ./bin/ep1 3 $many_file outputs/pri_out_${cpu_cnt}_cpu_${many}_proc_${run}
+    ./bin/ep1 3 $many_file outputs/pri_out_${cpu_cnt}_cpu_${many}_proc_${run} d
     sleep 5
     echo "Ended Priority..."
+    estim_t=$((($(date +%s) - ${init_l}) * (${runs} - ${run}) + $(date +%s)))
+    echo "Estimated end: $(date -d @${estim_t})"
 done
