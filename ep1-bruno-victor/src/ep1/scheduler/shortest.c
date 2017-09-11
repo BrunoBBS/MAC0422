@@ -81,6 +81,11 @@ void* sjf(void *sch_init)
                 if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
                     unsigned int end_time = getwtime();
+                    if (globals.debug)
+                    {
+                        fprintf(stderr,"[SJF ] Process %s has left virtual CPU %d\n", running_p[i]->name, i);
+                        fprintf(stderr,"[SJF ] Process %s, at line %d has ended \n", running_p[i]->name, running_p[i]->trace_line);
+                    }
                     if (globals.extra)
                     {
                         printf("[SJF ] Process %s \e[31mended\e[0m at \e[34m%.1f\e[0m\n",
@@ -148,6 +153,9 @@ void* sjf(void *sch_init)
             event.timestamp_millis = getwtime();
             eq_notify(&events, event);
 
+            if (globals.debug)
+                fprintf(stderr,"[SJF ] Process %s is using virtual CPU %d\n", to_run->name, core);
+
             if (globals.extra)
             {
                 printf("[SJF ] Process %s \e[32mstarted\e[0m at \e[34m%.1f\e[0m\n",
@@ -180,5 +188,7 @@ int sjf_add_job(process *job)
     sem_wait(&ll_s);
     lq_insert(&ll, job);
     sem_post(&ll_s);
+    if (globals.debug)
+        fprintf(stderr,"[SJF ] Process %s, line: %d arrived at system\n", job->name, job->trace_line);
     return 0;
 }
