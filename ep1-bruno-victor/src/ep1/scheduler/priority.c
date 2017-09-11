@@ -68,6 +68,8 @@ int priority_add_job(process *job)
 
     curr_round_p[curr_round_p_cnt++] = job;
     sem_post(&queue_s);
+    if (globals.debug)
+        fprintf(stderr,"[PRIO] Process %s, line: %d arrived at system\n", job->name, job->trace_line);
 
     return 0;
 }
@@ -122,6 +124,11 @@ void *priority(void *sch_init)
                 // If process has ended
                 if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
+                    if (globals.debug)
+                    {
+                        fprintf(stderr,"[PRIO] Process %s has left virtual CPU %d\n", running_p[i]->name, i);
+                        fprintf(stderr,"[PRIO] Process %s, at line %d has ended \n", running_p[i]->name, running_p[i]->trace_line);
+                    }
                     if (globals.extra)
                     {
                         printf("[PRIO] Process %s \e[31mended\e[0m at \e[34m%.1f\e[0m\n",
@@ -160,6 +167,8 @@ void *priority(void *sch_init)
                 else if (running_p[i] && curr_time - startt[i] >=
                         priorities[i] * PQUANTUM)
                 {
+                    if (globals.debug)
+                        fprintf(stderr,"[PRIO] Process %s has left virtual CPU %d\n", running_p[i]->name, i);
                     if (globals.extra)
                     {
                         printf("[PRIO] Process %s \e[33mpaused\e[0m at \e[34m%.1f\e[0m\n",
@@ -257,6 +266,9 @@ void *priority(void *sch_init)
             event.proc = to_resume;
             event.timestamp_millis = startt[core];
             eq_notify(&events, event);
+
+            if (globals.debug)
+                fprintf(stderr,"[PRIO] Process %s is using virtual CPU %d\n", to_resume->name, core);
 
             if (globals.extra)
             {

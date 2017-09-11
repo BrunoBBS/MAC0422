@@ -68,7 +68,7 @@ int get_processes(string filename, process **processes)
             (*processes)[len].dl_dec = convert_time(dl_str);
             (*processes)[len].name =
                 malloc((strlen(name) + 1) * sizeof(char));
-            (*processes)[len].trace_line = len;
+            (*processes)[len].trace_line = len + 1;
             strcpy((*processes)[len++].name, name);
         }
         qsort(*processes, len, sizeof(process), order_by_t0);

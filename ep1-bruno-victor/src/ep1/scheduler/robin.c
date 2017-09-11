@@ -61,6 +61,8 @@ int rr_add_job(process *job)
 
     curr_round[curr_round_cnt++] = job;
     sem_post(&queue_s);
+    if (globals.debug)
+        fprintf(stderr,"[RR  ] Process %s, line: %d arrived at system\n", job->name, job->trace_line);
 
     return 0;
 }
@@ -68,7 +70,7 @@ int rr_add_job(process *job)
 void rr_init(void *sch_init)
 {
     if (globals.extra)
-        printf("[RR ] Initializing Scheduler...\n");
+        printf("[RR  ] Initializing Scheduler...\n");
 
     // Initializes a linked list
     queue = 0;
@@ -89,7 +91,7 @@ void *rr(void *sch_init)
     scheduler_def *def = (scheduler_def *) sch_init;
 
     if (globals.extra)
-        printf("[RR ] Scheduler has started!\n");
+        printf("[RR  ] Scheduler has started!\n");
 
     // MULTICORES
     // This is the currently running processes
@@ -113,6 +115,11 @@ void *rr(void *sch_init)
                 // If process has ended
                 if (running_p[i] && running_p[i]->dt_dec == -1)
                 {
+                    if (globals.debug)
+                    {
+                        fprintf(stderr,"[RR  ] Process %s has left virtual CPU %d\n", running_p[i]->name, i);
+                        fprintf(stderr,"[RR  ] Process %s, at line %d has ended \n", running_p[i]->name, running_p[i]->trace_line);
+                    }
                     if (globals.extra)
                     {
                         printf("[RR  ] Process %s \e[31mended\e[0m at \e[34m%.1f\e[0m\n",
@@ -157,6 +164,8 @@ void *rr(void *sch_init)
                 // If quantum has ended
                 else if (running_p[i] && curr_time - startt[i] >= QUANTUM)
                 {
+                    if (globals.debug)
+                        fprintf(stderr,"[RR  ] Process %s has left virtual CPU %d\n", running_p[i]->name, i);
                     if (globals.extra)
                     {
                         printf("[RR  ] Process %s \e[33mpaused\e[0m at \e[34m%.1f\e[0m\n",
@@ -244,6 +253,8 @@ void *rr(void *sch_init)
             event.timestamp_millis = startt[core];
             eq_notify(&events, event);
 
+            if (globals.debug)
+                fprintf(stderr,"[RR  ] Process %s is using virtual CPU %d\n", to_resume->name, core);
             if (globals.extra)
             {
                 printf("[RR  ] Process %s \e[32mresumed\e[0m at \e[34m%.1f\e[0m\n",
