@@ -9,12 +9,6 @@
 #define V60KM 2
 #define V90KM 3
 
-
-const float break_chance = 0.01;
-const float v90_chance = 0.2;
-// Chance when speed was 30, otherwise is 50/50
-const float v30_chance = 0.3;
-const float v60_chance = 0.7;
 struct Rider
 {
     int id;

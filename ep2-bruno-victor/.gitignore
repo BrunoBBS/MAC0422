@@ -1,0 +1,6 @@
+testbin/
+bin/
+vgcore.*
+out
+inputs/
+outputs/

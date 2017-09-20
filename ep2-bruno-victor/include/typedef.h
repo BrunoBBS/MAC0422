@@ -4,4 +4,7 @@
 typedef unsigned int uint;
 typedef unsigned char bool;
 
+typedef struct Velodrome * Velodrome;
+typedef struct Rider Rider;
+
 #endif
