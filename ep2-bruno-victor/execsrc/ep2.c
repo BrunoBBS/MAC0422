@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "rider.h"
 
 int main(int argc, char **argv)
 {
@@ -6,4 +7,5 @@ int main(int argc, char **argv)
     {
         printf("Usage: ep2 d n v");
     }
+
 }

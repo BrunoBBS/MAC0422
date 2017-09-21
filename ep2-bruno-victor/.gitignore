@@ -4,3 +4,5 @@ vgcore.*
 out
 inputs/
 outputs/
+*.swp
+*.swo
