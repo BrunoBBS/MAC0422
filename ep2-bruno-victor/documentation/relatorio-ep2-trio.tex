@@ -1,0 +1,127 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[bottom=2cm,top=2cm,left=2cm,right=2cm]{geometry}
+
+\title{Relatório do EP2\\MAC0422 -- Sistemas Operacionais -- 2s2017}
+\author{Anderson Andrei da Silva (8944025), Bruno Boaventura Scholl (9793586), Aluno 3 (NUSP)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introdução}
+
+\subsection{O problema}
+
+	Uma das varias modalidades de ciclismo realizada em velodromos é a corrida por pontos. O objetivo deste EP sera simular essa modalidade.
+Na corrida por pontos, ciclistas iniciam a prova ao mesmo tempo no mesmo lado do velodromo.
+	A prova geralmente dura 160 voltas em um velodromo de 250m, no caso da prova masculina, e 100
+voltas em um velodromo de 250m, no caso da prova feminina. A pontuação é definida em “sprints”
+que acontecem a cada 10 voltas, com 5, 3, 2 e 1 ponto(s) sendo atribuıdos às 4 primeiras colocações em cada sprint. Ao termino da prova, a pontuacão acumulada define as colocações de cada ciclista. Além da pontuacão definida a cada “sprint”, ciclistas que conseguem completar 1 volta sobre todos(as) os(as) outros(as), ganham 20 pontos.
+	A simulacão deve considerar que a corrida é em um velódromo com d metros, que n ciclistas
+comecam a prova e que v voltas serao realizadas (d > 249, 5 < n <= 5 x de v é múltiplo de 20).
+A qualquer momento, no maximo, apenas 10 ciclistas podem estar lado a lado em cada ponto da pista.
+Considere que cada ciclista ocupa exatamente 1 metro da pista.
+
+
+%% Apresentar a organização do EP -- Todos os arquivos presentes no
+%% .tar.gz, para que serve cada um deles, etc...
+\subsection{Disposição dos arquivos} 
+	Os arquivos estão dispostos da seguinte maneira:
+    \begin{itemize} %pastas
+    
+    \item Na \textbf{raiz do diretório} se encontram : Makefile, relatório (em LaTex) e as pastas descritas a seguir;
+    \item Na pasta \textbf{execsrc} se encontram dispostos todos os arquivos que gerarão executáveis:
+    	
+ 	\begin{itemize} %arquivos
+    \item ep2.c : %%colocar o cabeçalho de cada aquivo aqui
+ 	\end{itemize} %arquivos
+    
+    \item Na pasta \textbf{src} se encontram todos os arquivos em c que serão utilizados mas não gerarão executáveis:
+    
+ 	\begin{itemize} %arquivos
+    \item rider.c : %%colocar o cabeçalho de cada aquivo aqui
+    \item velodrome.c : %%colocar o cabeçalho de cada aquivo aqui
+ 	\end{itemize} %arquivos
+    
+    \item Na pasta \textbf{include} se encontram todos os arquivos de include (.h) que serão utilizados nos outros dois casos:
+     
+    \begin{itemize} %arquivos
+    \item ep2.h : %%colocar o cabeçalho de cada aquivo aqui
+    \item reider.h : %%colocar o cabeçalho de cada aquivo aqui
+ 	\item typedef.h : %%colocar o cabeçalho de cada aquivo aqui
+ 	\item velodrome.h : %%colocar o cabeçalho de cada aquivo aqui
+ 	\end{itemize} %arquivos
+    
+        \item Na pasta \textbf{documentation} se encontram este relatŕoio e a apresentação em slides do projeto.
+    
+    \end{itemize} %pastas
+    
+%%Apresentar o algoritmo de cada ciclista e o algoritmo geral do código,
+%%destacando cada um dos mecanismos utilizados que tenham sido vistos na
+%%sala de aula. Cada um desses mecanismos deverá ser mais detalhado nas
+%%subseções a seguir (os títulos são exemplos supondo que eles tenham
+%%sido usados)
+\subsection{Algoritmos}
+
+	Para a resolução do problema, foram criados e utilizados pelo grupo os seguintes algoritmos:
+    
+\subsubsection{Ciclistas}
+
+\subsubsection{Corrida}
+
+	A seguir serão descritos alguns dos termos usados.
+    
+\subsection{Barreiras de sincronização}
+
+Explicar para que foram usadas barreiras (em todos os lugares onde
+foram usadas), como foram implementadas (se foi implementado algum
+algoritmo visto em sala de aula ou se foi usada alguma função pronta).
+Caso tenha usado alguma função pronta, expliar o que ela faz por
+"baixo dos panos".
+
+\subsection{Semáforos}
+
+Explicar para que foram usados semáforos (em todos os lugares onde
+foram usados).
+
+\subsection{Threads}
+
+Explicar para que foram usadas threads (em todos os lugares onde foram
+usadas).
+
+\section{Resultados}
+
+Explicar como foram feitos os experimentos (se manualmente ou se
+usando alguma linguagem de script ou algo similar. Caso tenha usado
+algo automatizado, explicar brevemente como funcionou).
+
+Explicar os resultados (os gráficos que já foram pedidos no
+enunciado) deixando claro se foram os esperados ou não. \textbf{Todos}
+os gráficos precisam ser citados no texto. Não pode simplesmente
+``jogar'' 100 gráficos aqui e falar algo como: ``Em todos os gráficos
+pode ser visto...''. Tem que explicar um por um mesmo que a explicação
+fique repetitiva. Até pode-se fazer referência a um resultado similar
+escrevendo algo como: ``Como pode-se ver no gráfico da Figura 1, o
+resultado foi similar ao gráfico da Figura 2 pois ...''.
+
+\section{Divisão das tarefas de implementação}
+
+Mostrar como ficou a dedicação de cada membro da equipe em termos de
+implementação. É altamente recomendado que aqui seja apresentada a
+saída de algum repositório que já gere o histórico dos
+\texttt{commits}.
+
+\section{Referências}
+
+Colocar todas as referências usadas para a escrita do relatório (Se
+vocês souberem usar bibtex, podem usar. Se não souberem usar, sem
+problemas simplesmente listar as referências aqui).
+
+\end{document}
