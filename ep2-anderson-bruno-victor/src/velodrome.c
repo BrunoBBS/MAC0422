@@ -28,6 +28,8 @@ void create_velodrome(
     // Start riders
     for (int i = 0; i < rider_cnt; i++)
     {
+        pthread_create(&velodrome->riders[i].rider_t, 0, &ride,
+                &velodrome->riders[i]);
     }
 }
 

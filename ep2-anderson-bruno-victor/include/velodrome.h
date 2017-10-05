@@ -9,6 +9,12 @@
 
 typedef struct Rider Rider;
 
+// Declarations for circular dependency
+int change_speed(Rider *rider, bool V90);
+void *ride(void *args);
+bool will_break(Rider *rider);
+void change_lane(Rider *rider);
+
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome
 {
