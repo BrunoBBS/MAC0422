@@ -79,7 +79,6 @@ configure: clang
 	@mkdir -p $(TESTSRC)
 	@mkdir -p $(TESTBIN)
 
-
 clang:
 	@echo "-I$(INCDIR)" > .clang_complete
 

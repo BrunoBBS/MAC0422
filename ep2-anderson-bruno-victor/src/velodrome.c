@@ -1,9 +1,9 @@
 #include "velodrome.h"
 
-void create_velodrome (
-        Velodrome *velodrome_ptr,
-        uint length,
-        uint rider_cnt)
+void create_velodrome(
+    Velodrome *velodrome_ptr,
+    uint length,
+    uint rider_cnt)
 {
     // Allocates the velodrome struct
     Velodrome velodrome =
@@ -27,10 +27,11 @@ void create_velodrome (
 
     // Start riders
     for (int i = 0; i < rider_cnt; i++)
-    {}
+    {
+    }
 }
 
-void destroy_velodrome (Velodrome *velodrome_ptr)
+void destroy_velodrome(Velodrome *velodrome_ptr)
 {
     Velodrome velodrome = *velodrome_ptr;
     // Free track
@@ -47,15 +48,14 @@ void destroy_velodrome (Velodrome *velodrome_ptr)
     *velodrome_ptr = NULL;
 }
 
-int max_rider_speed (
-        Velodrome *velodrome_ptr,
-        Rider *rider)
+int max_rider_speed(
+    Velodrome *velodrome_ptr,
+    Rider *rider)
 {
     Velodrome velodrome = *velodrome_ptr;
     int max_speed = 3;
     // Get the meter immediately in front of the rider
-    int next_meter = (rider->total_dist + velodrome->length + 1)
-        % velodrome->length;
+    int next_meter = (rider->total_dist + velodrome->length + 1) % velodrome->length;
 
     // For each lane external to this one
     for (int lane = rider->lane; lane < 10; lane++)

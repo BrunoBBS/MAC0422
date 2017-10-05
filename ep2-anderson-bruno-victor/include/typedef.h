@@ -3,8 +3,10 @@
 
 typedef unsigned int uint;
 typedef unsigned char bool;
+#define true 't'
+#define false 'f'
 
-typedef struct Velodrome * Velodrome;
+typedef struct Velodrome *Velodrome;
 typedef struct Rider Rider;
 
 #endif
