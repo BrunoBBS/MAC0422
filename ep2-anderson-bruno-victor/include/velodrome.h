@@ -7,7 +7,7 @@
 #include "typedef.h"
 #include <semaphore.h>
 
-typedef struct Rider Rider;
+typedef struct Rider *Rider;
 
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome

@@ -7,6 +7,6 @@ typedef unsigned char bool;
 #define false 'f'
 
 typedef struct Velodrome *Velodrome;
-typedef struct Rider Rider;
+typedef struct Rider *Rider;
 
 #endif
