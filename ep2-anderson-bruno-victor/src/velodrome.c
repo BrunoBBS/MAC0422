@@ -26,11 +26,13 @@ void create_velodrome(
     }
 
     // Start riders
+    pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)
     {
         pthread_create(&velodrome->riders[i].rider_t, 0, &ride,
                 &velodrome->riders[i]);
     }
+    pthread_barrier_wait(velodrome->start_barrier);
 }
 
 void destroy_velodrome(Velodrome *velodrome_ptr)
