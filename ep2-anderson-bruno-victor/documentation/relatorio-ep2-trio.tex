@@ -19,16 +19,7 @@
 
 \subsection{O problema}
 
-	Uma das varias modalidades de ciclismo realizada em velodromos é a corrida por pontos. O objetivo deste EP sera simular essa modalidade.
-Na corrida por pontos, ciclistas iniciam a prova ao mesmo tempo no mesmo lado do velodromo.
-	A prova geralmente dura 160 voltas em um velodromo de 250m, no caso da prova masculina, e 100
-voltas em um velodromo de 250m, no caso da prova feminina. A pontuação é definida em “sprints”
-que acontecem a cada 10 voltas, com 5, 3, 2 e 1 ponto(s) sendo atribuıdos às 4 primeiras colocações em cada sprint. Ao termino da prova, a pontuacão acumulada define as colocações de cada ciclista. Além da pontuacão definida a cada “sprint”, ciclistas que conseguem completar 1 volta sobre todos(as) os(as) outros(as), ganham 20 pontos.
-	A simulacão deve considerar que a corrida é em um velódromo com d metros, que n ciclistas
-comecam a prova e que v voltas serao realizadas (d > 249, 5 < n <= 5 x de v é múltiplo de 20).
-A qualquer momento, no maximo, apenas 10 ciclistas podem estar lado a lado em cada ponto da pista.
-Considere que cada ciclista ocupa exatamente 1 metro da pista.
-
+      Uma das varias modalidades de ciclismo realizada em velodromos é a corrida por pontos. O objetivo deste EP sera simular essa modalidade. Todas os detalhes estão descritos no arquivo \textbf{ep2.pdf} presente no diretório do projeto.
 
 %% Apresentar a organização do EP -- Todos os arquivos presentes no
 %% .tar.gz, para que serve cada um deles, etc...
@@ -59,8 +50,14 @@ Considere que cada ciclista ocupa exatamente 1 metro da pista.
  	\item velodrome.h : %%colocar o cabeçalho de cada aquivo aqui
  	\end{itemize} %arquivos
     
-        \item Na pasta \textbf{documentation} se encontram este relatŕoio e a apresentação em slides do projeto.
+    \item Na pasta \textbf{documentation} se encontram :
     
+    	\begin{itemize} %%arquivos
+        \item ep2.pdf : o enunciado deste exercício programa;
+        \item relatorio-ep2-trio.pdf : este relatório;
+        \item apresentacao.pdf : a apresentação do projeto em slides.
+        \end{itemize} %%arquivos
+        
     \end{itemize} %pastas
     
 %%Apresentar o algoritmo de cada ciclista e o algoritmo geral do código,
@@ -73,28 +70,36 @@ Considere que cada ciclista ocupa exatamente 1 metro da pista.
 	Para a resolução do problema, foram criados e utilizados pelo grupo os seguintes algoritmos:
     
 \subsubsection{Ciclistas}
+	Os ciclitas serão representados cada um por uma thread, tendo suas características específicas POR AS CARACTERÍSTICAS DELES (VELOCIDADE, PISTA E MAIS O Q ?). O conjunto de todos eles será representado por um vetor de threads.
+    Pontos como a movimentação de cada um deles será melhor descrita na seção THREADS. 
 
 \subsubsection{Corrida}
 
+	Para simular a corrida, dado um vetor de threads, cada thread será disparada a cada ciclo de 60 ms , e de acordo com suas características em cada volta (velocidade, pista, etc.) desempenharão seu rendimento. O disparo das threads é sequêncial, ou seja, cada uma é disparada por vez, o que diferenciará o rendimento individual de cada uma serão suas características (já descritas), que serão contabilizadas a cada cilco. E assim, teremos então diferentes desempenhos por ciclos e em uma visão geral, teremos então a simulação da corrida. 
+
 	A seguir serão descritos alguns dos termos usados.
     
+%%Explicar para que foram usadas barreiras (em todos os lugares onde
+%%foram usadas), como foram implementadas (se foi implementado algum
+%%algoritmo visto em sala de aula ou se foi usada alguma função pronta).
+%%Caso tenha usado alguma função pronta, expliar o que ela faz por
+%%"baixo dos panos".
+
 \subsection{Barreiras de sincronização}
+	Foram utilizadas as barreiras de sincronizações para tratar dois pontos vitais. O primeiro, o disparo das threads (riders). O grupo implementará a execução das threads conforme será descrito nas próximas seções. Mas para tal, a cada ciclo de 60ms serão designados quais threads, serão executadas em quais cores até o próximo ciclo. Tal designação será feita através de sorteio aleatório, o que pode então resultar sempre na mesma thread e o mesmo core. Utilizando a barreira nesse ponto, dessa forma, evitamos colocar sempre a mesma thread em execução, fazendo com as outras nunca sejam executadas.
+    O segundo caso é para tratar casos nos quais mais de um corredor estão na mesma pista. Nesse caso, o corredor da frente é o limite de movimentação do anterior, sendo assim, as threads que estão atrás tem que esperar a da frente se mover. Porém se apenas o da frente se mover durante muito tempo, por o disparo ser sequencial (como descrito na seção 1.3.2) as outras permanecerão paradas. Assim sendo, utilizaremos as barreiras nesse caso, para sincronizar a movimentação de todos até um determinado ponto , para que então possam ser redisparados as primeiras threads. 
 
-Explicar para que foram usadas barreiras (em todos os lugares onde
-foram usadas), como foram implementadas (se foi implementado algum
-algoritmo visto em sala de aula ou se foi usada alguma função pronta).
-Caso tenha usado alguma função pronta, expliar o que ela faz por
-"baixo dos panos".
-
+%%Explicar para que foram usados semáforos (em todos os lugares onde
+%%foram usados).
 \subsection{Semáforos}
 
-Explicar para que foram usados semáforos (em todos os lugares onde
-foram usados).
+	Os semáforos serão utilizados na implementação das barreiras de sincronização. Assim como utilizaremos um vetor de threads, também teremos um vetor de semáforos, sendo cada semáforo responsável pela liberação ou bloqueio de uma thread em específico. No nosso caso, pela indexação i = 0 ... n, o semáforo[0] será responsável pela thred[0], semárforo[1] pela thread[1] e assim respectivamente. 
 
+%%Explicar para que foram usadas threads (em todos os lugares onde foram
+%%usadas).
 \subsection{Threads}
 
-Explicar para que foram usadas threads (em todos os lugares onde foram
-usadas).
+	As threads representarão os riders (ciclitas) e terão suas características (como já descrito na seção 1.3.2). A execução de cada uma delas será feita sempre com suas respectivas criações. Então, ao ser criada, uma thread receberá suas características e executará sua função (correr na pista), dentro do intervalo de 60 ms. Para a criação da próxima , a anterior terá que ter encerrado sua parte. Quando uma thread encerra sua parte no ciclo de 60 ms , as novas informações (distancia atual , ACRESCENTAR O RESTO) serão computadas e armazenadas. A thread então é excluída, e a próxima poderá ser criada. Para uma nova ser criada, a anterior precisa obrigatóriamente ter encerrado. Quando uma thread que já foi excluída precisar ser executada novamente, ou seja, o ciclista continuará sua movimentação, será criada uma nova, utilizando as informações da anterior que foram armazenadas.
 
 \section{Resultados}
 
