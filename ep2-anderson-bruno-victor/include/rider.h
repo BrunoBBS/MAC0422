@@ -10,6 +10,21 @@
 #define V60KM 2
 #define V90KM 3
 
+// Declarations for circular dependency
+void create_velodrome(
+    Velodrome *velodrome_ptr,
+    uint length,
+    uint rider_cnt);
+void destroy_velodrome(Velodrome *velodrome_ptr);
+int max_rider_speed(
+    Velodrome *velodrome_ptr,
+    Rider rider);
+void complete_turn(
+    Velodrome *velodrome_ptr,
+    Rider rider);
+bool can_rider_break(
+    Velodrome *velodrome_ptr);
+
 struct Rider
 {
     int id;
