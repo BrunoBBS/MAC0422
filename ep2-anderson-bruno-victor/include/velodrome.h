@@ -21,8 +21,11 @@ struct Velodrome
     // Length of velodrome, in meters
     int length;
 
-    // Number of active riders
+    // Total number of riders
     uint rider_cnt;
+
+    // Number of active riders
+    uint a_rider_cnt;
 
     // This is the track. It stores rider ids (or -1)
 

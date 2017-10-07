@@ -75,3 +75,10 @@ int max_rider_speed(
     // Return max speed so rider does not overtake from internal lane
     return max_speed;
 }
+
+bool can_rider_break(
+    Velodrome *velodrome_ptr)
+{
+    Velodrome velodrome = *velodrome_ptr;
+    return velodrome->a_rider_cnt; 
+}

@@ -64,6 +64,8 @@ void *ride(void *args)
         }
 
     }
+
+    return NULL;
 }
 
 // Calculates if breaks based on chance
@@ -75,6 +77,7 @@ bool will_break(Rider rider)
         if (p > break_chance)
             rider->broken = true;
     }
+    return rider->broken;
 }
 
 // Calculates if will change and wich adjacent lane to change
