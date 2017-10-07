@@ -1,9 +1,9 @@
 CC:=gcc
-CFLAGS=-Wall -std=c11 -lreadline -lpthread
+CFLAGS=-Wall -std=c11
 DEBUGF:=-g
 RELEASEF:=-O2
 
-LIBS:=
+LIBS=-lreadline -lpthread
 CEXT:=c
 HEXT:=h
 
@@ -48,6 +48,13 @@ debug: organize
 debug: dependencies
 debug: execs$(DEBUG_POST)
 debug: tests$(DEBUG_POST)
+
+sfml: CFLAGS=-Wall -std=c++11
+sfml: LIBS+=-lsfml-graphics -lsfml-window -lsfml-system
+sfml: organize
+sfml: dependencies
+sfml: execs$(DEBUG_POST)
+sfml: tests$(DEBUG_POST)
 
 # Generate directory trees on objects folder, delete unnecessary stuff, etc.
 .PHONY: organize
