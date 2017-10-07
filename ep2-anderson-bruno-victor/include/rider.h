@@ -20,6 +20,7 @@ struct Rider
     // Absolute position
     int total_dist;
     int lane;
+    int step;
     sem_t turn_done;
     // Just a reference for vallig velodrome functions
     Velodrome velodrome;
