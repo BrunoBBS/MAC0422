@@ -40,17 +40,29 @@ void *ride(void *args)
     //   ->if is a rider in front:
     //      ->wait rider in front, left or right do its turn
     //      ->chacks max speed poddible and reduce if needed
-    //
+    //notify rider behind semaphore
     //notify global barrier
     //wait global barrier
 
     Rider myself = (Rider)args;
-    Velodrome vel
+    Velodrome vel = myself->velodrome;
 
     //wait start
-    pthread_barrier_wait(myself->velodrome->start_barrier);
-    if (myself->total_dist % myself->velodrome->length == 0)
+    pthread_barrier_wait(vel->start_barrier);
+    myself->speed = V30KM;
+    while (1)
     {
+        if (myself->total_dist % vel->length == 0)
+        {
+            int lap = myself->total_dist / vel->length;
+            myself->speed = change_speed(myself, false);
+            myself->score += 1; //TODO check scorei;
+            if (lap % 15 == 0 && will_break(myself))
+            {
+                myself->broken = true;
+            }
+        }
+
     }
 }
 

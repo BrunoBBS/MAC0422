@@ -4,6 +4,7 @@
 #include "typedef.h"
 #include "velodrome.h"
 #include <pthread.h>
+#include <semaphore.h>
 
 #define V30KM 1 //one meter every 120ms
 #define V60KM 2

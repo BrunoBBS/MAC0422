@@ -1,9 +1,6 @@
 #include "velodrome.h"
 
-void create_velodrome(
-    Velodrome *velodrome_ptr,
-    uint length,
-    uint rider_cnt)
+void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
 {
     // Allocates the velodrome struct
     Velodrome velodrome =
@@ -54,7 +51,7 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
 
 int max_rider_speed(
     Velodrome *velodrome_ptr,
-    Rider *rider)
+    Rider rider)
 {
     Velodrome velodrome = *velodrome_ptr;
     int max_speed = 3;
