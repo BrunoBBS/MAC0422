@@ -1,9 +1,9 @@
 CC:=gcc
-CFLAGS=-Wall -std=c11 -lreadline -lpthread
+CFLAGS=-Wall -std=gnu11
 DEBUGF:=-g
 RELEASEF:=-O2
 
-LIBS:=
+LIBS:=-lreadline -lpthread
 CEXT:=c
 HEXT:=h
 
@@ -78,7 +78,6 @@ configure: clang
 	@mkdir -p $(EXECSRC)
 	@mkdir -p $(TESTSRC)
 	@mkdir -p $(TESTBIN)
-
 
 clang:
 	@echo "-I$(INCDIR)" > .clang_complete
