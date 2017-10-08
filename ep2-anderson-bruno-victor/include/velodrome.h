@@ -42,6 +42,9 @@ struct Velodrome
     pthread_barrier_t *start_barrier;
     // All riders write on the same array
     sem_t *velodrome_sem;
+
+    //Table of placings per turn. Size [n][160].
+    int **placings;
 };
 
 typedef struct Velodrome *Velodrome;
@@ -71,4 +74,18 @@ void complete_turn(
 // If there are more than 5 riders
 bool can_rider_break(
     Velodrome *velodrome_ptr);
+
+// Mark placings to all turns
+void mark_placing(
+    Velodrome *velodrome_ptr,
+    Rider rider);
+
+// Verify if the turn is a sprint
+bool is_sprint(Velodrome *velodrome_ptr,
+    Rider rider);
+
+// To rider score
+void scoring(Velodrome *velodrome_ptr,
+    Rider rider);
+
 #endif
