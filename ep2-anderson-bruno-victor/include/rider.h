@@ -63,6 +63,6 @@ bool will_break(Rider rider);
  *The rider has a 50% chance of changing lanes and 60% of chance to go to
  *rignt lane case will change lanes
  */
-void change_lane(Rider rider);
+bool change_lane(Rider rider);
 
 #endif

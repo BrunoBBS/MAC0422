@@ -76,6 +76,15 @@ int max_rider_speed(
     return max_speed;
 }
 
+Rider rider_in_front(Velodrome velodrome_ptr, Rider behind)
+{
+    // Calculates position of behind rider
+    int meter = behind->total_dist % velodrome_ptr->length;
+    int lane = behind->lane;
+    int front_id = velodrome_ptr->pista[meter + 1][lane];
+    return &velodrome_ptr->riders[front_id];
+}
+
 bool can_rider_break(
     Velodrome *velodrome_ptr)
 {

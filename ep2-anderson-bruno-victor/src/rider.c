@@ -22,6 +22,9 @@ int change_speed(Rider rider, bool V90)
     }
 }
 
+// Writes down in velodrome when rider rides 1 meter
+int step() {}
+
 // Main function of rider
 void* ride(void* args)
 {
@@ -53,18 +56,51 @@ void* ride(void* args)
             myself->score += 1; // TODO check score;
             if (lap % 15 == 0 && will_break(myself)) {
                 myself->broken = true;
+                //TODO die
             }
         }
+        if(Rider front = rider_in_front(myself))
+            sem_wait(front->turn_done);
         // go!!
+        int steps_needed;
         switch (myself->speed) {
         case V30KM:
-            if (myself->step == 0)
-                break;
-        }
+            steps_needed = 1;
+            if (vel->round_time == 20) 
+                steps_needed = 5;//0 to 5, six steps                
+
+            if (myself->step < steps_needed)
+                myself->step += 1;
+            else if (myself->step == steps_needed) {
+                step();
+                myself->step = 0;
+            }
+            break;
         case V60KM:
-            if (vel->round_time == 60)
-            //nesse switch é pra por de acordo com a velocidade quanto o cara
-            //vai andar 
+            steps_needed = 0;
+            if (vel->round_time == 20) 
+                steps_needed = 2;//0 to 2, three steps                
+
+            if (myself->step < steps_needed)
+                myself->step += 1;
+            else if (myself->step == steps_needed) {
+                step();
+                myself->step = 0;
+            }
+            break;
+        case V90KM:
+            // The simulation is already at a 20ms pace
+            steps_needed = 1;
+
+            if (myself->step < steps_needed)
+                myself->step += 1;
+            else if (myself->step == steps_needed) {
+                step();
+                myself->step = 0;
+            }
+        }
+
+            //if max speed < speed...
     }
 
     return NULL;
@@ -81,8 +117,9 @@ bool will_break(Rider rider)
     return rider->broken;
 }
 
+
 // Calculates if will change and wich adjacent lane to change
-void change_lane(Rider rider)
+bool change_lane(Rider rider)
 {
     int p = rand() % 100;
     // decides if will change lanes
@@ -90,13 +127,11 @@ void change_lane(Rider rider)
         // decides wich lane will change
         p = rand() % 100;
         if (p < 60) {
-            sem_wait(rider->velodrome->velodrome_sem);
             /*go left*/
-            sem_post(rider->velodrome->velodrome_sem);
+            return false;
         } else {
-            sem_wait(rider->velodrome->velodrome_sem);
             /*go right*/
-            sem_post(rider->velodrome->velodrome_sem);
+            return true;
         }
     }
 }

@@ -13,7 +13,7 @@ typedef struct Rider *Rider;
 int change_speed(Rider rider, bool V90);
 void *ride(void *args);
 bool will_break(Rider rider);
-void change_lane(Rider rider);
+bool change_lane(Rider rider);
 
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome
@@ -59,6 +59,9 @@ void destroy_velodrome(Velodrome *velodrome_ptr);
 int max_rider_speed(
     Velodrome *velodrome_ptr,
     Rider rider);
+
+// Returns rider in front of parameter
+Rider rider_in_front(Velodrome velodrome_ptr, Rider behind);
 
 // Scores rider for turn
 void complete_turn(
