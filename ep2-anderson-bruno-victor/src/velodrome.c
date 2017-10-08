@@ -22,6 +22,18 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
         velodrome->riders[i].total_dist = -(i / 10);
     }
 
+    // Create placings
+    velodrome->placings = malloc(160 * sizeof(int));
+    for (int i = 0; i < rider_cnt; i++)
+    {
+        velodrome->placings[i] = malloc(rider_qnt * sizeof(int));;
+    }
+
+    //Inicializing the placings with 0
+    for (int i = 0; i < 160; i++)
+        for (int j = 0; j < rider_cnt; j++)
+            velodrome->placings[i][j] = 0;
+
     // Start riders
     pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)
@@ -30,6 +42,8 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
                 &velodrome->riders[i]);
     }
     pthread_barrier_wait(velodrome->start_barrier);
+
+
 }
 
 void destroy_velodrome(Velodrome *velodrome_ptr)
@@ -81,4 +95,53 @@ bool can_rider_break(
 {
     Velodrome velodrome = *velodrome_ptr;
     return velodrome->a_rider_cnt; 
+}
+
+bool is_sprint(Velodrome *velodrome_ptr,
+    Rider rider) 
+{
+    if (rider.step % 10 == 0)
+        return true;
+    return false;
+}
+
+void complete_turn(
+    Velodrome *velodrome_ptr,
+    Rider rider) 
+{
+    if (rider.total_dist % rider.step == 0){
+        rider.total_dist += 60;
+    }
+    return;
+}
+
+void mark_placing(
+    Velodrome *velodrome_ptr,
+    Rider rider)
+{
+    int i;
+    for (i = 0; i < velodrome_ptr.rider_cnt; i++ && velodrome_ptr.placings[i][velodrome_ptr.turn] != 0) {
+        velodrome_ptr.placings[i][velodrome_ptr.turn] = rider.id;
+    }
+    return;
+}
+
+void scoring(Velodrome *velodrome_ptr,
+    Rider rider) 
+{
+    int round = rider.total_dist/60;
+    if (is_sprint()) {
+        if (placings[round][0] == rider.id) 
+            rider.score += 5;
+        
+        else if (placings[round][1] == rider.id) 
+            rider.score += 3;
+        
+        else if (placings[round][2] == rider.id) 
+            rider.score += 2;
+        
+        else if (placings[round][3] == rider.id) 
+            rider.score += 1;
+    }
+    return;
 }
