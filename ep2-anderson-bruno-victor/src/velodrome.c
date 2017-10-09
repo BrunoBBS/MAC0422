@@ -1,6 +1,9 @@
 #include "velodrome.h"
 
-void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
+void create_velodrome(Velodrome *velodrome_ptr,
+        uint length,
+        uint rider_cnt,
+        uint turns)
 {
     if (globals.e)
         printf("velodrome:l%3d -> Creating velodrome...\n", __LINE__);
@@ -10,6 +13,7 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
         *velodrome_ptr = malloc(sizeof(Velodrome));
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
+    velodrome->turn_cnt = turns;
 
     if (globals.e)
         printf("velodromel:%3d -> Allocated velodrome\n", __LINE__);
@@ -35,17 +39,21 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
         printf("velodrome:l%3d -> Set up riders\n", __LINE__);
 
     // Create placings
-    velodrome->placings = malloc(160 * sizeof(int));
-    for (int i = 0; i < rider_cnt; i++)
-    {
+    velodrome->placings = malloc(turns * sizeof(int *));
+    for (int i = 0; i < turns; i++)
         velodrome->placings[i] = malloc(velodrome->rider_cnt * sizeof(int));;
-    }
 
+    if (globals.e)
+        printf("velodrome:l%3d -> Allocated placings matrix\n", __LINE__);
+    
     //Inicializing the placings with 0
-    for (int i = 0; i < 160; i++)
+    for (int i = 0; i < turns; i++)
         for (int j = 0; j < rider_cnt; j++)
             velodrome->placings[i][j] = 0;
 
+    if (globals.e)
+       printf("velodrome:l%3d -> Initialized placings matrix\n", __LINE__);
+    
     // Start riders
     pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)

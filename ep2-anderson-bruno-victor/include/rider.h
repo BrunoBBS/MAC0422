@@ -14,7 +14,8 @@
 void create_velodrome(
     Velodrome *velodrome_ptr,
     uint length,
-    uint rider_cnt);
+    uint rider_cnt,
+    uint turns);
 void destroy_velodrome(Velodrome *velodrome_ptr);
 int max_rider_speed(
     Velodrome *velodrome_ptr,

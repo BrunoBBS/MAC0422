@@ -27,6 +27,9 @@ struct Velodrome
     // Number of active riders
     uint a_rider_cnt;
 
+    // Turn count
+    uint turn_cnt;
+
     // This is the track. It stores rider ids (or -1)
 
     // This is accessed like this:
@@ -53,7 +56,8 @@ typedef struct Velodrome *Velodrome;
 void create_velodrome(
     Velodrome *velodrome_ptr,
     uint length,
-    uint rider_cnt);
+    uint rider_cnt,
+    uint turns);
 
 // Destroys velodrome object
 void destroy_velodrome(Velodrome *velodrome_ptr);
