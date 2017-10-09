@@ -23,7 +23,14 @@ int change_speed(Rider rider, bool V90)
 }
 
 // Writes down in velodrome when rider rides 1 meter
-int step(char dir) {}
+void step(char dir, Rider rider, Velodrome vel)
+{
+    int lane = rider->lane;
+    if (dir == 'r')
+        lane++;
+    else if (dir == 'l')
+        lane--;
+}
 
 // Main function of rider
 void* ride(void* args)
@@ -85,7 +92,7 @@ void* ride(void* args)
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step(change_lane(myself));
+                step(change_lane(myself), myself, vel);
                 myself->step = 0;
             }
             break;
@@ -96,7 +103,7 @@ void* ride(void* args)
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step(change_lane(myself));
+                step(change_lane(myself), myself, vel);
                 myself->step = 0;
             }
             break;
@@ -107,7 +114,7 @@ void* ride(void* args)
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step(change_lane(myself));
+                step(change_lane(myself), myself, vel);
                 myself->step = 0;
             }
         }

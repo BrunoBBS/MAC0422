@@ -63,6 +63,11 @@ void *ride(void *args);
 bool will_break(Rider rider);
 
 /*
+ *Writes down the rider movement
+ */
+void step(char dir, Rider rider, Velodrome vel);
+
+/*
  *Calculates if will change and wich adjacent lane to change
  *The rider has a 50% chance of changing lanes and 50% of chance to go to
  *rignt lane case will change lanes
