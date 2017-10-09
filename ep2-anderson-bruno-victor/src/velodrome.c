@@ -109,7 +109,7 @@ bool can_rider_break(
 bool is_sprint(Velodrome *velodrome_ptr,
     Rider rider) 
 {
-    if (rider.step % 10 == 0)
+    if (rider->step % 10 == 0)
         return true;
     return false;
 }
@@ -118,8 +118,8 @@ void complete_turn(
     Velodrome *velodrome_ptr,
     Rider rider) 
 {
-    if (rider.total_dist % rider.step == 0){
-        rider.total_dist += 60;
+    if (rider->total_dist % rider->step == 0){
+        rider->total_dist += 60;
     }
     return;
 }
@@ -129,8 +129,8 @@ void mark_placing(
     Rider rider)
 {
     int i;
-    for (i = 0; i < velodrome_ptr.rider_cnt; i++ && velodrome_ptr.placings[i][velodrome_ptr.turn] != 0) {
-        velodrome_ptr.placings[i][velodrome_ptr.turn] = rider.id;
+    for (i = 0; i < velodrome_ptr->rider_cnt; i++ && velodrome_ptr->placings[i][velodrome_ptr->turn] != 0) {
+        velodrome_ptr->placings[i][velodrome_ptr.turn] = rider->id;
     }
     return;
 }
@@ -140,17 +140,17 @@ void scoring(Velodrome *velodrome_ptr,
 {
     int round = rider.total_dist/60;
     if (is_sprint()) {
-        if (placings[round][0] == rider.id) 
-            rider.score += 5;
+        if (velodrome_ptr->placings[round][0] == rider->id) 
+            rider->score += 5;
         
-        else if (placings[round][1] == rider.id) 
-            rider.score += 3;
+        else if (velodrome_ptr->placings[round][1] == rider->id) 
+            rider->score += 3;
         
-        else if (placings[round][2] == rider.id) 
-            rider.score += 2;
+        else if (velodrome_ptr->placings[round][2] == rider->id) 
+            rider->score += 2;
         
-        else if (placings[round][3] == rider.id) 
-            rider.score += 1;
+        else if (velodrome_ptr->placings[round][3] == rider->id) 
+            rider->score += 1;
     }
     return;
 }
