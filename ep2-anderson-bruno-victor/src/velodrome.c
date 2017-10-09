@@ -13,12 +13,12 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
 
     if (globals.e)
         printf("velodromel:%3d -> Allocated velodrome\n", __LINE__);
-    
+
     // Allocates the track
     velodrome->pista = malloc(length * sizeof(uint *));
     for (int i = 0; i < length; i++)
         velodrome->pista[i] = malloc(10 * sizeof(uint));
-    
+
     if (globals.e)
         printf("velodrome:l%3d -> Allocated track matrix\n", __LINE__);
 
@@ -33,7 +33,19 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
 
     if (globals.e)
         printf("velodrome:l%3d -> Set up riders\n", __LINE__);
-    
+
+    // Create placings
+    velodrome->placings = malloc(160 * sizeof(int));
+    for (int i = 0; i < rider_cnt; i++)
+    {
+        velodrome->placings[i] = malloc(velodrome->rider_cnt * sizeof(int));;
+    }
+
+    //Inicializing the placings with 0
+    for (int i = 0; i < 160; i++)
+        for (int j = 0; j < rider_cnt; j++)
+            velodrome->placings[i][j] = 0;
+
     // Start riders
     pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)
@@ -42,7 +54,7 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
                 &velodrome->riders[i]);
     }
     pthread_barrier_wait(velodrome->start_barrier);
-    
+
     if (globals.e)
         printf("velodrome:l%3d -> Started riders\n", __LINE__);
     if (globals.e)
@@ -93,9 +105,71 @@ int max_rider_speed(
     return max_speed;
 }
 
+Rider rider_in_front(Velodrome velodrome_ptr, Rider behind)
+{
+    // Calculates position of behind rider
+    int meter = behind->total_dist % velodrome_ptr->length;
+    int lane = behind->lane;
+    int front_id = velodrome_ptr->pista[meter + 1][lane];
+    return &velodrome_ptr->riders[front_id];
+}
+
 bool can_rider_break(
     Velodrome *velodrome_ptr)
 {
     Velodrome velodrome = *velodrome_ptr;
-    return velodrome->a_rider_cnt; 
+    return velodrome->a_rider_cnt;
+}
+
+bool is_sprint(Velodrome *velodrome_ptr,
+    Rider rider)
+{
+    if (rider->step % 10 == 0)
+        return true;
+    return false;
+}
+
+void complete_turn(
+    Velodrome *velodrome_ptr,
+    Rider rider)
+{
+    if (rider->total_dist % rider->step == 0){
+        rider->total_dist += 60;
+    }
+    return;
+}
+
+void mark_placing(
+    Velodrome *velodrome_ptr,
+    Rider rider)
+{
+    Velodrome velodrome = *velodrome_ptr;
+    /*
+    int i;
+    for (i = 0; i < velodrome->rider_cnt; i++ && velodrome->placings[i][rider->turn] != 0) {
+        velodrome->placings[i][rider->turn] = rider->id;
+    }
+    */
+    return;
+}
+
+void scoring(Velodrome *velodrome_ptr,
+    Rider rider)
+{
+    Velodrome velodrome = *velodrome_ptr;
+    int round = rider->total_dist/60;
+    if (is_sprint(velodrome_ptr, rider)) {
+        if (velodrome->placings[round][0] == rider->id)
+            rider->score += 5;
+
+        else if (velodrome->placings[round][1] == rider->id)
+            rider->score += 3;
+
+        else if (velodrome->placings[round][2] == rider->id)
+            rider->score += 2;
+
+        else if (velodrome->placings[round][3] == rider->id)
+            rider->score += 1;
+    }
+    return;
 }

@@ -13,7 +13,7 @@ typedef struct Rider *Rider;
 int change_speed(Rider rider, bool V90);
 void *ride(void *args);
 bool will_break(Rider rider);
-void change_lane(Rider rider);
+bool change_lane(Rider rider);
 
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome
@@ -42,6 +42,9 @@ struct Velodrome
     pthread_barrier_t *start_barrier;
     // All riders write on the same array
     sem_t *velodrome_sem;
+
+    //Table of placings per turn. Size [n][160].
+    int **placings;
 };
 
 typedef struct Velodrome *Velodrome;
@@ -60,6 +63,9 @@ int max_rider_speed(
     Velodrome *velodrome_ptr,
     Rider rider);
 
+// Returns rider in front of parameter
+Rider rider_in_front(Velodrome velodrome_ptr, Rider behind);
+
 // Scores rider for turn
 void complete_turn(
     Velodrome *velodrome_ptr,
@@ -68,4 +74,18 @@ void complete_turn(
 // If there are more than 5 riders
 bool can_rider_break(
     Velodrome *velodrome_ptr);
+
+// Mark placings to all turns
+void mark_placing(
+    Velodrome *velodrome_ptr,
+    Rider rider);
+
+// Verify if the turn is a sprint
+bool is_sprint(Velodrome *velodrome_ptr,
+    Rider rider);
+
+// To rider score
+void scoring(Velodrome *velodrome_ptr,
+    Rider rider);
+
 #endif
