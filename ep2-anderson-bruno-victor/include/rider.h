@@ -28,19 +28,21 @@ bool can_rider_break(
 
 struct Rider
 {
+    // Constants set by velodrome
     int id;
+    pthread_t rider_t;
+    Velodrome velodrome;
+
+    // Set by rider
     int speed;
     bool broken;
     int score;
-    pthread_t rider_t;
     // Absolute position
     int total_dist;
     int lane;
     int step;
     uint turn;
     sem_t turn_done;
-    // Just a reference for vallig velodrome functions
-    Velodrome velodrome;
 };
 
 typedef struct Rider *Rider;

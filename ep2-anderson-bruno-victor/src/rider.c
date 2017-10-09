@@ -51,6 +51,8 @@ void* ride(void* args)
 
     // wait start
     pthread_barrier_wait(vel->start_barrier);
+    if (globals.e)
+        printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     myself->speed = V30KM;
     while (1) {
         if (myself->total_dist % vel->length == 0) {
