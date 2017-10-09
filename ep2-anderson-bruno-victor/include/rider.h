@@ -64,9 +64,9 @@ bool will_break(Rider rider);
 
 /*
  *Calculates if will change and wich adjacent lane to change
- *The rider has a 50% chance of changing lanes and 60% of chance to go to
+ *The rider has a 50% chance of changing lanes and 50% of chance to go to
  *rignt lane case will change lanes
  */
-bool change_lane(Rider rider);
+char change_lane(Rider rider);
 
 #endif

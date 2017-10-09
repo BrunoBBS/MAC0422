@@ -4,7 +4,7 @@
 
 const int break_chance = 1;
 const int v90_chance = 20;
-const int ch_lane_l_chance = 60;
+const int ch_lane_chance = 50;
 // Chance when speed was 30, otherwise is 50/50
 float v30_chance = 0.3;
 // TODO Scoring system
@@ -23,7 +23,7 @@ int change_speed(Rider rider, bool V90)
 }
 
 // Writes down in velodrome when rider rides 1 meter
-int step() {}
+int step(char dir) {}
 
 // Main function of rider
 void* ride(void* args)
@@ -32,7 +32,7 @@ void* ride(void* args)
     // wait start
     // if lap comleted:
     //  ->choose new speed
-    //  ->checks if scores
+    //  ->check if scores
     //  ->if lap is multiple of 15:
     //      ->decide if breaks
     // go foraward, left or right:
@@ -43,7 +43,7 @@ void* ride(void* args)
     // notify global barrier
     // wait global barrier
 
-    Rider myself = (Rider) args;
+    Rider myself = (Rider)args;
     Velodrome vel = myself->velodrome;
 
     if (globals.e)
@@ -61,39 +61,42 @@ void* ride(void* args)
             myself->score += 1; // TODO check score;
             if (lap % 15 == 0 && will_break(myself)) {
                 myself->broken = true;
-                //TODO die
+                // TODO die
             }
         }
 
         Rider front;
-        if(front = rider_in_front(&vel, myself))
+        if (front = rider_in_front(&vel, myself))
             sem_wait(&front->turn_done);
+
+        // Checks if is exceeding max speed possible
+        if (max_rider_speed(&vel, myself) < myself->speed) {
+            myself->speed = max_rider_speed(&vel, myself);
+            myself->step = 0;
+        }
+
         // go!!
         int steps_needed;
         switch (myself->speed) {
         case V30KM:
             steps_needed = 1;
-            /*
             if (vel->round_time == 20)
-                steps_needed = 5;//0 to 5, six steps
-            */
+                steps_needed = 5; // 0 to 5, six steps
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step();
+                step(change_lane(myself));
                 myself->step = 0;
             }
             break;
         case V60KM:
             steps_needed = 0;
-            /*
             if (vel->round_time == 20)
-                steps_needed = 2;//0 to 2, three steps
-            */
+                steps_needed = 2; // 0 to 2, three steps
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step();
+                step(change_lane(myself));
                 myself->step = 0;
             }
             break;
@@ -104,12 +107,11 @@ void* ride(void* args)
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
-                step();
+                step(change_lane(myself));
                 myself->step = 0;
             }
         }
-
-            //if max speed < speed...
+        sem_post(&myself->turn_done);
     }
 
     return NULL;
@@ -126,21 +128,23 @@ bool will_break(Rider rider)
     return rider->broken;
 }
 
-
 // Calculates if will change and wich adjacent lane to change
-bool change_lane(Rider rider)
+char change_lane(Rider rider)
 {
     int p = rand() % 100;
     // decides if will change lanes
     if (p < 50) {
         // decides wich lane will change
         p = rand() % 100;
-        if (p < 60) {
+        if (p < ch_lane_chance / 2) {
             /*go left*/
-            return false;
-        } else {
+            return 'l';
+        } else if (p > ch_lane_chance / 2 && p < ch_lane_chance) {
             /*go right*/
-            return true;
+            return 'r';
+        } else {
+            // go just forward
+            return 'f';
         }
     }
 }
