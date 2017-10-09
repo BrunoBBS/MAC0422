@@ -76,6 +76,10 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
 {
     Velodrome velodrome = *velodrome_ptr;
 
+    void *ret;
+    for (int i = 0; i < velodrome->rider_cnt; i++)
+        pthread_join(velodrome->riders[i].rider_t, &ret);
+
     // Free track
     for (int i = 0; i < velodrome->length; i++)
     {
