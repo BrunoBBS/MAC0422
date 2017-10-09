@@ -75,6 +75,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
 void destroy_velodrome(Velodrome *velodrome_ptr)
 {
     Velodrome velodrome = *velodrome_ptr;
+
     // Free track
     for (int i = 0; i < velodrome->length; i++)
     {
@@ -83,7 +84,16 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     }
     free(velodrome->pista);
     velodrome->pista = NULL;
-
+ 
+    // Free placings
+    for (int i = 0; i < velodrome->turn_cnt; i++)
+    {
+        free(velodrome->placings[i]);
+        velodrome->placings[i] = NULL;
+    }
+    free(velodrome->placings);
+    velodrome->pista = NULL;
+    
     // Free velodrome struct
     free(velodrome);
     *velodrome_ptr = NULL;
