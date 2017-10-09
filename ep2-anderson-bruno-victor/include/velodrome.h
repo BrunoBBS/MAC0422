@@ -52,6 +52,9 @@ struct Velodrome
 
     // Remaining riders
     int *placings;
+    // How much time passes in one barrier round
+    int round_time;
+
 };
 
 typedef struct Velodrome *Velodrome;
