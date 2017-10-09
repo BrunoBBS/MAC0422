@@ -43,9 +43,9 @@ void* ride(void* args)
     // notify global barrier
     // wait global barrier
 
-    Rider myself = (Rider)args;
+    Rider myself = (Rider) args;
     Velodrome vel = myself->velodrome;
-    
+
     if (globals.e)
         printf("rider:l%3d -> Created rider %d\n", __LINE__, myself->id);
 
@@ -62,16 +62,19 @@ void* ride(void* args)
                 //TODO die
             }
         }
-        if(Rider front = rider_in_front(myself))
-            sem_wait(front->turn_done);
+
+        Rider front;
+        if(front = rider_in_front(&vel, myself))
+            sem_wait(&front->turn_done);
         // go!!
         int steps_needed;
         switch (myself->speed) {
         case V30KM:
             steps_needed = 1;
-            if (vel->round_time == 20) 
-                steps_needed = 5;//0 to 5, six steps                
-
+            /*
+            if (vel->round_time == 20)
+                steps_needed = 5;//0 to 5, six steps
+            */
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
@@ -81,9 +84,10 @@ void* ride(void* args)
             break;
         case V60KM:
             steps_needed = 0;
-            if (vel->round_time == 20) 
-                steps_needed = 2;//0 to 2, three steps                
-
+            /*
+            if (vel->round_time == 20)
+                steps_needed = 2;//0 to 2, three steps
+            */
             if (myself->step < steps_needed)
                 myself->step += 1;
             else if (myself->step == steps_needed) {

@@ -64,7 +64,7 @@ int max_rider_speed(
     Rider rider);
 
 // Returns rider in front of parameter
-Rider rider_in_front(Velodrome velodrome_ptr, Rider behind);
+Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind);
 
 // Scores rider for turn
 void complete_turn(
