@@ -46,6 +46,9 @@ void *ride(void *args)
 
     Rider myself = (Rider)args;
     Velodrome vel = myself->velodrome;
+    
+    if (globals.e)
+        printf("rider:l%3d -> Created rider %d\n", __LINE__, myself->id);
 
     //wait start
     pthread_barrier_wait(vel->start_barrier);

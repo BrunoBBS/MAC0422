@@ -2,16 +2,25 @@
 
 void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
 {
+    if (globals.e)
+        printf("velodrome:l%3d -> Creating velodrome...\n", __LINE__);
+
     // Allocates the velodrome struct
     Velodrome velodrome =
         *velodrome_ptr = malloc(sizeof(Velodrome));
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
 
+    if (globals.e)
+        printf("velodromel:%3d -> Allocated velodrome\n", __LINE__);
+    
     // Allocates the track
     velodrome->pista = malloc(length * sizeof(uint *));
     for (int i = 0; i < length; i++)
         velodrome->pista[i] = malloc(10 * sizeof(uint));
+    
+    if (globals.e)
+        printf("velodrome:l%3d -> Allocated track matrix\n", __LINE__);
 
     // Create riders
     velodrome->riders = malloc(rider_cnt * sizeof(Rider));
@@ -22,6 +31,9 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
         velodrome->riders[i].total_dist = -(i / 10);
     }
 
+    if (globals.e)
+        printf("velodrome:l%3d -> Set up riders\n", __LINE__);
+    
     // Start riders
     pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)
@@ -30,6 +42,11 @@ void create_velodrome(Velodrome *velodrome_ptr, uint length, uint rider_cnt)
                 &velodrome->riders[i]);
     }
     pthread_barrier_wait(velodrome->start_barrier);
+    
+    if (globals.e)
+        printf("velodrome:l%3d -> Started riders\n", __LINE__);
+    if (globals.e)
+        printf("velodrome:l%3d -> Created velodrome!\n", __LINE__);
 }
 
 void destroy_velodrome(Velodrome *velodrome_ptr)
