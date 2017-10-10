@@ -10,7 +10,7 @@ struct winsize wins;
 void* debug_print_thread(void* velodrome_ptr)
 {
     Velodrome velodrome = (Velodrome)velodrome_ptr;
-    while (0)
+    while (1)
     {
         int i = 0;
         while (i < velodrome->length)
@@ -22,11 +22,11 @@ void* debug_print_thread(void* velodrome_ptr)
                      meter++)
                 {
                     int value = velodrome->pista[meter][lane];
-                    printf("%c", value < 0 ? '-' : 'A' + value);
+                    fprintf(stderr, "%c", value < 0 ? '-' : 'A' + value);
                 }
-                printf("\n");
+                fprintf(stderr, "\n");
             }
-            printf("\n");
+            fprintf(stderr, "\n");
             i += wins.ws_col;
         }
         sleep(1);

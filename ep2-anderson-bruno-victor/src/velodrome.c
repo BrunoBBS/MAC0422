@@ -12,7 +12,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
 
     // Allocates the velodrome struct
     Velodrome velodrome =
-        *velodrome_ptr = malloc(sizeof(Velodrome));
+        *velodrome_ptr = malloc(sizeof(struct Velodrome));
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
     velodrome->lap_cnt = lap_cnt;
@@ -88,11 +88,11 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     }
     free(velodrome->pista);
     velodrome->pista = NULL;
- 
+
     // Free placings
     free(velodrome->placings);
-    velodrome->pista = NULL;
-    
+    velodrome->placings = NULL;
+
     // Free velodrome struct
     free(velodrome);
     *velodrome_ptr = NULL;
@@ -125,11 +125,11 @@ int max_rider_speed(
     return max_speed;
 }
 
-Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind)
+Rider rider_in_front(Rider behind)
 {
-    Velodrome velodrome = *velodrome_ptr;
+    Velodrome velodrome = behind->velodrome;
     // Calculates position of behind rider
-    int meter = (behind->total_dist + velodrome->length) % velodrome->length;
+    int meter = get_pos(behind);
     int lane = behind->lane;
     int front_id = velodrome->pista[(meter + 1) % velodrome->length][lane];
     if (front_id == -1)
@@ -164,8 +164,16 @@ void complete_turn(
 
 void mark_placing(Rider rider, int lap)
 {
-    rider->score += sprint_points[
-        rider->velodrome->placings[lap / 10 - 1]--];
+    if (lap <= 0 || lap >= rider->velodrome->lap_cnt || lap % 10)
+        return;
+
+    int points = sprint_points[rider->velodrome->placings[lap / 10 - 1]--];
+
+    if (globals.e && points)
+        printf("velodrome:l%3d -> Rider %d gained %d points on lap %d\n",
+                __LINE__, rider->id, points, lap);
+
+    rider->score += points;
 
     if (rider->velodrome->placings[lap / 10 - 1] < 0)
         rider->velodrome->placings[lap / 10 - 1]++;

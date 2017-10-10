@@ -10,6 +10,7 @@
 typedef struct Rider* Rider;
 
 // Declarations for circular dependency
+int get_pos(Rider rider);
 int change_speed(Rider rider, bool V90);
 void* ride(void* args);
 bool will_break(Rider rider);
