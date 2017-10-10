@@ -7,8 +7,6 @@
 #include "typedef.h"
 #include <semaphore.h>
 
-const int sprints_points[] = {0, 1, 2, 3, 5};
-
 typedef struct Rider *Rider;
 
 // Declarations for circular dependency
