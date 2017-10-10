@@ -86,11 +86,11 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     }
     free(velodrome->pista);
     velodrome->pista = NULL;
- 
+
     // Free placings
     free(velodrome->placings);
     velodrome->placings = NULL;
-    
+
     // Free velodrome struct
     free(velodrome);
     *velodrome_ptr = NULL;
