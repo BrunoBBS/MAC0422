@@ -47,6 +47,9 @@ int main()
     Velodrome velodrome = NULL;
 
     create_velodrome(&velodrome, vel_len, rider_cnt, turn_cnt);
+
+    if (globals.e)
+        printf("velodrome:l%3d -> Creating graphics thread...\n", __LINE__);
     pthread_t graphics_pthread;
     pthread_create(&graphics_pthread, NULL, &debug_print_thread, velodrome);
 
