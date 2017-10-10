@@ -8,7 +8,7 @@ int main()
 {
     uint vel_len = 150;
     uint rider_cnt = 15;
-    uint turn_cnt = 160;
+    uint lap_cnt = 160;
 
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -18,7 +18,7 @@ int main()
 
     Velodrome velodrome = NULL;
 
-    create_velodrome(&velodrome, vel_len, rider_cnt, turn_cnt);
+    create_velodrome(&velodrome, vel_len, rider_cnt, lap_cnt);
 
     destroy_velodrome(&velodrome);
 }
