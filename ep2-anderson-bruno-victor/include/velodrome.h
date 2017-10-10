@@ -7,6 +7,8 @@
 #include "typedef.h"
 #include <semaphore.h>
 
+const int sprints_points[] = {0, 1, 2, 3, 5};
+
 typedef struct Rider *Rider;
 
 // Declarations for circular dependency
@@ -28,7 +30,7 @@ struct Velodrome
     uint a_rider_cnt;
 
     // Turn count
-    uint turn_cnt;
+    uint lap_cnt;
 
     // This is the track. It stores rider ids (or -1)
 
@@ -47,8 +49,8 @@ struct Velodrome
     // All riders write on the same array
     sem_t *velodrome_sem;
 
-    //Table of placings per turn. Size [n][t].
-    int **placings;
+    // Remaining riders
+    int *placings;
 };
 
 typedef struct Velodrome *Velodrome;
@@ -58,7 +60,7 @@ void create_velodrome(
     Velodrome *velodrome_ptr,
     uint length,
     uint rider_cnt,
-    uint turns);
+    uint lap_cnt);
 
 // Destroys velodrome object
 void destroy_velodrome(Velodrome *velodrome_ptr);
@@ -71,26 +73,15 @@ int max_rider_speed(
 // Returns rider in front of parameter
 Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind);
 
-// Scores rider for turn
-void complete_turn(
-    Velodrome *velodrome_ptr,
-    Rider rider);
-
 // If there are more than 5 riders
 bool can_rider_break(
     Velodrome *velodrome_ptr);
 
-// Mark placings to all turns
-void mark_placing(
-    Velodrome *velodrome_ptr,
-    Rider rider);
+// Mark placings
+void mark_placing(Rider rider, int lap);
 
 // Verify if the turn is a sprint
 bool is_sprint(Velodrome *velodrome_ptr,
-    Rider rider);
-
-// To rider score
-void scoring(Velodrome *velodrome_ptr,
     Rider rider);
 
 #endif
