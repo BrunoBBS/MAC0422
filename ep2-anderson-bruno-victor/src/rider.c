@@ -69,6 +69,7 @@ void* ride(void* args)
             myself->speed = change_speed(myself, false);
             if (lap % 10 == 0)
                 // TODO score
+                mark_placing(myself, myself->total_dist/vel->length);
             if (lap % 15 == 0 && will_break(myself)) {
                 // TODO die
                 sem_post(&myself->turn_done);
