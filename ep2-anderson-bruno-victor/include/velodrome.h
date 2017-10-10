@@ -13,7 +13,7 @@ typedef struct Rider *Rider;
 int change_speed(Rider rider, bool V90);
 void *ride(void *args);
 bool will_break(Rider rider);
-bool change_lane(Rider rider);
+char change_lane(Rider rider);
 
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome
@@ -45,7 +45,10 @@ struct Velodrome
     pthread_barrier_t start_barrier;
 
     // All riders write on the same array
-    sem_t *velodrome_sem;
+    sem_t velodrome_sem;
+
+    // How much time passes in one barrier round
+    int round_time;
 
     // Remaining riders
     int *placings;
