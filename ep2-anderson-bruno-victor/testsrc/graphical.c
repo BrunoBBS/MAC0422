@@ -10,7 +10,7 @@ struct winsize wins;
 void* debug_print_thread(void* velodrome_ptr)
 {
     Velodrome velodrome = (Velodrome)velodrome_ptr;
-    while (0)
+    while (1)
     {
         int i = 0;
         while (i < velodrome->length)

@@ -74,7 +74,7 @@ void* ride(void* args)
         }
 
         Rider front;
-        if(front = rider_in_front(&vel, myself))
+        if(front = rider_in_front(myself))
             sem_wait(&front->turn_done);
         // go!!
         int steps_needed;

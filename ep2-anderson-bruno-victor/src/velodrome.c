@@ -12,7 +12,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
 
     // Allocates the velodrome struct
     Velodrome velodrome =
-        *velodrome_ptr = malloc(sizeof(Velodrome));
+        *velodrome_ptr = malloc(sizeof(struct Velodrome));
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
     velodrome->lap_cnt = lap_cnt;
@@ -89,7 +89,7 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
  
     // Free placings
     free(velodrome->placings);
-    velodrome->pista = NULL;
+    velodrome->placings = NULL;
     
     // Free velodrome struct
     free(velodrome);
@@ -123,11 +123,11 @@ int max_rider_speed(
     return max_speed;
 }
 
-Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind)
+Rider rider_in_front(Rider behind)
 {
-    Velodrome velodrome = *velodrome_ptr;
+    Velodrome velodrome = behind->velodrome;
     // Calculates position of behind rider
-    int meter = behind->total_dist % velodrome->length;
+    int meter = get_pos(behind);
     int lane = behind->lane;
     int front_id = velodrome->pista[(meter + 1) % velodrome->length][lane];
     if (front_id == -1)

@@ -10,6 +10,7 @@
 typedef struct Rider *Rider;
 
 // Declarations for circular dependency
+int get_pos(Rider rider);
 int change_speed(Rider rider, bool V90);
 void *ride(void *args);
 bool will_break(Rider rider);
@@ -69,7 +70,7 @@ int max_rider_speed(
     Rider rider);
 
 // Returns rider in front of parameter
-Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind);
+Rider rider_in_front(Rider behind);
 
 // If there are more than 5 riders
 bool can_rider_break(
