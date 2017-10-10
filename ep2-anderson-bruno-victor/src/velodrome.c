@@ -54,7 +54,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
         velodrome->placings[i] = 4;
 
     // Start riders
-    pthread_barrier_init(velodrome->start_barrier, 0, rider_cnt + 1);
+    pthread_barrier_init(&velodrome->start_barrier, 0, rider_cnt + 1);
     for (int i = 0; i < rider_cnt; i++)
     {
         if (globals.e)
@@ -62,7 +62,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
         pthread_create(&velodrome->riders[i].rider_t, 0, &ride,
                 &velodrome->riders[i]);
     }
-    pthread_barrier_wait(velodrome->start_barrier);
+    pthread_barrier_wait(&velodrome->start_barrier);
 
     if (globals.e)
         printf("velodrome:l%3d -> Started riders\n", __LINE__);
