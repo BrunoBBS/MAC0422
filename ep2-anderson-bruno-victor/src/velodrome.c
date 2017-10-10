@@ -1,5 +1,7 @@
 #include "velodrome.h"
 
+const int sprint_points[] = {0, 1, 2, 3, 5};
+
 void create_velodrome(Velodrome *velodrome_ptr,
         uint length,
         uint rider_cnt,
@@ -160,7 +162,7 @@ void complete_turn(
 
 void mark_placing(Rider rider, int lap)
 {
-    rider->score += sprints_points[
+    rider->score += sprint_points[
         rider->velodrome->placings[lap / 10 - 1]--];
 
     if (rider->velodrome->placings[lap / 10 - 1] < 0)
