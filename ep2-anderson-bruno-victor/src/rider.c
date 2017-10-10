@@ -58,7 +58,7 @@ void* ride(void* args)
         printf("rider:l%3d -> Created rider %d\n", __LINE__, myself->id);
 
     // wait start
-    pthread_barrier_wait(vel->start_barrier);
+    pthread_barrier_wait(&vel->start_barrier);
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     myself->speed = V30KM;
