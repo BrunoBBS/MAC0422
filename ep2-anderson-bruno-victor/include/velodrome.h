@@ -50,7 +50,7 @@ struct Velodrome
     // How much time passes in one barrier round
     int round_time;
 
-    //Table of placings per turn. Size [n][160].
+    //Table of placings per turn. Size [n][t].
     int **placings;
 };
 
