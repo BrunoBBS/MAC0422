@@ -43,10 +43,11 @@ struct Velodrome
 
     // This is the barrier for riders to wait for start
     pthread_barrier_t *start_barrier;
+
     // All riders write on the same array
     sem_t *velodrome_sem;
 
-    //Table of placings per turn. Size [n][160].
+    //Table of placings per turn. Size [n][t].
     int **placings;
 };
 

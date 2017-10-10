@@ -22,6 +22,9 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->pista = malloc(length * sizeof(uint *));
     for (int i = 0; i < length; i++)
         velodrome->pista[i] = malloc(10 * sizeof(uint));
+    for (int i = 0; i < length; i++)
+        for (int j = 0; j < 10; j++)
+            velodrome->pista[i][j] = -1;
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated track matrix\n", __LINE__);
@@ -30,10 +33,14 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->riders = malloc(rider_cnt * sizeof(struct Rider));
     for (int i = 0; i < rider_cnt; i++)
     {
+        int start_lane = i % 10;
+        int start_meter = -((i + 10) / 10);
         velodrome->riders[i].id = i;
-        velodrome->riders[i].lane = i % 10;
-        velodrome->riders[i].total_dist = -(i / 10);
+        velodrome->riders[i].lane = start_lane;
+        velodrome->riders[i].total_dist = start_meter;
         velodrome->riders[i].velodrome = velodrome;
+        sem_init(&velodrome->riders[i].turn_done, 1, 1);
+        velodrome->pista[start_meter + velodrome->length][start_lane] = i;
     }
 
     if (globals.e)

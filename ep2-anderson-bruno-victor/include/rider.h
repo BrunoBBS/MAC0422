@@ -48,7 +48,12 @@ struct Rider
 typedef struct Rider *Rider;
 
 /*
- *Chage randomly the rider's speed using defined probilities
+ *Calculates rider position in the velodrome
+ */
+int get_pos(Rider rider);
+
+/*
+ *Change randomly the rider's speed using defined probilities
  */
 int change_speed(Rider rider, bool V90);
 

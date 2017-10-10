@@ -8,7 +8,15 @@ const int ch_lane_l_chance = 60;
 // Chance when speed was 30, otherwise is 50/50
 float v30_chance = 0.3;
 // TODO Scoring system
-// Chage randomly the rider's speed using defined probilities
+
+// Calculates rider position in the velodrome
+int get_pos(Rider rider)
+{
+    return (rider->total_dist + rider->velodrome->length) %
+        rider->velodrome->length;
+}
+
+// Change randomly the rider's speed using defined probilities
 int change_speed(Rider rider, bool V90)
 {
     int p = rand() % 100;
@@ -55,7 +63,7 @@ void* ride(void* args)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     myself->speed = V30KM;
     while (1) {
-        if (myself->total_dist % vel->length == 0) {
+        if (get_pos(myself) == 0) {
             int lap = myself->total_dist / vel->length;
             myself->speed = change_speed(myself, false);
             myself->score += 1; // TODO check score;
