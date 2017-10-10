@@ -130,10 +130,13 @@ Rider rider_in_front(Velodrome *velodrome_ptr, Rider behind)
 {
     Velodrome velodrome = *velodrome_ptr;
     // Calculates position of behind rider
-    int meter = behind->total_dist % velodrome->length;
+    int meter = (behind->total_dist + velodrome->length) % velodrome->length;
     int lane = behind->lane;
     int front_id = velodrome->pista[meter + 1][lane];
+    if (front_id >= 0) 
     return &velodrome->riders[front_id];
+    else 
+        return NULL;
 }
 
 bool can_rider_break(

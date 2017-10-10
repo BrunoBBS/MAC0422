@@ -30,6 +30,8 @@ void step(char dir, Rider rider, Velodrome vel)
         lane++;
     else if (dir == 'l')
         lane--;
+    rider->total_dist++;
+
 }
 
 // Main function of rider
@@ -65,10 +67,11 @@ void* ride(void* args)
         if (myself->total_dist % vel->length == 0) {
             int lap = myself->total_dist / vel->length;
             myself->speed = change_speed(myself, false);
-            myself->score += 1; // TODO check score;
+            if (lap % 10 == 0)
+                // TODO score
             if (lap % 15 == 0 && will_break(myself)) {
-                myself->broken = true;
                 // TODO die
+                sem_post(&myself->turn_done);
             }
         }
 
@@ -93,6 +96,7 @@ void* ride(void* args)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
                 step(change_lane(myself), myself, vel);
+                //TODO overtake count
                 myself->step = 0;
             }
             break;
