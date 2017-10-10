@@ -73,7 +73,7 @@ void destroy_velodrome(Velodrome* velodrome_ptr);
 int max_rider_speed(Velodrome* velodrome_ptr, Rider rider);
 
 // Returns rider in front of parameter
-Rider rider_in_front(Velodrome* velodrome_ptr, Rider behind);
+Rider rider_in_front(Rider behind);
 
 // If there are more than 5 riders
 bool can_rider_break(Velodrome* velodrome_ptr);
