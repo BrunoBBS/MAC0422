@@ -37,7 +37,7 @@ int main()
 {
     uint vel_len = 150;
     uint rider_cnt = 15;
-    uint turn_cnt = 160;
+    uint lap_cnt = 160;
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &wins);
 
@@ -46,7 +46,7 @@ int main()
 
     Velodrome velodrome = NULL;
 
-    create_velodrome(&velodrome, vel_len, rider_cnt, turn_cnt);
+    create_velodrome(&velodrome, vel_len, rider_cnt, lap_cnt);
 
     if (globals.e)
         printf("velodrome:l%3d -> Creating graphics thread...\n", __LINE__);
