@@ -16,6 +16,8 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
     velodrome->lap_cnt = lap_cnt;
+    velodrome->arrive = malloc(rider_cnt*sizeof(int));
+    velodrome->continue_flag = malloc(rider_cnt*sizeof(int));
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);

@@ -12,8 +12,8 @@ float v30_chance = 0.3;
 // Calculates rider position in the velodrome
 int get_pos(Rider rider)
 {
-    return (rider->total_dist + rider->velodrome->length) %
-        rider->velodrome->length;
+    return (rider->total_dist + rider->velodrome->length)
+        % rider->velodrome->length;
 }
 
 // Change randomly the rider's speed using defined probilities
@@ -39,6 +39,20 @@ void step(char dir, Rider rider, Velodrome vel)
     else if (dir == 'l')
         lane--;
     rider->total_dist++;
+}
+
+void* coordinator(void* args)
+{
+    int sum = 0;
+    Velodrome velodrome = (Velodrome)args;
+    while (sum < velodrome->a_rider_cnt) {
+        sum = 0;
+        for (int i = 0; i < velodrome->rider_cnt; i++) {
+            sum += velodrome->arrive[i];
+        }
+    }
+    for (int j = 0; j < velodrome->rider_cnt; j++)
+        velodrome->continue_flag[j] = 1;
 }
 
 // Main function of rider
@@ -70,13 +84,14 @@ void* ride(void* args)
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     myself->speed = V30KM;
-    while (1) {
-        if (get_pos(myself) == 0) {
-            int lap = myself->total_dist / vel->length;
+    int lap = 0;
+    while (lap < vel->lap_cnt) {
+        if (get_pos(myself) == 0 && myself->step == 0) {
+            lap = myself->total_dist / vel->length;
             myself->speed = change_speed(myself, false);
             if (lap % 10 == 0)
                 // TODO score
-                mark_placing(myself, myself->total_dist/vel->length);
+                mark_placing(myself, myself->total_dist / vel->length);
             if (lap % 15 == 0 && will_break(myself)) {
                 // TODO die
                 sem_post(&myself->turn_done);
@@ -104,7 +119,7 @@ void* ride(void* args)
                 myself->step += 1;
             else if (myself->step == steps_needed) {
                 step(change_lane(myself), myself, vel);
-                //TODO overtake count
+                // TODO overtake count
                 myself->step = 0;
             }
             break;
