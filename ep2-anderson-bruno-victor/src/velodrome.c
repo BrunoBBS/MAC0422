@@ -162,8 +162,16 @@ void complete_turn(
 
 void mark_placing(Rider rider, int lap)
 {
-    rider->score += sprint_points[
-        rider->velodrome->placings[lap / 10 - 1]--];
+    if (lap <= 0 || lap >= rider->velodrome->lap_cnt || lap % 10)
+        return;
+
+    int points = sprint_points[rider->velodrome->placings[lap / 10 - 1]--];
+
+    if (globals.e && points)
+        printf("velodrome:l%3d -> Rider %d gained %d points on lap %d\n",
+                __LINE__, rider->id, points, lap);
+
+    rider->score += points;
 
     if (rider->velodrome->placings[lap / 10 - 1] < 0)
         rider->velodrome->placings[lap / 10 - 1]++;
