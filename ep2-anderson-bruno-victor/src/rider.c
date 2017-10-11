@@ -34,10 +34,17 @@ int change_speed(Rider rider, bool V90)
 void step(char dir, Rider rider, Velodrome vel)
 {
     int lane = rider->lane;
+    int new_lane;
+    int meter = get_pos(rider);
+    int new_meter = (get_pos(rider) + 1) % vel->length;
     if (dir == 'r')
-        lane++;
+        new_lane = lane + 1;
     else if (dir == 'l')
-        lane--;
+        new_lane = lane - 1;
+    sem_wait(&vel->velodrome_sem);
+    vel->pista[meter][lane] = -1;
+    vel->pista[new_meter][new_lane] = rider->id;
+    sem_post(&vel->velodrome_sem);
     rider->total_dist++;
 }
 
@@ -99,7 +106,7 @@ void* ride(void* args)
         }
 
         Rider front;
-        if(front = rider_in_front(myself))
+        if (front = rider_in_front(myself))
             sem_wait(&front->turn_done);
 
         // Checks if is exceeding max speed possible
