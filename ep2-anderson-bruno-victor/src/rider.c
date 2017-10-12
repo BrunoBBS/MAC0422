@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-const int break_chance = 1;
+const int break_chance = 5;
 const int v90_chance = 20;
 const int ch_lane_chance = 50;
 // Chance when speed was 30, otherwise is 50/50
@@ -19,8 +19,12 @@ int get_pos(Rider rider)
 // Change randomly the rider's speed using defined probilities
 int change_speed(Rider rider)
 {
+    sem_wait(&rider->velodrome->rand_sem);
     int p = rand() % 100;
-    return rider->speed == V30KM ? p < v30_60_chance ? V60KM : V30KM : p < v60_30_chance ? V30KM : V60KM;
+    sem_post(&rider->velodrome->rand_sem);
+    return rider->speed == V30KM ?
+        p < v30_60_chance ? V60KM : V30KM :
+        p < v60_30_chance ? V30KM : V60KM;
 }
 
 // Writes down in velodrome when rider rides 1 meter
@@ -122,16 +126,14 @@ void *ride(void *args)
         //    sem_wait(&front->turn_done);
 
         // Checks if is exceeding max speed possible
-        if (max_rider_speed(&vel, myself) < myself->speed)
-        {
-            myself->speed = max_rider_speed(&vel, myself);
-            myself->step_time = 0;
-        }
+        int curr_spd = myself->speed;
+        if (max_rider_speed(&vel, myself) > myself->speed)
+            curr_spd = max_rider_speed(&vel, myself);
 
         // go!!
-        if (myself->step_time < myself->speed)
+        if (myself->step_time < curr_spd)
             myself->step_time += vel->round_time;
-        else if (myself->step_time >= myself->speed)
+        else if (myself->step_time >= curr_spd)
         {
             step(change_lane(myself), myself, vel);
             //TODO not overtake from left
@@ -164,7 +166,9 @@ bool will_break(Rider rider)
 {
     if (can_rider_break(&rider->velodrome))
     {
+        sem_wait(&rider->velodrome->rand_sem);
         int p = rand() % 100;
+        sem_post(&rider->velodrome->rand_sem);
         if (p < break_chance)
             return true;
     }
@@ -176,7 +180,9 @@ char change_lane(Rider rider)
 {
     if (globals.e)
         printf("rider:l%3d -> Rider %d Arrived at change_lane\n", __LINE__, rider->id);
+    sem_wait(&rider->velodrome->rand_sem);
     int p = rand() % 100;
+    sem_post(&rider->velodrome->rand_sem);
     // decides if will change lanes
     if (p < 50)
     {

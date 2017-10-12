@@ -21,6 +21,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->round_time = 60;
     velodrome->a_rider_cnt = rider_cnt;
     sem_init(&velodrome->velodrome_sem, 0, 1);
+    sem_init(&velodrome->rand_sem, 0, 1);
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);
@@ -109,26 +110,14 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
 int max_rider_speed(Velodrome *velodrome_ptr, Rider rider)
 {
     Velodrome velodrome = *velodrome_ptr;
-    int max_speed = 3;
+    int max_speed = V90KM;
     // Get the meter immediately in front of the rider
-    int next_meter = (rider->total_dist + velodrome->length + 1) % velodrome->length;
+    int next_meter =
+        (get_pos(rider) + 1) % velodrome->length;
 
-    // For each lane external to this one
-    for (int lane = rider->lane; lane < 10; lane++)
-    {
-        // Get id of rider in this place
-        int id = velodrome->pista[next_meter][lane];
-
-        // If there is no rider here
-        if (id < 0)
-            continue;
-        // Else, if some other rider is slower than max speed
-        else if (velodrome->riders[id].speed < max_speed)
-            max_speed = velodrome->riders[id].speed;
-    }
-
-    // Return max speed so rider does not overtake from internal lane
-    return max_speed;
+    int id = velodrome->pista[next_meter][rider->lane] >= 0;
+    if (id >= 0)
+        return velodrome->riders[id].speed;
 }
 
 Rider rider_in_front(Rider behind)
@@ -146,8 +135,7 @@ Rider rider_in_front(Rider behind)
 bool can_rider_break(
     Velodrome *velodrome_ptr)
 {
-    Velodrome velodrome = *velodrome_ptr;
-    return velodrome->a_rider_cnt;
+    return (*velodrome_ptr)->a_rider_cnt > 5;
 }
 
 void mark_placing(Rider rider, int lap)

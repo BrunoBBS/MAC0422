@@ -13,6 +13,11 @@ void print_vel(Velodrome velodrome)
 {
     int i = 0;
     sem_wait(&velodrome->velodrome_sem);
+    for (int j = 0; j < velodrome->rider_cnt; j++)
+        printf("%c -> l:%d s:%d ", 'A' + j,
+                velodrome->riders[j].total_dist / velodrome->length,
+                velodrome->riders[j].speed);
+    printf("\n");
     while (i < velodrome->length) {
         for (int lane = 0; lane < 10; lane++) {
             for (int meter = i;
@@ -47,6 +52,8 @@ int main(int argc, char** argv)
     uint vel_len = 150;
     uint rider_cnt = 15;
     uint lap_cnt = 160;
+
+    srand(time(0));
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &wins);
 

@@ -63,6 +63,9 @@ struct Velodrome
 
     // Remaining riders
     int *placings;
+
+    // Random generator semaphor
+    sem_t rand_sem;
 };
 
 typedef struct Velodrome *Velodrome;
