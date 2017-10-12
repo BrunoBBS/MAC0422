@@ -178,9 +178,13 @@ void mark_overtake(Rider rider) {
     {
         if (i != rider->lane)
         {
-            overtaken = &velodrome->riders[velodrome->pista[meter][i]];
-            rider->overtake[overtaken->id]++;
-            overtaken->overtake[rider->id]--;
+            int id = velodrome->pista[meter][i];
+            if (id >= 0)
+            {
+                overtaken = &velodrome->riders[id];
+                rider->overtake[overtaken->id]++;
+                overtaken->overtake[rider->id]--;
+            }
         }
     }
     for (int i = 0; i < velodrome->rider_cnt; i++)
