@@ -11,15 +11,27 @@ struct winsize wins;
 
 void print_vel(Velodrome velodrome)
 {
-    int i = 0;
     sem_wait(&velodrome->velodrome_sem);
-    printf("* * * * * * * * * * * * * * *\n");
+    for (int j = 0; j < 61; j++)
+        printf("* ");
+    printf("\n");
     for (int j = 0; j < velodrome->rider_cnt; j++)
-        printf("* %c -> l:%4d s:%4d p:%4d *\n", 'A' + j,
-                velodrome->riders[j].total_dist / velodrome->length,
-                velodrome->riders[j].speed, velodrome->riders[j].score);
+    {
+        Rider rider = &velodrome->riders[j];
+        printf("* %c -> l:%5d s:%5d p:%6d t:%5d o:", 'A' + j,
+                rider->total_dist / velodrome->length,
+                rider->speed, rider->score,
+                rider->total_dist);
+        printf("[ ");
+        for (int i = 0; i < velodrome->rider_cnt; i++)
+            printf("%3d%s", rider->overtake[i],
+                    i == velodrome->rider_cnt - 1 ? " ] *\n" : ", ");
+    }
+    for (int j = 0; j < 61; j++)
+        printf("* ");
+    printf("\n");
 
-    printf("* * * * * * * * * * * * * * *\n");
+    int i = 0;
     while (i < velodrome->length) {
         for (int lane = 0; lane < 10; lane++) {
             for (int meter = i;
@@ -75,6 +87,8 @@ int main(int argc, char** argv)
                 break;
             case 'r':
                 globals.r = true;
+                if (argv[1][c] >= '1' && argv[1][c] <= '9')
+                    globals.r = argv[1][c++] - '0';
                 break;
             default:
                 fprintf(stderr, "Unrecognized option: '%c'\n", option);
