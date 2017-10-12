@@ -3,9 +3,9 @@
 const int sprint_points[] = {0, 1, 2, 3, 5};
 
 void create_velodrome(Velodrome *velodrome_ptr,
-        uint length,
-        uint rider_cnt,
-        uint lap_cnt)
+                      uint length,
+                      uint rider_cnt,
+                      uint lap_cnt)
 {
     if (globals.e)
         printf("velodrome:l%3d -> Creating velodrome...\n", __LINE__);
@@ -16,12 +16,11 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
     velodrome->lap_cnt = lap_cnt;
-    velodrome->arrive = malloc(rider_cnt*sizeof(int));
-    velodrome->continue_flag = malloc(rider_cnt*sizeof(int));
+    velodrome->arrive = malloc(rider_cnt * sizeof(int));
+    velodrome->continue_flag = malloc(rider_cnt * sizeof(int));
     velodrome->round_time = 60;
     velodrome->a_rider_cnt = rider_cnt;
     sem_init(&velodrome->velodrome_sem, 0, 1);
-
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);
@@ -67,9 +66,9 @@ void create_velodrome(Velodrome *velodrome_ptr,
     for (int i = 0; i < rider_cnt; i++)
     {
         if (globals.e)
-           printf("velodrome:l%3d -> Starting rider %d\n", __LINE__, i);
+            printf("velodrome:l%3d -> Starting rider %d\n", __LINE__, i);
         pthread_create(&velodrome->riders[i].rider_t, 0, &ride,
-                &velodrome->riders[i]);
+                       &velodrome->riders[i]);
     }
     // Start coordinator thread
     pthread_create(&velodrome->coordinator_t, 0, &coordinator, &velodrome);
@@ -107,9 +106,7 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     *velodrome_ptr = NULL;
 }
 
-int max_rider_speed(
-    Velodrome *velodrome_ptr,
-    Rider rider)
+int max_rider_speed(Velodrome *velodrome_ptr, Rider rider)
 {
     Velodrome velodrome = *velodrome_ptr;
     int max_speed = 3;
@@ -162,7 +159,7 @@ void mark_placing(Rider rider, int lap)
 
     if (globals.e && points)
         printf("velodrome:l%3d -> Rider %d gained %d points on lap %d\n",
-                __LINE__, rider->id, points, lap);
+               __LINE__, rider->id, points, lap);
 
     rider->score += points;
 
@@ -170,7 +167,8 @@ void mark_placing(Rider rider, int lap)
         rider->velodrome->placings[lap / 10 - 1]++;
 }
 
-void mark_overtake(Rider rider) {
+void mark_overtake(Rider rider)
+{
     int meter = get_pos(rider);
     Velodrome velodrome = rider->velodrome;
     Rider overtaken;
@@ -197,7 +195,6 @@ void mark_overtake(Rider rider) {
             // Points for you
             points = 20;
         rider->score += points;
-            
     }
     return;
 }
