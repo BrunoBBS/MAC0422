@@ -64,6 +64,8 @@ void create_velodrome(Velodrome *velodrome_ptr,
         pthread_create(&velodrome->riders[i].rider_t, 0, &ride,
                 &velodrome->riders[i]);
     }
+    // Start coordinator thread
+    pthread_create(&velodrome->coordinator_t, 0, &coordinator, &velodrome);
     pthread_barrier_wait(&velodrome->start_barrier);
 
     if (globals.e)
