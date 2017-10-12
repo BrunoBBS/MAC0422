@@ -45,6 +45,7 @@ void step(char dir, Rider rider, Velodrome vel)
     vel->pista[new_meter][new_lane] = rider->id;
     sem_post(&vel->velodrome_sem);
     rider->total_dist++;
+    rider->lane = new_lane;
     if (globals.e)
         printf("rider:l%3d -> Rider %d moved\n", __LINE__, rider->id);
 }
