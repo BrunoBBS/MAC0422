@@ -36,7 +36,7 @@ void* debug_print_thread(void* velodrome_ptr)
 
         struct timespec sleep_time;
         sleep_time.tv_sec = 0;
-        sleep_time.tv_nsec = (velodrome->round_time % 1000) * 1000000;
+        sleep_time.tv_nsec = 100000000;
         nanosleep(&sleep_time, NULL);
     }
 }
