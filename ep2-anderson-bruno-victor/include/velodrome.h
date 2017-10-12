@@ -15,6 +15,7 @@ int change_speed(Rider rider);
 void* ride(void* args);
 bool will_break(Rider rider);
 char change_lane(Rider rider);
+void *coordinator(void *args);
 
 // This is a struct representing a counter-clockwise velodrome
 struct Velodrome {
@@ -40,6 +41,9 @@ struct Velodrome {
     // This is a vector of riders
     // riders[i] is pointer to rider with id i
     struct Rider* riders;
+
+    // Coordinator thread
+    pthread_t coordinator_t;
 
     // This is the barrier for riders to wait for start
     pthread_barrier_t start_barrier;

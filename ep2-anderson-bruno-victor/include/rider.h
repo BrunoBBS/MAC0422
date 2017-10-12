@@ -75,6 +75,11 @@ bool will_break(Rider rider);
 void step(char dir, Rider rider, Velodrome vel);
 
 /*
+ *Barrier Coordinator function
+ */
+void *coordinator(void *args);
+
+/*
  *Calculates if will change and wich adjacent lane to change
  *The rider has a 50% chance of changing lanes and 50% of chance to go to
  *rignt lane case will change lanes

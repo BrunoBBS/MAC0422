@@ -30,7 +30,7 @@ int change_speed(Rider rider)
 void step(char dir, Rider rider, Velodrome vel)
 {
     int lane = rider->lane;
-    int new_lane;
+    int new_lane = lane;
     int meter = get_pos(rider);
     int new_meter = (get_pos(rider) + 1) % vel->length;
     if (dir == 'r')
@@ -42,6 +42,8 @@ void step(char dir, Rider rider, Velodrome vel)
     vel->pista[new_meter][new_lane] = rider->id;
     sem_post(&vel->velodrome_sem);
     rider->total_dist++;
+    if (globals.e)
+        printf("rider:l%3d -> Rider %d moved\n", __LINE__, rider->id);
 }
 
 void* coordinator(void* args)
@@ -56,6 +58,7 @@ void* coordinator(void* args)
     }
     for (int j = 0; j < velodrome->rider_cnt; j++)
         velodrome->continue_flag[j] = 1;
+    // TODO change to pthread_cond
 }
 
 // Main function of rider
@@ -79,6 +82,8 @@ void* ride(void* args)
     Rider myself = (Rider)args;
     Velodrome vel = myself->velodrome;
 
+    if (globals.e)
+        printf("rider:l%3d -> rider count %d\n", __LINE__, vel->rider_cnt);
     if (globals.e)
         printf("rider:l%3d -> Created rider %d\n", __LINE__, myself->id);
 
@@ -126,7 +131,23 @@ void* ride(void* args)
             myself->step_time = 0;
         }
 
+        if (globals.e)
+            printf("rider:l%3d -> Rider %d turn done\n", __LINE__, myself->id);
+
         sem_post(&myself->turn_done);
+        if (globals.e)
+            printf("rider:l%3d -> Rider %d NOTIFIED turn done\n", __LINE__,
+                myself->id);
+        vel->arrive[myself->id] = 1;
+        if (globals.e)
+            printf("rider:l%3d -> Rider %d ARRIVE BARRIER\n", __LINE__,
+                myself->id);
+        while (vel->continue_flag[myself->id] == 0) {
+        }
+        if (globals.e)
+            printf("rider:l%3d -> Rider %d PASSED BARRIER\n", __LINE__,
+                myself->id);
+        vel->continue_flag[myself->id] = 0;
     }
 
     return NULL;
