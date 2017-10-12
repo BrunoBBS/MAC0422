@@ -6,9 +6,9 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define V30KM 1 //one meter every 120ms
-#define V60KM 2
-#define V90KM 3
+#define V30KM 120 //one meter every 120ms
+#define V60KM 60  //one meter every 60ms
+#define V90KM 40  //one meter every 40ms
 
 // Declarations for circular dependency
 void create_velodrome(
@@ -25,6 +25,7 @@ void complete_turn(
     Rider rider);
 bool can_rider_break(
     Velodrome *velodrome_ptr);
+void mark_overtake(Rider rider);
 
 struct Rider
 {
@@ -40,7 +41,7 @@ struct Rider
     // Absolute position
     int total_dist;
     int lane;
-    int step;
+    int step_time;
     uint turn;
     sem_t turn_done;
     int *overtake;
@@ -56,7 +57,7 @@ int get_pos(Rider rider);
 /*
  *Change randomly the rider's speed using defined probilities
  */
-int change_speed(Rider rider, bool V90);
+int change_speed(Rider rider);
 
 /*
  *Main function of rider

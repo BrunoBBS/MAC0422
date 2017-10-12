@@ -6,7 +6,8 @@ const int break_chance = 1;
 const int v90_chance = 20;
 const int ch_lane_chance = 50;
 // Chance when speed was 30, otherwise is 50/50
-float v30_chance = 0.3;
+const int v30_60_chance = 70;
+const int v60_30_chance = 50;
 // TODO Scoring system
 
 // Calculates rider position in the velodrome
@@ -17,17 +18,12 @@ int get_pos(Rider rider)
 }
 
 // Change randomly the rider's speed using defined probilities
-int change_speed(Rider rider, bool V90)
+int change_speed(Rider rider)
 {
     int p = rand() % 100;
-    if (!V90) {
-        if (rider->speed == V60KM) {
-            v30_chance = 50;
-        }
-        return p < v30_chance ? V30KM : V60KM;
-    } else {
-        return p < v90_chance ? V90KM : rider->speed;
-    }
+    return rider->speed == V30KM ?
+        p < v30_60_chance ? V60KM : V30KM :
+        p < v60_30_chance ? V30KM : V60KM ;
 }
 
 // Writes down in velodrome when rider rides 1 meter
@@ -86,23 +82,25 @@ void* ride(void* args)
     if (globals.e)
         printf("rider:l%3d -> Created rider %d\n", __LINE__, myself->id);
 
+    // set speed
+    myself->speed = V30KM;
+
     // wait start
     pthread_barrier_wait(&vel->start_barrier);
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
-    myself->speed = V30KM;
     int lap = 0;
     while (lap < vel->lap_cnt) {
-        if (get_pos(myself) == 0 && myself->step == 0) {
+        if (get_pos(myself) == 0 && myself->step_time == 0) {
             lap = myself->total_dist / vel->length;
-            myself->speed = change_speed(myself, false);
+            myself->speed = change_speed(myself);
             if (lap % 10 == 0)
                 mark_placing(myself, myself->total_dist / vel->length);
             if (lap % 15 == 0 && will_break(myself)) {
                 // TODO die
                 lap = vel->lap_cnt;
-                myself -> velodrome = NULL;
-                vel -> a_rider_cnt -= 1;
+                myself->velodrome = NULL;
+                vel->a_rider_cnt -= 1;
                 sem_post(&myself->turn_done);
                 continue;
             }
@@ -115,46 +113,19 @@ void* ride(void* args)
         // Checks if is exceeding max speed possible
         if (max_rider_speed(&vel, myself) < myself->speed) {
             myself->speed = max_rider_speed(&vel, myself);
-            myself->step = 0;
+            myself->step_time = 0;
         }
         // go!!
         int steps_needed;
-        switch (myself->speed) {
-        case V30KM:
-            steps_needed = 1;
-            if (vel->round_time == 20)
-                steps_needed = 5; // 0 to 5, six steps
-            if (myself->step < steps_needed)
-                myself->step += 1;
-            else if (myself->step == steps_needed) {
-                step(change_lane(myself), myself, vel);
-                // TODO overtake count
-                mark_overtake(myself);
-                myself->step = 0;
-            }
-            break;
-        case V60KM:
-            steps_needed = 0;
-            if (vel->round_time == 20)
-                steps_needed = 2; // 0 to 2, three steps
-            if (myself->step < steps_needed)
-                myself->step += 1;
-            else if (myself->step == steps_needed) {
-                step(change_lane(myself), myself, vel);
-                myself->step = 0;
-            }
-            break;
-        case V90KM:
-            // The simulation is already at a 20ms pace
-            steps_needed = 1;
 
-            if (myself->step < steps_needed)
-                myself->step += 1;
-            else if (myself->step == steps_needed) {
-                step(change_lane(myself), myself, vel);
-                myself->step = 0;
-            }
+        if (myself->step_time < myself->speed)
+            myself->step_time += vel->round_time;
+        else if (myself->step_time >= myself->speed) {
+            step(change_lane(myself), myself, vel);
+            mark_overtake(myself);
+            myself->step_time = 0;
         }
+
         sem_post(&myself->turn_done);
     }
 

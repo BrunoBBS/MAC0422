@@ -11,7 +11,7 @@ typedef struct Rider* Rider;
 
 // Declarations for circular dependency
 int get_pos(Rider rider);
-int change_speed(Rider rider, bool V90);
+int change_speed(Rider rider);
 void* ride(void* args);
 bool will_break(Rider rider);
 char change_lane(Rider rider);
@@ -80,6 +80,9 @@ bool can_rider_break(Velodrome* velodrome_ptr);
 
 // Mark placings
 void mark_placing(Rider rider, int lap);
+
+// Mark placings
+void mark_overtake(Rider rider);
 
 // Verify if the turn is a sprint
 bool is_sprint(Velodrome* velodrome_ptr, Rider rider);

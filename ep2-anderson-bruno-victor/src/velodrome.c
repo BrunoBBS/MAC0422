@@ -150,7 +150,7 @@ bool can_rider_break(
 bool is_sprint(Velodrome *velodrome_ptr,
     Rider rider)
 {
-    if (rider->step % 10 == 0)
+    if (rider->step_time % 10 == 0)
         return true;
     return false;
 }
@@ -159,7 +159,7 @@ void complete_turn(
     Velodrome *velodrome_ptr,
     Rider rider)
 {
-    if (rider->total_dist % rider->step == 0){
+    if (rider->total_dist % rider->step_time == 0){
         rider->total_dist += 60;
     }
     return;
