@@ -151,7 +151,7 @@ void *ride(void *args)
         {
             struct timespec sleep_time;
             sleep_time.tv_sec = 0;
-            sleep_time.tv_nsec = (vel->round_time % 1000) * 1000000;
+            sleep_time.tv_nsec = ((vel->round_time / globals.r) % 1000) * 1000000;
             nanosleep(&sleep_time, NULL);
         }
     }

@@ -79,6 +79,8 @@ int main(int argc, char** argv)
                 break;
             case 'r':
                 globals.r = true;
+                if (argv[1][c] >= '1' && argv[1][c] <= '9')
+                    globals.r = argv[1][c++] - '0';
                 break;
             default:
                 fprintf(stderr, "Unrecognized option: '%c'\n", option);
