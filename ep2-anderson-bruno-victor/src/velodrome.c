@@ -173,16 +173,13 @@ void mark_overtake(Rider rider)
             }
         }
     }
+    int points = 20;
     for (int i = 0; i < velodrome->rider_cnt; i++)
     {
-        int points;
-        if (!velodrome->riders[i].broken && rider->overtake[i] % 2 != 0 && rider->overtake[i] > 0)
+        if (!velodrome->riders[i].broken && (rider->overtake[i] % 2 != 0 || rider->overtake[i] < 0 || rider->total_dist < velodrome->length))
             // No poits for you
             points = 0;
-        else
-            // Points for you
-            points = 20;
-        rider->score += points;
     }
+    rider->score += points;
     return;
 }

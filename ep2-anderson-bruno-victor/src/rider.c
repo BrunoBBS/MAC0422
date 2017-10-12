@@ -99,12 +99,13 @@ void *ride(void *args)
     pthread_barrier_wait(&vel->start_barrier);
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
-    int lap = 0;
+    int lap = 1;
     while (lap < vel->lap_cnt)
     {
         if (get_pos(myself) == 0 && myself->step_time == 0)
         {
             lap = myself->total_dist / vel->length;
+            if (myself->total_dist > vel->length - 1)
             myself->speed = change_speed(myself);
             if (lap % 10 == 0)
                 mark_placing(myself, myself->total_dist / vel->length);
