@@ -13,13 +13,17 @@ void print_vel(Velodrome velodrome)
 {
     int i = 0;
     sem_wait(&velodrome->velodrome_sem);
-    printf("* * * * * * * * * * * * * * *\n");
+    printf("* * * * * * * * * * * * * * * * * * * * *\n");
     for (int j = 0; j < velodrome->rider_cnt; j++)
-        printf("* %c -> l:%4d s:%4d p:%4d *\n", 'A' + j,
-                velodrome->riders[j].total_dist / velodrome->length,
-                velodrome->riders[j].speed, velodrome->riders[j].score);
+    {
+        Rider rider = &velodrome->riders[j];
+        printf("* %c -> l:%5d s:%5d p:%6d t:%5d *\n", 'A' + j,
+                rider->total_dist / velodrome->length,
+                rider->speed, rider->score,
+                rider->total_dist);
+    }
 
-    printf("* * * * * * * * * * * * * * *\n");
+    printf("* * * * * * * * * * * * * * * * * * * * *\n");
     while (i < velodrome->length) {
         for (int lane = 0; lane < 10; lane++) {
             for (int meter = i;
