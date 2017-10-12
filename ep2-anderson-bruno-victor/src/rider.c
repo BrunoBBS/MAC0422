@@ -8,7 +8,6 @@ const int ch_lane_chance = 50;
 // Chance when speed was 30, otherwise is 50/50
 const int v30_60_chance = 70;
 const int v60_30_chance = 50;
-// TODO Scoring system
 
 // Calculates rider position in the velodrome
 int get_pos(Rider rider)
@@ -29,6 +28,8 @@ int change_speed(Rider rider)
 // Writes down in velodrome when rider rides 1 meter
 void step(char dir, Rider rider, Velodrome vel)
 {
+    if (globals.e)
+        printf("rider:l%3d -> Rider %d Arrived at step\n", __LINE__, rider->id);
     int lane = rider->lane;
     int new_lane = lane;
     int meter = get_pos(rider);
@@ -46,18 +47,19 @@ void step(char dir, Rider rider, Velodrome vel)
         printf("rider:l%3d -> Rider %d moved\n", __LINE__, rider->id);
 }
 
+// Main function for barrier coordinator
 void* coordinator(void* args)
 {
-    int sum = 0;
-    Velodrome velodrome = (Velodrome)args;
-    while (sum < velodrome->a_rider_cnt) {
-        sum = 0;
-        for (int i = 0; i < velodrome->rider_cnt; i++) {
-            sum += velodrome->arrive[i];
-        }
-    }
-    for (int j = 0; j < velodrome->rider_cnt; j++)
-        velodrome->continue_flag[j] = 1;
+    /*int sum = 0;*/
+    /*Velodrome velodrome = (Velodrome)args;*/
+    /*while (sum < velodrome->a_rider_cnt) {*/
+        /*sum = 0;*/
+        /*for (int i = 0; i < velodrome->rider_cnt; i++) {*/
+            /*sum += velodrome->arrive[i];*/
+        /*}*/
+    /*}*/
+    /*for (int j = 0; j < velodrome->rider_cnt; j++)*/
+        /*velodrome->continue_flag[j] = 1;*/
     // TODO change to pthread_cond
 }
 
@@ -120,34 +122,23 @@ void* ride(void* args)
             myself->speed = max_rider_speed(&vel, myself);
             myself->step_time = 0;
         }
-        // go!!
-        int steps_needed;
 
+        // go!!
         if (myself->step_time < myself->speed)
             myself->step_time += vel->round_time;
         else if (myself->step_time >= myself->speed) {
             step(change_lane(myself), myself, vel);
+            //TODO not overtake from left
             mark_overtake(myself);
             myself->step_time = 0;
         }
 
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d turn done\n", __LINE__, myself->id);
 
         sem_post(&myself->turn_done);
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d NOTIFIED turn done\n", __LINE__,
-                myself->id);
-        vel->arrive[myself->id] = 1;
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d ARRIVE BARRIER\n", __LINE__,
-                myself->id);
-        while (vel->continue_flag[myself->id] == 0) {
-        }
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d PASSED BARRIER\n", __LINE__,
-                myself->id);
-        vel->continue_flag[myself->id] = 0;
+        /*vel->arrive[myself->id] = 1;*/
+        /*while (vel->continue_flag[myself->id] == 0) {*/
+        /*}*/
+        /*vel->continue_flag[myself->id] = 0;*/
     }
 
     return NULL;
@@ -159,14 +150,16 @@ bool will_break(Rider rider)
     if (can_rider_break(&rider->velodrome)) {
         int p = rand() % 100;
         if (p > break_chance)
-            rider->broken = true;
+            return true;
     }
-    return rider->broken;
+    return false;
 }
 
 // Calculates if will change and wich adjacent lane to change
 char change_lane(Rider rider)
 {
+    if (globals.e)
+        printf("rider:l%3d -> Rider %d Arrived at change_lane\n", __LINE__, rider->id);
     int p = rand() % 100;
     // decides if will change lanes
     if (p < 50) {

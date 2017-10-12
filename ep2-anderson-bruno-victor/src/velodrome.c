@@ -18,6 +18,10 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->lap_cnt = lap_cnt;
     velodrome->arrive = malloc(rider_cnt*sizeof(int));
     velodrome->continue_flag = malloc(rider_cnt*sizeof(int));
+    velodrome->round_time = 60;
+    velodrome->a_rider_cnt = rider_cnt;
+    sem_init(&velodrome->velodrome_sem, 0, 1);
+
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);
@@ -149,24 +153,6 @@ bool can_rider_break(
     return velodrome->a_rider_cnt;
 }
 
-bool is_sprint(Velodrome *velodrome_ptr,
-    Rider rider)
-{
-    if (rider->step_time % 10 == 0)
-        return true;
-    return false;
-}
-
-void complete_turn(
-    Velodrome *velodrome_ptr,
-    Rider rider)
-{
-    if (rider->total_dist % rider->step_time == 0){
-        rider->total_dist += 60;
-    }
-    return;
-}
-
 void mark_placing(Rider rider, int lap)
 {
     if (lap <= 0 || lap >= rider->velodrome->lap_cnt || lap % 10)
@@ -186,17 +172,28 @@ void mark_placing(Rider rider, int lap)
 
 void mark_overtake(Rider rider) {
     int meter = get_pos(rider);
-    int dist;
-    for (int i = 0; i < 10; i++) {
-        dist = rider->velodrome->riders[rider->velodrome->pista[meter-1][rider->lane]].total_dist;
-        if (rider->total_dist > dist){
-            rider->overtake[i] += 1;
-            if (globals.e)
-                printf("rider:l%3d -> Rider %d overtaked Rider %d!\n", __LINE__, rider->id, 
-                    rider->velodrome->pista[meter-1][rider->lane]);
-            if ((rider->velodrome->riders[i]).overtake[rider->id] > 0)
-                (rider->velodrome->riders[i]).overtake[rider->id] -= 1;
+    Velodrome velodrome = rider->velodrome;
+    Rider overtaken;
+    for (int i = 0; i < 10; i++)
+    {
+        if (i != rider->lane)
+        {
+            overtaken = &velodrome->riders[velodrome->pista[meter][i]];
+            rider->overtake[overtaken->id]++;
+            overtaken->overtake[rider->id]--;
         }
+    }
+    for (int i = 0; i < velodrome->rider_cnt; i++)
+    {
+        int points;
+        if (!velodrome->riders[i].broken && rider->overtake[i] < 2)
+            // No poits for you
+            points = 0;
+        else
+            // Points for you
+            points = 20;
+        rider->score += points;
+            
     }
     return;
 }
