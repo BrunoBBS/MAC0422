@@ -176,7 +176,7 @@ void mark_overtake(Rider rider)
     for (int i = 0; i < velodrome->rider_cnt; i++)
     {
         int points;
-        if (!velodrome->riders[i].broken && rider->overtake[i] < 2)
+        if (!velodrome->riders[i].broken && rider->overtake[i] % 2 != 0 && rider->overtake[i] > 0)
             // No poits for you
             points = 0;
         else
