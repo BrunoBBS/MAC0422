@@ -43,6 +43,7 @@ struct Rider
     int step;
     uint turn;
     sem_t turn_done;
+    int *overtake;
 };
 
 typedef struct Rider *Rider;
