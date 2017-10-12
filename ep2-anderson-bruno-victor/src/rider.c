@@ -13,17 +13,14 @@ const int v60_30_chance = 50;
 // Calculates rider position in the velodrome
 int get_pos(Rider rider)
 {
-    return (rider->total_dist + rider->velodrome->length)
-        % rider->velodrome->length;
+    return (rider->total_dist + rider->velodrome->length) % rider->velodrome->length;
 }
 
 // Change randomly the rider's speed using defined probilities
 int change_speed(Rider rider)
 {
     int p = rand() % 100;
-    return rider->speed == V30KM ?
-        p < v30_60_chance ? V60KM : V30KM :
-        p < v60_30_chance ? V30KM : V60KM ;
+    return rider->speed == V30KM ? p < v30_60_chance ? V60KM : V30KM : p < v60_30_chance ? V30KM : V60KM;
 }
 
 // Writes down in velodrome when rider rides 1 meter
@@ -49,23 +46,23 @@ void step(char dir, Rider rider, Velodrome vel)
 }
 
 // Main function for barrier coordinator
-void* coordinator(void* args)
+void *coordinator(void *args)
 {
     /*int sum = 0;*/
     /*Velodrome velodrome = (Velodrome)args;*/
     /*while (sum < velodrome->a_rider_cnt) {*/
-        /*sum = 0;*/
-        /*for (int i = 0; i < velodrome->rider_cnt; i++) {*/
-            /*sum += velodrome->arrive[i];*/
-        /*}*/
+    /*sum = 0;*/
+    /*for (int i = 0; i < velodrome->rider_cnt; i++) {*/
+    /*sum += velodrome->arrive[i];*/
+    /*}*/
     /*}*/
     /*for (int j = 0; j < velodrome->rider_cnt; j++)*/
-        /*velodrome->continue_flag[j] = 1;*/
+    /*velodrome->continue_flag[j] = 1;*/
     // TODO change to pthread_cond
 }
 
 // Main function of rider
-void* ride(void* args)
+void *ride(void *args)
 {
     // TODO
     // wait start
@@ -98,13 +95,16 @@ void* ride(void* args)
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     int lap = 0;
-    while (lap < vel->lap_cnt) {
-        if (get_pos(myself) == 0 && myself->step_time == 0) {
+    while (lap < vel->lap_cnt)
+    {
+        if (get_pos(myself) == 0 && myself->step_time == 0)
+        {
             lap = myself->total_dist / vel->length;
             myself->speed = change_speed(myself);
             if (lap % 10 == 0)
                 mark_placing(myself, myself->total_dist / vel->length);
-            if (lap % 15 == 0 && will_break(myself)) {
+            if (lap % 15 == 0 && will_break(myself))
+            {
                 // TODO die
                 lap = vel->lap_cnt;
                 myself->velodrome = NULL;
@@ -119,7 +119,8 @@ void* ride(void* args)
             sem_wait(&front->turn_done);
 
         // Checks if is exceeding max speed possible
-        if (max_rider_speed(&vel, myself) < myself->speed) {
+        if (max_rider_speed(&vel, myself) < myself->speed)
+        {
             myself->speed = max_rider_speed(&vel, myself);
             myself->step_time = 0;
         }
@@ -127,13 +128,13 @@ void* ride(void* args)
         // go!!
         if (myself->step_time < myself->speed)
             myself->step_time += vel->round_time;
-        else if (myself->step_time >= myself->speed) {
+        else if (myself->step_time >= myself->speed)
+        {
             step(change_lane(myself), myself, vel);
             //TODO not overtake from left
             mark_overtake(myself);
             myself->step_time = 0;
         }
-
 
         sem_post(&myself->turn_done);
         /*vel->arrive[myself->id] = 1;*/
@@ -155,7 +156,8 @@ void* ride(void* args)
 // Calculates if breaks based on chance
 bool will_break(Rider rider)
 {
-    if (can_rider_break(&rider->velodrome)) {
+    if (can_rider_break(&rider->velodrome))
+    {
         int p = rand() % 100;
         if (p > break_chance)
             return true;
@@ -170,16 +172,22 @@ char change_lane(Rider rider)
         printf("rider:l%3d -> Rider %d Arrived at change_lane\n", __LINE__, rider->id);
     int p = rand() % 100;
     // decides if will change lanes
-    if (p < 50) {
+    if (p < 50)
+    {
         // decides wich lane will change
         p = rand() % 100;
-        if (p < ch_lane_chance / 2) {
+        if (p < ch_lane_chance / 2)
+        {
             /*go left*/
             return 'l';
-        } else if (p > ch_lane_chance / 2 && p < ch_lane_chance) {
+        }
+        else if (p > ch_lane_chance / 2 && p < ch_lane_chance)
+        {
             /*go right*/
             return 'r';
-        } else {
+        }
+        else
+        {
             // go just forward
             return 'f';
         }
