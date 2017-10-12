@@ -9,30 +9,31 @@
 
 struct winsize wins;
 
+void print_vel(Velodrome velodrome)
+{
+    int i = 0;
+    sem_wait(&velodrome->velodrome_sem);
+    while (i < velodrome->length) {
+        for (int lane = 0; lane < 10; lane++) {
+            for (int meter = i;
+                 meter < i + wins.ws_col && meter < velodrome->length;
+                 meter++) {
+                int value = velodrome->pista[meter][lane];
+                fprintf(stderr, "%c", value < 0 ? '-' : 'A' + value);
+            }
+            fprintf(stderr, "\n");
+        }
+        fprintf(stderr, "\n");
+        i += wins.ws_col;
+    }
+    sem_post(&velodrome->velodrome_sem);
+}
+
 void* debug_print_thread(void* velodrome_ptr)
 {
     Velodrome velodrome = (Velodrome)velodrome_ptr;
-    while (1)
-    {
-        int i = 0;
-        sem_wait(&velodrome->velodrome_sem);
-        while (i < velodrome->length)
-        {
-            for (int lane = 0; lane < 10; lane++)
-            {
-                for (int meter = i;
-                     meter < i + wins.ws_col && meter < velodrome->length;
-                     meter++)
-                {
-                    int value = velodrome->pista[meter][lane];
-                    fprintf(stderr, "%c", value < 0 ? '-' : 'A' + value);
-                }
-                fprintf(stderr, "\n");
-            }
-            fprintf(stderr, "\n");
-            i += wins.ws_col;
-        }
-        sem_post(&velodrome->velodrome_sem);
+    while (velodrome->a_rider_cnt) {
+        print_vel(velodrome);
 
         struct timespec sleep_time;
         sleep_time.tv_sec = 0;
@@ -41,7 +42,7 @@ void* debug_print_thread(void* velodrome_ptr)
     }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     uint vel_len = 150;
     uint rider_cnt = 15;
@@ -55,23 +56,20 @@ int main(int argc, char **argv)
     globals.d = false;
     globals.r = false;
 
-    if (argc > 1)
-    {
+    if (argc > 1) {
         int c = 0;
-        while (argv[1][c])
-        {
+        while (argv[1][c]) {
             char option = argv[1][c++];
-            switch (option)
-            {
-                case 'e':
-                    globals.e = true;
-                    break;
-                case 'r':
-                    globals.r = true;
-                    break;
-                default:
-                    fprintf(stderr, "Unrecognized option: '%c'\n", option);
-                    break;
+            switch (option) {
+            case 'e':
+                globals.e = true;
+                break;
+            case 'r':
+                globals.r = true;
+                break;
+            default:
+                fprintf(stderr, "Unrecognized option: '%c'\n", option);
+                break;
             }
         }
     }
@@ -83,11 +81,13 @@ int main(int argc, char **argv)
     if (globals.e)
         printf("velodrome:l%3d -> Creating graphics thread...\n", __LINE__);
     pthread_t graphics_pthread;
-    if (!globals.e)
-    {
+    if (!globals.e && globals.r) {
         printf("Starting graphical engine\n");
         pthread_create(&graphics_pthread, NULL, &debug_print_thread, velodrome);
         pthread_join(graphics_pthread, NULL);
     }
+
+    print_vel(velodrome);
+
     destroy_velodrome(&velodrome);
 }
