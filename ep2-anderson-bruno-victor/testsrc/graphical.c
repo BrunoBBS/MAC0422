@@ -1,6 +1,8 @@
 #include "rider.h"
 #include "velodrome.h"
 
+#include <time.h>
+
 #include <pthread.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -13,6 +15,7 @@ void* debug_print_thread(void* velodrome_ptr)
     while (1)
     {
         int i = 0;
+        sem_wait(&velodrome->velodrome_sem);
         while (i < velodrome->length)
         {
             for (int lane = 0; lane < 10; lane++)
@@ -29,7 +32,12 @@ void* debug_print_thread(void* velodrome_ptr)
             fprintf(stderr, "\n");
             i += wins.ws_col;
         }
-        sleep(1);
+        sem_post(&velodrome->velodrome_sem);
+
+        struct timespec sleep_time;
+        sleep_time.tv_sec = 0;
+        sleep_time.tv_nsec = (velodrome->round_time % 1000) * 1000000;
+        nanosleep(&sleep_time, NULL);
     }
 }
 
