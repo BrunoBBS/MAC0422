@@ -5,8 +5,8 @@
 
 typedef unsigned int uint;
 typedef unsigned char bool;
-#define true 't'
-#define false 'f'
+#define true 1
+#define false 0
 
 typedef struct Velodrome *Velodrome;
 typedef struct Rider *Rider;
