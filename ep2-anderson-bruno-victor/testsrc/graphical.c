@@ -42,7 +42,8 @@ int main()
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &wins);
 
     printf("Terminal of size: %d x %d\n", wins.ws_col, wins.ws_row);
-    globals.e = true;
+    globals.e = false;
+    globals.r = true;
 
     Velodrome velodrome = NULL;
 

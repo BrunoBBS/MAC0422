@@ -13,6 +13,7 @@ typedef struct Rider *Rider;
 
 struct
 {
+    bool r; // Real Time
     bool e; // Extra mode
     bool d; // Debug mode
 } globals;

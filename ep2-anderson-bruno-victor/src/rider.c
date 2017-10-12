@@ -1,6 +1,7 @@
 #include "rider.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <time.h>
 
 const int break_chance = 1;
 const int v90_chance = 20;
@@ -139,6 +140,13 @@ void* ride(void* args)
         /*while (vel->continue_flag[myself->id] == 0) {*/
         /*}*/
         /*vel->continue_flag[myself->id] = 0;*/
+        if (globals.r)
+        {
+            struct timespec sleep_time;
+            sleep_time.tv_sec = 0;
+            sleep_time.tv_nsec = (vel->round_time % 1000) * 1000000;
+            nanosleep(&sleep_time, NULL);
+        }
     }
 
     return NULL;
