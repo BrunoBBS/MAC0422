@@ -105,6 +105,9 @@ void *ride(void *args)
                 mark_placing(myself, myself->total_dist / vel->length);
             if (lap % 15 == 0 && will_break(myself))
             {
+                if (globals.e)
+                    printf("rider:l%3d -> Rider %d died!\n", __LINE__,
+                            myself->id);
                 // TODO die
                 lap = vel->lap_cnt;
                 myself->velodrome = NULL;
@@ -114,9 +117,9 @@ void *ride(void *args)
             }
         }
 
-        Rider front;
-        if (front = rider_in_front(myself))
-            sem_wait(&front->turn_done);
+        //Rider front;
+        //if (front = rider_in_front(myself))
+        //    sem_wait(&front->turn_done);
 
         // Checks if is exceeding max speed possible
         if (max_rider_speed(&vel, myself) < myself->speed)
@@ -150,6 +153,9 @@ void *ride(void *args)
         }
     }
 
+    if (globals.e)
+        printf("rider:l%3d -> Rider %d terminated\n", __LINE__, myself->id);
+
     return NULL;
 }
 
@@ -159,7 +165,7 @@ bool will_break(Rider rider)
     if (can_rider_break(&rider->velodrome))
     {
         int p = rand() % 100;
-        if (p > break_chance)
+        if (p < break_chance)
             return true;
     }
     return false;

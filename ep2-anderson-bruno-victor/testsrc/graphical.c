@@ -43,13 +43,16 @@ int main(int argc, char **argv)
 
     printf("Terminal of size: %d x %d\n", wins.ws_col, wins.ws_row);
 
-    globals.e = globals.d = globals.r = false;
+    globals.e = false;
+    globals.d = false;
+    globals.r = false;
+
     if (argc > 1)
     {
         int c = 0;
-        while (argv[0][c])
+        while (argv[1][c])
         {
-            char option = argv[0][c++];
+            char option = argv[1][c++];
             switch (option)
             {
                 case 'e':
@@ -74,6 +77,7 @@ int main(int argc, char **argv)
     pthread_t graphics_pthread;
     if (!globals.e)
     {
+        printf("Starting graphical engine\n");
         pthread_create(&graphics_pthread, NULL, &debug_print_thread, velodrome);
         pthread_join(graphics_pthread, NULL);
     }
