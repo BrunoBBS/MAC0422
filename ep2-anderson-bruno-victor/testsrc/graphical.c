@@ -33,7 +33,7 @@ void* debug_print_thread(void* velodrome_ptr)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
     uint vel_len = 150;
     uint rider_cnt = 15;
@@ -42,8 +42,28 @@ int main()
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &wins);
 
     printf("Terminal of size: %d x %d\n", wins.ws_col, wins.ws_row);
-    globals.e = false;
-    globals.r = true;
+
+    globals.e = globals.d = globals.r = false;
+    if (argc > 1)
+    {
+        int c = 0;
+        while (argv[0][c])
+        {
+            char option = argv[0][c++];
+            switch (option)
+            {
+                case 'e':
+                    globals.e = true;
+                    break;
+                case 'r':
+                    globals.r = true;
+                    break;
+                default:
+                    fprintf(stderr, "Unrecognized option: '%c'\n", option);
+                    break;
+            }
+        }
+    }
 
     Velodrome velodrome = NULL;
 
@@ -52,8 +72,10 @@ int main()
     if (globals.e)
         printf("velodrome:l%3d -> Creating graphics thread...\n", __LINE__);
     pthread_t graphics_pthread;
-    pthread_create(&graphics_pthread, NULL, &debug_print_thread, velodrome);
-
-    pthread_join(graphics_pthread, NULL);
+    if (!globals.e)
+    {
+        pthread_create(&graphics_pthread, NULL, &debug_print_thread, velodrome);
+        pthread_join(graphics_pthread, NULL);
+    }
     destroy_velodrome(&velodrome);
 }
