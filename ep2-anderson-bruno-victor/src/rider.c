@@ -117,9 +117,9 @@ void *ride(void *args)
             }
         }
 
-        //Rider front;
-        //if (front = rider_in_front(myself))
-        //    sem_wait(&front->turn_done);
+        Rider front;
+        if (front = rider_in_front(myself))
+            sem_wait(&front->turn_done);
 
         // Checks if is exceeding max speed possible
         if (max_rider_speed(&vel, myself) < myself->speed)
@@ -182,12 +182,12 @@ char change_lane(Rider rider)
     {
         // decides wich lane will change
         p = rand() % 100;
-        if (p < ch_lane_chance / 2)
+        if (p < ch_lane_chance / 2 && rider->lane > 0)
         {
             /*go left*/
             return 'l';
         }
-        else if (p > ch_lane_chance / 2 && p < ch_lane_chance)
+        else if (p > ch_lane_chance / 2 && p < ch_lane_chance && rider->lane < 9)
         {
             /*go right*/
             return 'r';
