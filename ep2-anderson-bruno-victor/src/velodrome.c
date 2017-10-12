@@ -45,6 +45,9 @@ void create_velodrome(Velodrome *velodrome_ptr,
         velodrome->riders[i].velodrome = velodrome;
         sem_init(&velodrome->riders[i].turn_done, 1, 1);
         velodrome->pista[start_meter + velodrome->length][start_lane] = i;
+        velodrome->riders[i].overtake = malloc(rider_cnt * sizeof(int));
+        for (int j = 0; j < rider_cnt; j++)
+            velodrome->riders[i].overtake[j] = 0;
     }
 
     if (globals.e)
@@ -179,4 +182,21 @@ void mark_placing(Rider rider, int lap)
 
     if (rider->velodrome->placings[lap / 10 - 1] < 0)
         rider->velodrome->placings[lap / 10 - 1]++;
+}
+
+void mark_overtake(Rider rider) {
+    int meter = get_pos(rider);
+    int dist;
+    for (int i = 0; i < 10; i++) {
+        dist = rider->velodrome->riders[rider->velodrome->pista[meter-1][rider->lane]].total_dist;
+        if (rider->total_dist > dist){
+            rider->overtake[i] += 1;
+            if (globals.e)
+                printf("rider:l%3d -> Rider %d overtaked Rider %d!\n", __LINE__, rider->id, 
+                    rider->velodrome->pista[meter-1][rider->lane]);
+            if ((rider->velodrome->riders[i]).overtake[rider->id] > 0)
+                (rider->velodrome->riders[i]).overtake[rider->id] -= 1;
+        }
+    }
+    return;
 }

@@ -102,11 +102,14 @@ void* ride(void* args)
             lap = myself->total_dist / vel->length;
             myself->speed = change_speed(myself, false);
             if (lap % 10 == 0)
-                // TODO score
                 mark_placing(myself, myself->total_dist / vel->length);
             if (lap % 15 == 0 && will_break(myself)) {
                 // TODO die
+                lap = vel->lap_cnt;
+                myself -> velodrome = NULL;
+                vel -> a_rider_cnt -= 1;
                 sem_post(&myself->turn_done);
+                continue;
             }
         }
 
@@ -119,7 +122,6 @@ void* ride(void* args)
             myself->speed = max_rider_speed(&vel, myself);
             myself->step = 0;
         }
-
         // go!!
         int steps_needed;
         switch (myself->speed) {
@@ -132,6 +134,7 @@ void* ride(void* args)
             else if (myself->step == steps_needed) {
                 step(change_lane(myself), myself, vel);
                 // TODO overtake count
+                mark_overtake(myself);
                 myself->step = 0;
             }
             break;
