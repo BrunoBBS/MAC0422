@@ -6,6 +6,7 @@
 #include "rider.h"
 #include "typedef.h"
 #include <semaphore.h>
+#include <stdlib.h>
 
 typedef struct Rider *Rider;
 
@@ -94,5 +95,11 @@ void mark_overtake(Rider rider);
 
 // Verify if the turn is a sprint
 bool is_sprint(Velodrome *velodrome_ptr, Rider rider);
+
+// Compare the score to qsort()
+int compare_scores(const void * a, const void * b);
+
+// Print infos how scores or positions
+void print_info(uint *id, Velodrome velodrome_ptr); 
 
 #endif

@@ -183,3 +183,24 @@ void mark_overtake(Rider rider)
     rider->score += points;
     return;
 }
+
+/* Use it how : void qsort(void *base, size_t nmemb, size_t size,
+                    int (*compar)(const void *, const void *));
+*/
+int compare_scores(const void * rider_a, const void * rider_b){
+    
+    Rider a = ((Rider)rider_a);
+    Rider b = ((Rider)rider_b);
+    if (a->score > b->score) return 1;
+    else if (a->score < b->score) return -1;
+    return 0;
+}
+
+void print_info(uint *id, Velodrome velodrome_ptr) {
+    printf("Classification lap %d : ", velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++) {
+        printf(" %d", id[i]);
+    }
+    printf("\n");
+    //But if the broked? 
+}

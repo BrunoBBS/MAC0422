@@ -107,8 +107,10 @@ void *ride(void *args)
             lap = myself->total_dist / vel->length;
             if (myself->total_dist > vel->length - 1)
             myself->speed = change_speed(myself);
-            if (lap % 10 == 0)
+            if (lap % 10 == 0) {
                 mark_placing(myself, myself->total_dist / vel->length);
+                //print status of run
+            }
             if (lap % 15 == 0 && will_break(myself))
             {
                 if (globals.e)
