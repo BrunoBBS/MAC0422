@@ -12,6 +12,22 @@ struct winsize wins;
 void print_vel(Velodrome velodrome)
 {
     sem_wait(&velodrome->velodrome_sem);
+    
+    int i = 0;
+    while (i < velodrome->lap_cnt) {
+        for (int rider = 0; rider < velodrome->rider_cnt; rider++) {
+            for (int lap = i;
+                 lap < i + wins.ws_col && lap < velodrome->lap_cnt;
+                 lap++) {
+                int value = velodrome->placings_v[lap][rider];
+                fprintf(stderr, "%c", value < 0 ? '*' : 'A' + value);
+            }
+            fprintf(stderr, "\n");
+        }
+        fprintf(stderr, "\n");
+        i += wins.ws_col;
+    }
+    
     for (int j = 0; j < 61; j++)
         printf("* ");
     printf("\n");
@@ -23,15 +39,16 @@ void print_vel(Velodrome velodrome)
                 rider->speed, rider->score,
                 rider->total_dist);
         printf("[ ");
-        for (int i = 0; i < velodrome->rider_cnt; i++)
-            printf("%3d%s", rider->overtake[i],
-                    i == velodrome->rider_cnt - 1 ? " ] *\n" : ", ");
+        for (int k = 0; k < velodrome->rider_cnt; k++)
+            printf("%3d%s", rider->overtake[k],
+                    k == velodrome->rider_cnt - 1 ? " ] *\n" : ", ");
     }
     for (int j = 0; j < 61; j++)
         printf("* ");
     printf("\n");
 
-    int i = 0;
+    i = 0;
+
     while (i < velodrome->length) {
         for (int lane = 0; lane < 10; lane++) {
             for (int meter = i;

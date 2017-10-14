@@ -111,10 +111,10 @@ void* ride(void* args)
         if (get_pos(myself) == 0 && myself->step_time == 0) {
             lap = myself->total_dist / vel->length;
             if (myself->total_dist > vel->length - 1)
-                myself->speed = change_speed(myself);
-            if (lap % 10 == 0)
-                mark_placing(myself, myself->total_dist / vel->length);
-            if (lap % 15 == 0 && will_break(myself)) {
+            myself->speed = change_speed(myself);
+            mark_lap(myself, myself->total_dist / vel->length);
+            if (lap % 15 == 0 && will_break(myself))
+            {
                 if (globals.e)
                     printf(
                         "rider:l%3d -> Rider %d died!\n", __LINE__, myself->id);
