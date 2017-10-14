@@ -16,12 +16,18 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->length = length;
     velodrome->rider_cnt = rider_cnt;
     velodrome->lap_cnt = lap_cnt;
-    velodrome->arrive = malloc(rider_cnt * sizeof(int));
-    velodrome->continue_flag = malloc(rider_cnt * sizeof(int));
+    velodrome->arrive = malloc(rider_cnt * sizeof(sem_t));
+    velodrome->continue_flag = malloc(rider_cnt * sizeof(sem_t));
     velodrome->round_time = 60;
     velodrome->a_rider_cnt = rider_cnt;
     sem_init(&velodrome->velodrome_sem, 0, 1);
     sem_init(&velodrome->rand_sem, 0, 1);
+
+    for (int i = 0; i< rider_cnt;i++)
+    {
+        sem_init(&velodrome->arrive[i], 0, 0);
+        sem_init(&velodrome->continue_flag[i], 0, 0);
+    }
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);
@@ -47,7 +53,6 @@ void create_velodrome(Velodrome *velodrome_ptr,
         velodrome->riders[i].lane = start_lane;
         velodrome->riders[i].total_dist = start_meter;
         velodrome->riders[i].velodrome = velodrome;
-        sem_init(&velodrome->riders[i].turn_done, 1, 1);
         velodrome->pista[start_meter + velodrome->length][start_lane] = i;
         velodrome->riders[i].overtake = malloc(rider_cnt * sizeof(int));
         for (int j = 0; j < rider_cnt; j++)
@@ -72,7 +77,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
                        &velodrome->riders[i]);
     }
     // Start coordinator thread
-    pthread_create(&velodrome->coordinator_t, 0, &coordinator, &velodrome);
+    pthread_create(&velodrome->coordinator_t, 0, &coordinator, velodrome);
     pthread_barrier_wait(&velodrome->start_barrier);
 
     if (globals.e)

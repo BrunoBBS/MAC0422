@@ -56,10 +56,10 @@ struct Velodrome
     int round_time;
 
     // Array of arrive at barrier flags
-    int *arrive;
+    sem_t *arrive;
 
     // Flag to pass barrier
-    int *continue_flag;
+    sem_t *continue_flag;
 
     // Remaining riders
     int *placings;
