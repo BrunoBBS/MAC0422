@@ -1,3 +1,13 @@
+# -----------------------------------------------
+#EP2 - MAC0422 - Sistemas Operacionais 2s2017
+#
+#Authors:
+#
+#Anderson Andrei da Silva , 8944025
+#Bruno Boaventura Scholl, 9793586
+#Seiji
+#-------------------------------------------------
+
 CC:=gcc
 CFLAGS=-Wall -std=gnu11
 DEBUGF:=-g
