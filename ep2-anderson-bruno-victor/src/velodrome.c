@@ -27,15 +27,26 @@ void create_velodrome(Velodrome *velodrome_ptr,
         printf("velodrome:l%3d -> Allocated velodrome\n", __LINE__);
 
     // Allocates the track
-    velodrome->pista = malloc(length * sizeof(uint *));
+    velodrome->pista = malloc(length * sizeof(int *));
     for (int i = 0; i < length; i++)
-        velodrome->pista[i] = malloc(10 * sizeof(uint));
+        velodrome->pista[i] = malloc(10 * sizeof(int));
     for (int i = 0; i < length; i++)
         for (int j = 0; j < 10; j++)
             velodrome->pista[i][j] = -1;
 
     if (globals.e)
         printf("velodrome:l%3d -> Allocated track matrix\n", __LINE__);
+
+    // Allocates the placings stack
+    velodrome->placings_v = malloc(velodrome->lap_cnt * sizeof(int *));
+    velodrome->s_indexes = malloc(velodrome->lap_cnt * sizeof(int));
+    for (int i = 0; i < velodrome->lap_cnt; i++)
+        velodrome->placings_v[i] = malloc(velodrome->rider_cnt * sizeof(int));
+    for (int i = 0; i < velodrome->lap_cnt; i++)
+        for (int j = 0; j < velodrome->rider_cnt; j++)
+            velodrome->placings_v[i][j] = -1;
+    for (int i = 0; i < velodrome->lap_cnt; i++)
+        velodrome->s_indexes[i] = 0;
 
     // Create riders
     velodrome->riders = malloc(rider_cnt * sizeof(struct Rider));
@@ -101,6 +112,17 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     // Free placings
     free(velodrome->placings);
     velodrome->placings = NULL;
+    
+    // Frees the placings stack
+    for (int i = 0; i < velodrome->lap_cnt; i++)
+    {
+        free(velodrome->placings_v[i]);
+        velodrome->placings_v[i] = NULL;
+    }
+    free(velodrome->s_indexes);
+    velodrome->s_indexes = NULL;
+    free(velodrome->placings_v);
+    velodrome->placings_v = NULL;
 
     // Free velodrome struct
     free(velodrome);
@@ -138,7 +160,7 @@ bool can_rider_break(
     return (*velodrome_ptr)->a_rider_cnt > 5;
 }
 
-void mark_placing(Rider rider, int lap)
+void mark_sprint(Rider rider, int lap)
 {
     if (lap <= 0 || lap >= rider->velodrome->lap_cnt || lap % 10)
         return;
@@ -153,6 +175,23 @@ void mark_placing(Rider rider, int lap)
 
     if (rider->velodrome->placings[lap / 10 - 1] < 0)
         rider->velodrome->placings[lap / 10 - 1]++;
+}
+
+// Mark lap
+void mark_lap(Rider rider, int lap)
+{
+    if (lap <= 0 || lap >= rider->velodrome->lap_cnt)
+        return;
+
+    if (!(lap % 10))
+        mark_sprint(rider, lap);
+
+    Velodrome velodrome = rider->velodrome;
+
+    velodrome->placings_v[lap][velodrome->s_indexes[lap]++] = rider->id;
+
+    if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt)
+        print_info(velodrome->placings_v[lap], rider->velodrome);
 }
 
 void mark_overtake(Rider rider)
@@ -198,7 +237,7 @@ int compare_scores(const void * rider_a, const void * rider_b){
 
 void print_info(uint *id, Velodrome velodrome_ptr) {
     printf("Classification lap %d : ", velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
-    for (int i = 0; i < velodrome_ptr->rider_cnt; i++) {
+    for (int i = 0; i < velodrome_ptr->a_rider_cnt; i++) {
         printf(" %d", id[i]);
     }
     printf("\n");

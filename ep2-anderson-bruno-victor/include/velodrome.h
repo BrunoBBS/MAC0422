@@ -65,6 +65,10 @@ struct Velodrome
     // Remaining riders
     int *placings;
 
+    // Stack of placings by round
+    int *s_indexes;
+    uint **placings_v;
+
     // Random generator semaphor
     sem_t rand_sem;
 };
@@ -87,11 +91,14 @@ Rider rider_in_front(Rider behind);
 // If there are more than 5 riders
 bool can_rider_break(Velodrome *velodrome_ptr);
 
-// Mark placings
-void mark_placing(Rider rider, int lap);
+// Mark sprints
+void mark_sprint(Rider rider, int lap);
 
-// Mark placings
+    // Mark overtakes
 void mark_overtake(Rider rider);
+
+// Mark lap
+void mark_lap(Rider rider, int lap);
 
 // Verify if the turn is a sprint
 bool is_sprint(Velodrome *velodrome_ptr, Rider rider);
