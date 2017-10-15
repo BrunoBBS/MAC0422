@@ -205,7 +205,6 @@ void* ride(void* args)
                 myself->broken = true;
                 lap = vel->lap_cnt;
                 myself->velodrome = NULL;
-                vel->a_rider_cnt -= 1;
                 continue;
             }
         }
@@ -237,6 +236,8 @@ void* ride(void* args)
             nanosleep(&sleep_time, NULL);
         }
     }
+    sem_post(&vel->arrive[myself->id]);
+    vel->a_rider_cnt -= 1;
 
     if (globals.e)
         printf("rider:l%3d -> Rider %d terminated\n", __LINE__, myself->id);
