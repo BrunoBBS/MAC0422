@@ -53,7 +53,6 @@ struct Rider
     int lane;
     int step_time;
     uint turn;
-    sem_t turn_done;
     int *overtake;
 };
 
