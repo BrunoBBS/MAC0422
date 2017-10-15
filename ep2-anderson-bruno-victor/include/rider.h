@@ -35,7 +35,7 @@ void complete_turn(
     Rider rider);
 bool can_rider_break(
     Velodrome *velodrome_ptr);
-void mark_overtake(Rider rider);
+void mark_overtake(Velodrome velodrome);
 
 struct Rider
 {

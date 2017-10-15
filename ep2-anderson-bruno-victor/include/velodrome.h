@@ -108,7 +108,7 @@ bool can_rider_break(Velodrome *velodrome_ptr);
 void mark_sprint(Rider rider, int lap);
 
     // Mark overtakes
-void mark_overtake(Rider rider);
+void mark_overtake(Velodrome velodrome);
 
 // Mark lap
 void mark_lap(Rider rider, int lap);

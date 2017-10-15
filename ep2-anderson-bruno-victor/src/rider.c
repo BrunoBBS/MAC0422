@@ -60,8 +60,6 @@ void step(char dir, Rider rider, Velodrome vel)
     sem_post(&vel->velodrome_sem);
     rider->total_dist++;
     rider->lane = new_lane;
-    if (globals.e)
-        printf("rider:l%3d -> Rider %d moved\n", __LINE__, rider->id);
 }
 
 // Main function for barrier coordinator
@@ -71,17 +69,13 @@ void* coordinator(void* args)
     if (globals.e)
         printf("rider:l%3d -> Coordinator started!\n", __LINE__);
     while (1) {
-        if (globals.e)
-            printf("rider:l%3d -> Coordinator running\n", __LINE__);
         for (int i = 0; i < vel->rider_cnt; i++) {
             if (!vel->riders[i].broken) {
-                if (globals.e)
-                    printf(
-                        "rider:l%3d -> Coordinator waiting rider %d arrive\n",
-                        __LINE__, i);
                 sem_wait(&vel->arrive[i]);
             }
         }
+        vel->riders[0].speed = V90KM;
+        mark_overtake(vel);
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken)
                 sem_post(&vel->continue_flag[j]);
@@ -126,6 +120,9 @@ void* ride(void* args)
     while (lap < vel->lap_cnt) {
         if (get_pos(myself) == 0 && myself->step_time == 0) {
             lap = myself->total_dist / vel->length;
+                if (globals.e)
+                    printf(
+                        "rider:l%3d -> Rider %d is at lap %d \n", __LINE__, myself->id, lap);
             if (myself->total_dist > vel->length - 1)
                 myself->speed = change_speed(myself);
             mark_lap(myself, myself->total_dist / vel->length);
@@ -155,22 +152,15 @@ void* ride(void* args)
             char dir = change_lane(myself);
             if (dir != 's') {
                 step(dir, myself, vel);
-                mark_overtake(myself);
                 myself->step_time = 0;
             }
         }
 
-        if (globals.e)
-            printf(
-                "rider:l%3d -> Rider %d is at barrier\n", __LINE__, myself->id);
 
         // Notify Global Barrier
         sem_post(&vel->arrive[myself->id]);
         sem_wait(&vel->continue_flag[myself->id]);
 
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d passed barrier\n", __LINE__,
-                myself->id);
 
         if (globals.r) {
             struct timespec sleep_time;
@@ -233,8 +223,6 @@ char change_lane(Rider rider)
         sleep_time.tv_sec = 0;
         sleep_time.tv_nsec = 10000000;
         nanosleep(&sleep_time, NULL);
-        if (globals.e)
-            printf("rider:l%3d -> Rider %d cant move\n", __LINE__, rider->id);
     }
     return 's';
 }
