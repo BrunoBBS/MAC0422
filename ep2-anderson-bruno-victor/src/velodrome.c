@@ -27,6 +27,7 @@ void create_velodrome(
     velodrome->continue_flag = malloc(rider_cnt * sizeof(sem_t));
     velodrome->round_time = 60;
     velodrome->a_rider_cnt = rider_cnt;
+    velodrome->a_score = malloc(rider_cnt * sizeof(uint));
     sem_init(&velodrome->velodrome_sem, 0, 1);
     sem_init(&velodrome->rand_sem, 0, 1);
     sem_init(&velodrome->score_sem, 0, 0);
@@ -60,6 +61,12 @@ void create_velodrome(
             velodrome->placings_v[i][j] = -1;
     for (int i = 0; i < velodrome->lap_cnt; i++)
         velodrome->s_indexes[i] = 0;
+
+/*    for (int i = 0; i < velodrome->rider_cnt; i++){
+        velodrome->a_score[i] = 0;
+    }*/
+
+    velodrome->a_score = malloc(rider_cnt * sizeof(struct Rider));
 
     // Create riders
     velodrome->riders = malloc(rider_cnt * sizeof(struct Rider));
@@ -136,6 +143,9 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
     free(velodrome->placings_v);
     velodrome->placings_v = NULL;
 
+    free(velodrome->a_score);
+    velodrome->a_score = NULL;
+
     // Destroy semaphores
     for (int i = 0; i < velodrome->rider_cnt; i++) {
         sem_destroy(&velodrome->arrive[i]);
@@ -183,7 +193,7 @@ void mark_sprint(Rider rider, int lap)
 {
     if (lap <= 0 || lap >= rider->velodrome->lap_cnt || lap % 10)
         return;
-
+    
     int points = sprint_points[rider->velodrome->placings[lap / 10 - 1]--];
 
     if (globals.e && points)
@@ -202,16 +212,25 @@ void mark_lap(Rider rider, int lap)
     if (lap <= 0 || lap >= rider->velodrome->lap_cnt)
         return;
 
-    if (!(lap % 10))
+    Velodrome velodrome = rider->velodrome;
+
+    if (!(lap % 10) && lap > 0) {
         mark_sprint(rider, lap);
+    }
 
     sem_post(&rider->velodrome->score_sem);
-    Velodrome velodrome = rider->velodrome;
     velodrome->placings_v[lap][velodrome->s_indexes[lap]++] = rider->id;
     sem_wait(&rider->velodrome->score_sem);
 
-    if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt)
+    if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt){
         print_info(velodrome->placings_v[lap], rider->velodrome, lap);
+        if (!(lap % 10) && lap > 0) {
+            for (int i = 0; i < velodrome->rider_cnt; i++) {
+                velodrome->a_score[i] = velodrome->riders[i];
+            }
+            print_scores(velodrome->a_score, rider->velodrome, lap);
+        }
+    }
 }
 
 void mark_overtake(Velodrome velodrome)
@@ -253,9 +272,9 @@ int compare_scores(const void* rider_a, const void* rider_b)
     Rider a = ((Rider)rider_a);
     Rider b = ((Rider)rider_b);
     if (a->score > b->score)
-        return 1;
-    else if (a->score < b->score)
         return -1;
+    else if (a->score < b->score)
+        return 1;
     return 0;
 }
 
@@ -266,4 +285,21 @@ void print_info(uint *id, Velodrome velodrome_ptr, int lap) {
     }
     printf("\n");
     // But if the broked?
+}
+
+
+void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap) {
+    qsort(scores, velodrome_ptr->rider_cnt, sizeof(struct Rider), compare_scores);
+    printf("---------------------------------\n ", lap);
+    printf("Atention! Total scores lap %d \n", lap);
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        printf(" %2d", scores[i].id);
+    }
+    printf("\n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        printf(" %2d", scores[i].score);
+    }
+    printf("\n---------------------------------\n");
+    // But, if the broked?
+
 }
