@@ -41,23 +41,86 @@ int change_speed(Rider rider)
 void step(char dir, Rider rider, Velodrome vel)
 {
     int lane = rider->lane;
-    int new_lane = lane;
     int meter = get_pos(rider);
-    int new_meter = (get_pos(rider) + 1) % vel->length;
+    int new_meter = (meter + 1) % vel->length;
     // Exit track if broken
-    if (dir == 'b') {
+    char move_p[3];
+    
+    switch (dir)
+    {
+        case 'r':
+            move_p[0] = 'r';
+            move_p[1] = 'l';
+            move_p[2] = 'f';
+            break;
+        case 'l':
+            move_p[0] = 'l';
+            move_p[1] = 'r';
+            move_p[2] = 'f';
+            break;
+        case 'f':
+            move_p[0] = 'f';
+            move_p[1] = 'r';
+            move_p[2] = 'l';
+            break;
+    }
+    char final_dir = '\0';
+
+    sem_wait(&vel->velodrome_sem);
+
+    int new_lane = lane;
+    
+    for (int i = 0; i < 3 && !final_dir; i++)
+    {
+        char move_to = move_p[i];
+        int rider_id = -1;
+        
+
+        if (move_to == 'r' && lane + 1 == 10)
+            continue;
+        if (move_to == 'l' && lane - 1 == -1)
+            continue;
+
+        if (move_to == 'r')
+            new_lane++;
+
+        if (move_to == 'l')
+            new_lane--;
+
+        if ((rider_id = vel->pista[new_meter][new_lane]) == -1)
+            final_dir = move_to;
+
+        if (rider_id >= 0)
+        {
+            int res;
+            sem_getvalue(&vel->arrive[rider_id], &res);
+            if (!res)
+            {
+                i--;
+                sem_post(&vel->velodrome_sem);
+                sem_wait(&vel->arrive[rider_id]);
+                sem_post(&vel->arrive[rider_id]);
+                sem_wait(&vel->velodrome_sem);
+            }
+        }
+    }
+
+    if (!final_dir)
+    {
         new_meter = meter;
         new_lane = lane;
         // Compensate dist added after step
         rider->total_dist--;
-    } else if (dir == 'r')
+    }
+    else if (dir == 'r')
         new_lane = lane + 1;
     else if (dir == 'l')
         new_lane = lane - 1;
-    sem_wait(&vel->velodrome_sem);
-    vel->pista[new_meter][new_lane] = rider->id;
+
     vel->pista[meter][lane] = -1;
+    vel->pista[new_meter][new_lane] = rider->id;
     sem_post(&vel->velodrome_sem);
+
     rider->total_dist++;
     rider->lane = new_lane;
 }
@@ -72,10 +135,15 @@ void* coordinator(void* args)
         for (int i = 0; i < vel->rider_cnt; i++) {
             if (!vel->riders[i].broken && !vel->riders[i].finished) {
                 sem_wait(&vel->arrive[i]);
+                sem_post(&vel->arrive[i]);
             }
         }
     if (globals.e)
         printf("rider:l%3d -> rider count %d\n", __LINE__, vel->a_rider_cnt);
+        for (int i = 0; i < vel->rider_cnt; i++) {
+            if (!vel->riders[i].broken)
+                sem_wait(&vel->arrive[i]);
+        }
         mark_overtake(vel);
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken)
@@ -192,39 +260,17 @@ bool will_break(Rider rider)
     return false;
 }
 
-// Calculates if will change and wich adjacent lane to change
+// Calculates if will change and which adjacent lane to change
 char change_lane(Rider rider)
 {
-    for (int i = 0; i < 5; i++) {
-        sem_wait(&rider->velodrome->rand_sem);
-        int p = rand() % 100;
-        sem_post(&rider->velodrome->rand_sem);
-        Velodrome vel = rider->velodrome;
-        int pos = (get_pos(rider) + 1) % vel->length;
-        // decides if will change lanes
-        if (p < ch_lane_chance) {
-            // decides wich lane will change
-            p = rand() % 100;
-            if (p < ch_lane_chance / 2 && rider->lane > 0
-                && vel->pista[pos][rider->lane - 1] == -1) {
-                /*go left*/
-                return 'l';
-            } else if (p > ch_lane_chance / 2 && p < ch_lane_chance
-                && rider->lane < 9 && vel->pista[pos][rider->lane + 1] == -1
-                && vel->pista[(pos + vel->length - 1) % vel->length]
-                             [rider->lane + 1]
-                    == -1) {
-                /*go right*/
-                return 'r';
-            }
-        } else if (vel->pista[pos][rider->lane] == -1) {
-            // go just forward
-            return 'f';
-        }
-        struct timespec sleep_time;
-        sleep_time.tv_sec = 0;
-        sleep_time.tv_nsec = 10000000;
-        nanosleep(&sleep_time, NULL);
-    }
-    return 's';
+    sem_wait(&rider->velodrome->rand_sem);
+    bool will_change = rand() % 100 < ch_lane_chance; // Will be changing lanes?
+    char p_lane = rand() % 100 < 50 ? 'r' : 'l';   // Which side if it will
+    sem_post(&rider->velodrome->rand_sem);
+
+    if (will_change && p_lane == 'l' && rider->lane > 0)
+        return 'l';
+    else if (will_change && rider->lane < 9)
+        return 'r';
+    return 'f';
 }
