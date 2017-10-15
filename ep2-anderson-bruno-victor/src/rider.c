@@ -74,7 +74,6 @@ void* coordinator(void* args)
                 sem_wait(&vel->arrive[i]);
             }
         }
-        vel->riders[0].speed = V90KM;
         mark_overtake(vel);
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken)
