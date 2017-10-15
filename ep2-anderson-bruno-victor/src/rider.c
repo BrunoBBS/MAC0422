@@ -126,7 +126,9 @@ void* ride(void* args)
                 myself->speed = change_speed(myself);
             mark_lap(myself, myself->total_dist / vel->length);
             if (lap > 10 && lap % 15 == 0 && will_break(myself)) {
-                // printf("Atention! -> Rider %d crashed!\n", myself->id);
+                printf("******************************\n");
+                printf("Atention! -> Rider %d crashed!\n", myself->id);
+                printf("******************************\n");
                 if (globals.e)
                     printf(
                         "rider:l%3d -> Rider %d died!\n", __LINE__, myself->id);
@@ -137,7 +139,6 @@ void* ride(void* args)
                 break;
             }
         }
-
         // Checks if is exceeding max speed possible
         int curr_spd = myself->speed;
         if (max_rider_speed(&vel, myself) > myself->speed)
@@ -156,7 +157,6 @@ void* ride(void* args)
 
         // Notify Global Barrier
         sem_post(&vel->arrive[myself->id]);
-        // mark_lap(myself, lap);
         sem_wait(&vel->continue_flag[myself->id]);
 
         if (globals.r) {

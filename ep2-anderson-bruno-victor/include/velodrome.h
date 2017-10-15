@@ -84,6 +84,8 @@ struct Velodrome
 
     // Scores semaphore
     sem_t score_sem;
+
+    struct Rider *a_score;
 };
 
 typedef struct Velodrome *Velodrome;
@@ -121,5 +123,7 @@ int compare_scores(const void * a, const void * b);
 
 // Print infos how scores or positions
 void print_info(uint *id, Velodrome velodrome_ptr, int lap); 
+
+void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap);
 
 #endif
