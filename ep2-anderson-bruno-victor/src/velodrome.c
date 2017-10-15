@@ -241,8 +241,6 @@ void mark_overtake(Velodrome velodrome)
                 points = 0;
         }
         a.score += points;
-        if (points == 20)
-            printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n" );
     }
 }
 
