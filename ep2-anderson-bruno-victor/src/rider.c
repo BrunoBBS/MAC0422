@@ -126,6 +126,7 @@ void* ride(void* args)
                 myself->speed = change_speed(myself);
             mark_lap(myself, myself->total_dist / vel->length);
             if (lap > 10 && lap % 15 == 0 && will_break(myself)) {
+                //printf("Atention! -> Rider %d crashed!\n", myself->id);
                 if (globals.e)
                     printf(
                         "rider:l%3d -> Rider %d died!\n", __LINE__, myself->id);
@@ -155,9 +156,9 @@ void* ride(void* args)
             }
         }
 
-
         // Notify Global Barrier
         sem_post(&vel->arrive[myself->id]);
+        //mark_lap(myself, lap);
         sem_wait(&vel->continue_flag[myself->id]);
 
 
