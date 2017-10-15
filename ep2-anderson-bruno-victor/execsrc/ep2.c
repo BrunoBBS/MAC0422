@@ -16,6 +16,7 @@ int main(int argc, char** argv)
 {
     if (argc < 4) {
         printf("Usage: ep2 d n v\n");
+        exit(0);
     }
     uint vel_len = atoi(argv[1]);
     uint rider_cnt = atoi(argv[2]);
