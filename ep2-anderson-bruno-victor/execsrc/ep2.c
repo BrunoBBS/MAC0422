@@ -20,19 +20,26 @@ int main(int argc, char** argv)
     uint vel_len = atoi(argv[1]);
     uint rider_cnt = atoi(argv[2]);
     uint lap_cnt = atoi(argv[3]);
-    if (argc == 5 && argv[4][0] == 'd')
-        globals.d = true;
+
+    globals.e = false;
     globals.d = false;
+    globals.r = false;
+
+    if (argc == 5)
+        if (argv[4][0] == 'd')
+            globals.d = true;
+        else if (argv[4][0] == 'e')
+            globals.e = true;
+
     srand(time(0));
     Velodrome velodrome = NULL;
 
     create_velodrome(&velodrome, vel_len, rider_cnt, lap_cnt);
-    while(velodrome->a_rider_cnt > 0)
-    {
-        for (int i =0; i<velodrome->rider_cnt;i++)
-        {
+
+    while (velodrome->a_rider_cnt > 0) {
+        for (int i = 0; i < velodrome->rider_cnt; i++) {
             if (velodrome->riders[i].broken)
-                pthread_join(velodrome->riders[i].rider_t,NULL);
+                pthread_join(velodrome->riders[i].rider_t, NULL);
         }
     }
 
