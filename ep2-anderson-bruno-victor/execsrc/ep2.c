@@ -8,16 +8,33 @@ Bruno Boaventura Scholl, 9793586
 Victor Seiji Hariki, 9793694
 ------------------------------------------------- */
 
-#include <stdio.h>
 #include "rider.h"
+#include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    if (argc < 1)
-    {
-        printf("Usage: ep2 d n v");
+    if (argc < 4) {
+        printf("Usage: ep2 d n v\n");
     }
-    srand(123123123);
+    uint vel_len = atoi(argv[1]);
+    uint rider_cnt = atoi(argv[2]);
+    uint lap_cnt = atoi(argv[3]);
+    if (argc == 5 && argv[4][0] == 'd')
+        globals.d = true;
+    globals.d = false;
+    srand(time(0));
+    Velodrome velodrome = NULL;
 
+    create_velodrome(&velodrome, vel_len, rider_cnt, lap_cnt);
+    while(velodrome->a_rider_cnt > 0)
+    {
+        for (int i =0; i<velodrome->rider_cnt;i++)
+        {
+            if (velodrome->riders[i].broken)
+                pthread_join(velodrome->riders[i].rider_t,NULL);
+        }
+    }
+
+    destroy_velodrome(&velodrome);
 }

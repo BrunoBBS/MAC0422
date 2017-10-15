@@ -1,0 +1,8 @@
+Para compilar o binário e movê-lo para o diretório atual (Diretório em que esse arquivo se encontra), basta usar os dois comandos:
+
+$ make
+$ make move
+
+Para executar a shell basta usar:
+
+$ ./ep2 <args>

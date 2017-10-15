@@ -108,7 +108,8 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
 
     void* ret;
     for (int i = 0; i < velodrome->rider_cnt; i++)
-        pthread_join(velodrome->riders[i].rider_t, &ret);
+        if (!velodrome->riders[i].broken)
+            pthread_join(velodrome->riders[i].rider_t, &ret);
 
     // Join coordinator
     pthread_join(velodrome->coordinator_t, &ret);
