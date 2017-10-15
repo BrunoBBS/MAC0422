@@ -32,6 +32,7 @@ void create_velodrome(Velodrome *velodrome_ptr,
     velodrome->a_rider_cnt = rider_cnt;
     sem_init(&velodrome->velodrome_sem, 0, 1);
     sem_init(&velodrome->rand_sem, 0, 1);
+    sem_init(&velodrome->score_sem, 0, 0);
 
     for (int i = 0; i< rider_cnt;i++)
     {
@@ -139,9 +140,20 @@ void destroy_velodrome(Velodrome *velodrome_ptr)
     free(velodrome->placings_v);
     velodrome->placings_v = NULL;
 
+    // Destroy semaphores
+    for (int i = 0; i < velodrome->rider_cnt; i++) {
+        sem_destroy(&velodrome->arrive[i]);
+        sem_destroy(&velodrome->continue_flag[i]);
+    }
+    sem_destroy(&velodrome->velodrome_sem);
+    sem_destroy(&velodrome->rand_sem);
+    sem_destroy(&velodrome->score_sem);
+
     // Free velodrome struct
     free(velodrome);
     *velodrome_ptr = NULL;
+
+
 }
 
 int max_rider_speed(Velodrome *velodrome_ptr, Rider rider)
@@ -201,9 +213,10 @@ void mark_lap(Rider rider, int lap)
     if (!(lap % 10))
         mark_sprint(rider, lap);
 
+    sem_post(&rider->velodrome->score_sem);
     Velodrome velodrome = rider->velodrome;
-
     velodrome->placings_v[lap][velodrome->s_indexes[lap]++] = rider->id;
+    sem_wait(&rider->velodrome->score_sem);
 
     if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt)
         print_info(velodrome->placings_v[lap], rider->velodrome);
