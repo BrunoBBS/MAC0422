@@ -74,6 +74,8 @@ void* coordinator(void* args)
                 sem_wait(&vel->arrive[i]);
             }
         }
+    if (globals.e)
+        printf("rider:l%3d -> rider count %d\n", __LINE__, vel->a_rider_cnt);
         mark_overtake(vel);
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken)
@@ -135,6 +137,7 @@ void* ride(void* args)
                 // TODO die
                 step('b', myself, vel);
                 myself->broken = true;
+                sem_post(&vel->arrive[myself->id]);
                 vel->a_rider_cnt -= 1;
                 break;
             }
