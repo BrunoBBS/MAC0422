@@ -81,6 +81,9 @@ struct Velodrome
 
     // Random generator semaphor
     sem_t rand_sem;
+
+    // Scores semaphore
+    sem_t score_sem;
 };
 
 typedef struct Velodrome *Velodrome;
