@@ -74,6 +74,7 @@ void create_velodrome(
         velodrome->riders[i].overtake = malloc(rider_cnt * sizeof(int));
         for (int j = 0; j < rider_cnt; j++)
             velodrome->riders[i].overtake[j] = 0;
+        velodrome->riders[i].finished = false;
     }
 
     if (globals.e)
@@ -210,7 +211,23 @@ void mark_lap(Rider rider, int lap)
     velodrome->placings_v[lap][velodrome->s_indexes[lap]++] = rider->id;
     sem_wait(&rider->velodrome->score_sem);
 
-    if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt)
+    bool someone = false;
+    for(int i = 0; i < velodrome->rider_cnt;i++)
+    {
+        struct Rider rider2 = velodrome->riders[i];
+        int lap2 = rider2.total_dist/rider2.velodrome->length;
+        int lap = rider->total_dist/rider->velodrome->length;
+        if(!rider2.broken && !rider2.finished)
+        {
+            if (lap2 < lap)
+            {
+                someone = true;
+                break;
+            }
+        }
+    }
+
+    if (velodrome->s_indexes[lap] >= velodrome->a_rider_cnt && !someone)
         print_info(velodrome->placings_v[lap], rider->velodrome, lap);
 }
 

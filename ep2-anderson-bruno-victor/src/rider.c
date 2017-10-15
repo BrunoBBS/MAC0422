@@ -68,9 +68,9 @@ void* coordinator(void* args)
     Velodrome vel = (Velodrome)args;
     if (globals.e)
         printf("rider:l%3d -> Coordinator started!\n", __LINE__);
-    while (1) {
+    while (vel->a_rider_cnt > 0) {
         for (int i = 0; i < vel->rider_cnt; i++) {
-            if (!vel->riders[i].broken) {
+            if (!vel->riders[i].broken && !vel->riders[i].finished) {
                 sem_wait(&vel->arrive[i]);
             }
         }
@@ -119,24 +119,22 @@ void* ride(void* args)
     while (lap < vel->lap_cnt) {
         if (get_pos(myself) == 0 && myself->step_time == 0) {
             lap = myself->total_dist / vel->length;
-                if (globals.e)
-                    printf(
-                        "rider:l%3d -> Rider %d is at lap %d \n", __LINE__, myself->id, lap);
+            if (globals.e)
+                printf("rider:l%3d -> Rider %d is at lap %d \n", __LINE__,
+                    myself->id, lap);
             if (myself->total_dist > vel->length - 1)
                 myself->speed = change_speed(myself);
             mark_lap(myself, myself->total_dist / vel->length);
             if (lap > 10 && lap % 15 == 0 && will_break(myself)) {
-                //printf("Atention! -> Rider %d crashed!\n", myself->id);
+                // printf("Atention! -> Rider %d crashed!\n", myself->id);
                 if (globals.e)
                     printf(
                         "rider:l%3d -> Rider %d died!\n", __LINE__, myself->id);
                 // TODO die
                 step('b', myself, vel);
                 myself->broken = true;
-                lap = vel->lap_cnt;
-                myself->velodrome = NULL;
                 vel->a_rider_cnt -= 1;
-                continue;
+                break;
             }
         }
 
@@ -158,9 +156,8 @@ void* ride(void* args)
 
         // Notify Global Barrier
         sem_post(&vel->arrive[myself->id]);
-        //mark_lap(myself, lap);
+        // mark_lap(myself, lap);
         sem_wait(&vel->continue_flag[myself->id]);
-
 
         if (globals.r) {
             struct timespec sleep_time;
@@ -170,7 +167,9 @@ void* ride(void* args)
             nanosleep(&sleep_time, NULL);
         }
     }
-
+    myself->finished = true;
+    sem_post(&vel->arrive[myself->id]);
+    vel->a_rider_cnt--;
     if (globals.e)
         printf("rider:l%3d -> Rider %d terminated\n", __LINE__, myself->id);
 

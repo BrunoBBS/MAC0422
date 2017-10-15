@@ -47,6 +47,7 @@ struct Rider
     // Set by rider
     int speed;
     bool broken;
+    bool finished;
     int score;
     // Absolute position
     int total_dist;

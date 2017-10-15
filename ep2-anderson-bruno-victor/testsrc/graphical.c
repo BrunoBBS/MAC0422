@@ -89,9 +89,9 @@ void* debug_print_thread(void* velodrome_ptr)
 
 int main(int argc, char** argv)
 {
-    uint vel_len = 150;
-    uint rider_cnt = 15;
-    uint lap_cnt = 160;
+    uint vel_len = 10;
+    uint rider_cnt = 5;
+    uint lap_cnt = 10;
 
     srand(time(0));
 
