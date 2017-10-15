@@ -219,7 +219,7 @@ void mark_lap(Rider rider, int lap)
     sem_wait(&rider->velodrome->score_sem);
 
     if (velodrome->s_indexes[lap] == velodrome->a_rider_cnt)
-        print_info(velodrome->placings_v[lap], rider->velodrome);
+        print_info(velodrome->placings_v[lap], rider->velodrome, lap);
 }
 
 void mark_overtake(Rider rider)
@@ -263,8 +263,8 @@ int compare_scores(const void * rider_a, const void * rider_b){
     return 0;
 }
 
-void print_info(uint *id, Velodrome velodrome_ptr) {
-    printf("Classification lap %d : ", velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
+void print_info(uint *id, Velodrome velodrome_ptr, int lap) {
+    printf("Classification lap %d : ", lap);//velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
     for (int i = 0; i < velodrome_ptr->a_rider_cnt; i++) {
         printf(" %d", id[i]);
     }

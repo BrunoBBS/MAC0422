@@ -120,6 +120,6 @@ bool is_sprint(Velodrome *velodrome_ptr, Rider rider);
 int compare_scores(const void * a, const void * b);
 
 // Print infos how scores or positions
-void print_info(uint *id, Velodrome velodrome_ptr); 
+void print_info(uint *id, Velodrome velodrome_ptr, int lap); 
 
 #endif
