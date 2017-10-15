@@ -5,9 +5,8 @@ Authors:
 
 Anderson Andrei da Silva , 8944025
 Bruno Boaventura Scholl, 9793586
-Seiji
+Victor Seiji Hariki, 9793694
 ------------------------------------------------- */
-
 #include "rider.h"
 #include "velodrome.h"
 

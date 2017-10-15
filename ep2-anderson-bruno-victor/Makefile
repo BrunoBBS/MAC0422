@@ -1,11 +1,11 @@
 # -----------------------------------------------
-#EP2 - MAC0422 - Sistemas Operacionais 2s2017
+# EP2 - MAC0422 - Sistemas Operacionais 2s2017
 #
-#Authors:
+# Authors:
 #
-#Anderson Andrei da Silva , 8944025
-#Bruno Boaventura Scholl, 9793586
-#Seiji
+# Anderson Andrei da Silva , 8944025
+# Bruno Boaventura Scholl, 9793586
+# Victor Seiji Hariki, 9793694
 #-------------------------------------------------
 
 CC:=gcc
