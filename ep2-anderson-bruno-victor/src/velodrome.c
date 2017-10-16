@@ -124,7 +124,7 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
     // Free track
     for (int i = 0; i < velodrome->length; i++) {
         //printf("free pista[%d]: 0x%lx\n", i, velodrome->pista[i]);
-        //free(velodrome->pista[i]);
+        free(velodrome->pista[i]);
         velodrome->pista[i] = NULL;
     }
     //printf("free pista: 0x%lx\n", velodrome->pista);
