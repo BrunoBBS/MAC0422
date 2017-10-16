@@ -127,6 +127,10 @@ int compare_scores(const void * a, const void * b);
 // Print infos how scores or positions
 void print_info(int *id, Velodrome velodrome_ptr, int lap, int lap_cnt); 
 
+// Print the total score in some moment
 void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap);
+
+// Print infos how scores or positions in the end of run
+void print_end_of_run (Velodrome velodrome_ptr);
 
 #endif
