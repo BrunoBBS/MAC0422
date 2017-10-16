@@ -1,0 +1,905 @@
+commit 2d7ec50a98520172baeba61a1672d01cb9db6aeb
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 05:19:56 2017 -0200
+
+    [ep2] Finishing touches
+
+commit 6b786ff3b8563060ca40f641e818325f1c3b29c7
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 04:22:33 2017 -0200
+
+    [ep2] Add explains to *a_riders.
+
+commit fdcc896c53293e6402303725c123396c85c90256
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 03:49:21 2017 -0200
+
+    [ep2] Added debug printing
+
+commit d0905f3c2ec15580c50f111deff12c0b1be9c85f
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 03:24:05 2017 -0200
+
+    [ep2] No more warnings
+
+commit 95e2e904ea51e9134b564fc48367e163f7641b5e
+Merge: 876f869 d70cbeb
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 03:18:33 2017 -0200
+
+    Merge branch 'master' of https://github.com/BrunoBBS/MAC0422
+
+commit 876f8693eb801cc1c18b2acdf42c71f549c74467
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 03:17:26 2017 -0200
+
+    [ep2] Print race's final status.
+
+commit d70cbebc4355d660563e9eed8c975d0548f16736
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:52:18 2017 -0200
+
+    [ep2] LEIAME corrigido
+
+commit 7ca9212fd252af4ba2b53539af04d278f4cdf078
+Merge: 5e51018 8d99f84
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:51:26 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit 5e5101828ee1bee3ef2b4b3eff2c8176dffefc5b
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:51:19 2017 -0200
+
+    [ep2] Makefile now has 'move' target
+
+commit 8d99f848d5c10e6ad459873eb9e78669619e8d04
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 02:50:32 2017 -0200
+
+    [ep2] Correcting the LEIAME.
+
+commit 2208e0aeb3ca1f4d0d66ffc222939b2217f1324a
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 02:45:51 2017 -0200
+
+    [ep2] Printing the finl results.
+
+commit f0df71e3ad8118310ccb8063ae9ca262cf7524d9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:16:36 2017 -0200
+
+    [ep2] Absolute timing system added
+
+commit e875a4226f65be17f6af9059bdb52bb35e043c76
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:09:59 2017 -0200
+
+    [ep2] Segfault now ok
+
+commit 67b9409f6e367d3e554c9581e6aef4288f5c9766
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 02:00:40 2017 -0200
+
+    [ep2] Now this free doesn't crash the program
+
+commit b5bb285f27fb3fc7877d49ea8c741533bdb09c89
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 01:58:56 2017 -0200
+
+    [ep2] Corrected lap marks
+
+commit 18b0797c9c547988e8c37d89b4c32c48e0d0fd17
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 16 01:37:42 2017 -0200
+
+    [ep2] Fix print info
+
+commit a1e90428c57daccb12c1860baab390098c022157
+Merge: 16b04e6 30b81e1
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 01:24:14 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit 16b04e60c486a6fbd286d60c44268c2e09cdca59
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 01:23:23 2017 -0200
+
+    [ep2] Fixed some allocation problems
+
+commit 30b81e130333a351beff25f419c4a243b6c8d092
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 01:13:24 2017 -0200
+
+    [ep2] Correcting the LEIAME.
+
+commit eb7260c410e7c0957065dc42cf4e07d987052c99
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 16 00:36:48 2017 -0200
+
+    [ep2] Printing the list of riders crashed.
+
+commit 77463ebaff277e7c102e6b8f4bc91593c5eebf7f
+Merge: a647062 65cc9d7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 00:02:44 2017 -0200
+
+    [ep2] Merged to master
+
+commit a6470626adb0b0637c021f021afbb11d907c3d82
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 16 00:00:55 2017 -0200
+
+    [ep2] FINALLY!! Reaches end of program!!
+
+commit 65cc9d715870663aede042be2d9cb994df500c0d
+Merge: 230ce58 63ab388
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 23:40:27 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 230ce58d8876ef3ddb44331462ed8ecdcd3b9a91
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 23:39:09 2017 -0200
+
+    [ep2] Add sem_post to erase step
+
+commit 63ab38886c99e927b465d5e4353d22fa757a557c
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 23:37:56 2017 -0200
+
+    [ep2] Well, almost working
+
+commit f2dff569fe1108768df772aa12f59222276b31ce
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 23:32:37 2017 -0200
+
+    [ep2] Furious debugging
+
+commit fb2d84582ae7a07e47c594405530b812415965b5
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 22:58:17 2017 -0200
+
+    [ep2] At least no more futex errors
+
+commit 6abe66541c27a5e4f47de3b697a949e322111f0a
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 22:22:05 2017 -0200
+
+    [ep2] Debbuging infinite loops
+
+commit a62bf98fc5d85b2f710fb7265321a63afe5f733e
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 21:51:21 2017 -0200
+
+    [ep2] Fix usage
+
+commit e57818eef74cd2af5cc30e0ec33cf33f1149da3e
+Merge: f236181 a01c9b1
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 21:46:34 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit a01c9b17e0180f98c54ab1216174577bcb5fcdbc
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 21:31:08 2017 -0200
+
+    [ep2] Now termination does work
+
+commit f236181518e74496853f84da1bfb48ade1f65325
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 21:29:25 2017 -0200
+
+    [ep2] Aciate semaphore when breaks
+
+commit 4a1d42f1d47737e92ec0f78b47312635b92eab76
+Merge: d66092a 4817e13
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 21:13:35 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit d66092aa074039c6f03a1373e78debe0e17d0356
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 15 21:13:07 2017 -0200
+
+    [ep2] Now no timeout needed!
+
+commit 9947077ecafb32205bd99d5ff0eb8e85cdc0d03a
+Merge: 1efd7e5 4817e13
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 20:48:51 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 1efd7e5e61c961ce55adefc960cf62eadc5a2a5d
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 20:27:57 2017 -0200
+
+    [ep2] Main Works
+
+commit 4817e13b78c3f198537faa90b775c80b408cdaef
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Oct 15 19:20:42 2017 -0200
+
+    [ep2] Doing print of classification and total score.
+
+commit bdde33475be8a1268489a66d189d14a110ca5bdb
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 19:03:23 2017 -0200
+
+    [ep2] make main
+
+commit 916b4d074c295b143aa995166c491c6fe121a00d
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Oct 15 17:56:40 2017 -0200
+
+    [ep2] Removing the "aaaaaaaaaaaaaaaa"
+
+commit ba5dbc3c8c133e53f321ae8fedf2d74f20a0e449
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 17:52:59 2017 -0200
+
+    [ep2] Make main and README
+
+commit 57b937f6090d19c8de161b5ef76fb03dbcc071c2
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 17:37:46 2017 -0200
+
+    [ep2] Fixed merge conflict not seen before
+
+commit e888ceaba361367bd90e0a416cdf1f810681a869
+Merge: f3cb6e6 dd15abf
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 17:23:23 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit f3cb6e6ced8581ab0e51cc26dc3e48deb4ed0378
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 17:22:09 2017 -0200
+
+    [ep2] Remove debug speed feature
+
+commit 723a078e3a85cb6167e007b62c1e35ac8823d5dc
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 17:21:26 2017 -0200
+
+    [ep2] Overtake now works
+
+commit dd15abf8882deaed7e5c1c31c21a733280910eba
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Oct 15 17:20:28 2017 -0200
+
+    [ep2] Classification prints fixed.
+
+commit c3f04cd4f16987ba452a18b61392ab847ace4b6e
+Merge: b7811f9 a005f34
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 13:10:29 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit b7811f976b4fdb9ddd6fb8079c75b3e44a7aa652
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 15 13:10:24 2017 -0200
+
+    [ep2] Fixed global barrier
+
+commit a005f343a1b0cf12f5c387c74f660b4c35dc4740
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Oct 15 13:08:06 2017 -0200
+
+    [ep2] Puting semaphore in mark_lap (score_sem).
+
+commit c82a87b41ecaad6d7380763076d175821e3f0cc2
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Oct 14 23:35:09 2017 -0300
+
+    [ep2] Improving the documentation.
+
+commit e21c45caeab31e7c950fece475e8a107cc19eded
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Oct 14 21:06:56 2017 -0300
+
+    [ep2] Updating the names in the headers. (Finished)
+
+commit bddeeafb3d9b74764987bbb66f8d1333b8e8025f
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Oct 14 17:21:59 2017 -0300
+
+    [ep2] Puting the headers.
+
+commit 70f54ff0ba5a905dc77ec9db4bcb09472d4e8d4c
+Merge: 9a4f2dd 98c351a
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sat Oct 14 12:39:49 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 9a4f2dda95ad710ce7fa031966070ab4ff2fad60
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sat Oct 14 12:37:02 2017 -0300
+
+    [ep2] Implemented barrier using semaphores
+
+commit 98c351a28c0337d5a02095b5c3b2b007a90df0d3
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 14 11:00:36 2017 -0300
+
+    [ep2] Now placings are marked every round
+
+commit dcc8277d2026538cce54c050aecc8d7d35d0b947
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Fri Oct 13 22:56:59 2017 -0300
+
+    Function compare_scores() to qsort (to the output prints) and print_info() done.
+
+commit 7217b0fc390dc2e01f1ba7b60a760e0f004b5a87
+Merge: 9969287 abd8031
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 20:48:59 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit abd8031e283fdc1b04f6367ec41bc369a376fe27
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 20:48:49 2017 -0300
+
+    [ep2] Added overtake vector to graphical debug
+
+commit 9969287bf5ccb38bcfa595bbc5a1fbd8aa7bcf4a
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 20:48:13 2017 -0300
+
+    [ep2] Fix points again
+
+commit 707bcd7a68e1b1d5e8ae3cca7a03f2ea130b3070
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 20:39:26 2017 -0300
+
+    [ep2] Realtime now relative
+
+commit 1584657df63fab416759bae62c62f356f721db76
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 20:24:26 2017 -0300
+
+    [ep2] Now shows total distance travelled
+
+commit 39d26d0b27df7e6bcf29eee9def56c0f1179751a
+Merge: f3bc61a 95b8f84
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 20:18:37 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit f3bc61a3018ddefedae10d1daba4477267be8cfe
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 20:18:31 2017 -0300
+
+    [ep2] Fix score
+
+commit 95b8f84b0ec92c13f3ed1af4df5d15bec9fcc541
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 20:14:09 2017 -0300
+
+    [ep2] Prettified a little
+
+commit f9f41e6b33c0405898f23a0e07a4b5503e78976d
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 20:04:19 2017 -0300
+
+    [ep2] Now lane switching works as it should!
+
+commit ba5a8637b3d2beed9d6160137fa53a58f3481de9
+Merge: fdb8cab d40f50e
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 19:57:39 2017 -0300
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit fdb8cabeee341c74ba118360e434f294b43b8e45
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 19:57:36 2017 -0300
+
+    [ep2] Now speeds work right
+
+commit d40f50e4b223696b0316f7093af83faf30baf486
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 19:48:26 2017 -0300
+
+    [ep2] Fix change lane in border
+
+commit 765310b4f7edbb295851f60b58cec052f5c4f749
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 19:07:00 2017 -0300
+
+    [ep2] More graphical debugging
+
+commit cca401e7858912978eb7dc85117c4b04934a8564
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:55:58 2017 -0300
+
+    [ep2] Now graphical timing is better
+
+commit 54459860f800bf2a614eabd73a686f5857463eb9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:52:46 2017 -0300
+
+    [ep2] Added semaphores to graphical debug
+
+commit 402f81ed83844270d82e2db1b7c9303b14af1d62
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:42:54 2017 -0300
+
+    [ep2] Now probabilities are better & arguments work
+
+commit a1627d2d8e5aa5c248bdad7e3b57f2204b3c221e
+Merge: 2910d4b 4c19371
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:31:35 2017 -0300
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit 2910d4bd593e039224d03e4bc00cd73666264e78
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:30:49 2017 -0300
+
+    [ep2] Now test accepts command line args
+
+commit 4c19371e2fc4d7cc752477db531c1bd39f6d8cd6
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Oct 12 18:25:34 2017 -0300
+
+    [ep2] Format Everything
+
+commit d1c92d3e65c1ab62a060ede8777268f8ef4f33d9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 18:17:33 2017 -0300
+
+    [ep2] Added realtime option
+
+commit 0cce9f8931f81f1dcd6590bb038102cdbc3bda1e
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 18:07:10 2017 -0300
+
+    [ep2] Fixed overtake SEGFAULT
+
+commit 1c8b922380a30c96a023c64bd6a7a61dabd206b3
+Merge: 778bf6f 762a7e0
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 17:41:02 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 778bf6f2c687fa6e547381e8a8c714c6e2c39f74
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 17:40:57 2017 -0300
+
+    [ep2] Remade mark overtake and scoring from lap
+
+commit 762a7e044c7eaebddfa788a3ebf566176089ba54
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 15:10:10 2017 -0300
+
+    [ep2] Fixed boolean values
+
+commit 33bba6fe5e0627197b67c15349dcccee36b687fc
+Merge: 3628022 62c7c54
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 14:28:04 2017 -0300
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit 3628022c106884d32d27022dcbc5707151017d54
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 12 14:24:42 2017 -0300
+
+    [ep2] Step time now more flexible
+
+commit 62c7c5420f05cd5310f44b52a6c7b16dca11041e
+Merge: a539930 fdfda9d
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 13:44:27 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit a53993081d879e0e5092b42863b2e410660d1bbf
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Thu Oct 12 13:44:22 2017 -0300
+
+    [ep2] Implemented coordinator and bug fixes
+
+commit fdfda9d08430b2ae0fd3e603802cc8e28e26fae7
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Thu Oct 12 13:36:50 2017 -0300
+
+    [ep2] Implementing the mark_overtake.
+
+commit 92863a619e276839aec92fc9980a63ace4dc01b6
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Wed Oct 11 19:27:13 2017 -0300
+
+    [ep2] Improving threads, semaphore and riders.
+
+commit c3c68d615e7470eab61b133c0a913451b11e42ac
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Wed Oct 11 11:54:51 2017 -0300
+
+    [ep2] Describing the barriers and some more about threads.
+
+commit 1b505ff8f993a4bdf58c9a9d5548f6de092d7f5a
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 21:05:46 2017 -0300
+
+    [ep2] ride step() done
+
+commit a0143a29a5803de37bfc520bbd91fcf6ec07be4a
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 20:39:12 2017 -0300
+
+    [ep2] fixed rider_in_front
+
+commit 0f16ed9aaa85f2fb25bac18fbd2c4dc43740f400
+Merge: 34b2723 3d11bb4
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 20:36:49 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 34b27232fbb608a0fd82397d0b129b0220b55432
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 20:34:52 2017 -0300
+
+    [ep2] Implemented barrier
+
+commit 3d11bb4c2395837da87f44f6e83c6ed0408abead
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 17:03:51 2017 -0300
+
+    [ep2] Redirected graphical output to stderr
+
+commit fd800b0e2e2aee127d6dbceb3fe29cec99e3a2ad
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 16:47:33 2017 -0300
+
+    [ep2] markplacing now failsafe
+
+commit a342b3b16647eef3d277ffb0d4c2496b0d61e3da
+Merge: 9b97d0f 4adcc87
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 16:35:39 2017 -0300
+
+    [ep2] Merged with master
+
+commit 9b97d0f989ea8134a564a65aeafd4ee549c2dbf2
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 16:31:06 2017 -0300
+
+    [ep2] Fixed SEGFAULT
+
+commit 4adcc87eff9beb1e68056c4883ec0bc82682992b
+Merge: 226bb0c 8481033
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 15:57:44 2017 -0300
+
+    Merge branch 'rider'
+
+commit 84810331400dbcbf53ed427468ca33aff795de61
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 9 23:41:15 2017 -0300
+
+    [ep2] better variable name in graphical.c
+
+commit 39d52f9ae06477ebd5259b9710d5f94ad275c80b
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 9 19:13:19 2017 -0300
+
+    [ep2] Rider completed (global barrier missing yet), will test now
+
+commit f0f416923832137217407e2ef9d60925ffa12a3a
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 15:30:30 2017 -0300
+
+    [ep2] Barrier now properly allocated
+
+commit 675864e472c083e2808e925a4ab75dd28d61263c
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 13:09:37 2017 -0300
+
+    [ep2] Fixed sprint_points definition
+
+commit 3e7d2c5ad60e8ef05a575c2ecf064e19e5a4edd7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:54:51 2017 -0300
+
+    [ep2] rider in front function now failsafe
+
+commit 8192a0584a86df05e12682b6ce97f9b4e9579f8e
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:54:20 2017 -0300
+
+    [ep2] Placings calculation made easier
+
+commit 5b6056eee6839fd6682fd07fdc9aaca43818f0b4
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:01:14 2017 -0300
+
+    [ep2] Now printing thread exists
+
+commit fdfcfdd226216a1d693fe6ea3366d2714a736f95
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 17:12:47 2017 -0300
+
+    [ep2] Now waits for threads to exit before destroying velodrome
+
+commit 226bb0c7abb1255a504bf6da41e4fffcff62fc34
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 15:36:50 2017 -0300
+
+    [ep2] Fixed barrier access at rider.c
+
+commit 1bcd7e657f2d338b5962d9033b844a40d100ab88
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 15:30:30 2017 -0300
+
+    [ep2] Barrier now properly allocated
+
+commit 44bdc8c955ddaa40540bb4f1221832daacd700c9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 13:09:37 2017 -0300
+
+    [ep2] Fixed sprint_points definition
+
+commit 748d2195d53bc48a4a07b5b5167af681af7a52a0
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:54:51 2017 -0300
+
+    [ep2] rider in front function now failsafe
+
+commit ed074b836093d1e104e626792c3cf6183c53bfaf
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:54:20 2017 -0300
+
+    [ep2] Placings calculation made easier
+
+commit c1529c5e2a906d225a5e50b6bbe5b84c643ec8b1
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 12:52:23 2017 -0300
+
+    [ep2] added mark_placing to rider
+
+commit b1c256fbcd02365876d87a745914901ded2e8fa1
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Oct 10 12:40:31 2017 -0300
+
+    [ep2] some fixes
+
+commit c9ca32cb8278ec44539eb3d3d5c071e21fd784a2
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 10 12:01:14 2017 -0300
+
+    [ep2] Now printing thread exists
+
+commit 243e13c67fb98ff4a84303f684b6fe7b3168b492
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 9 23:41:15 2017 -0300
+
+    [ep2] better variable name in graphical.c
+
+commit 010efa030036acd147111c74ceae53df176c3d9f
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 9 19:56:04 2017 -0300
+
+    [ep2] some fixes in rider
+
+commit 5e368ec8759337d9d00f0b391c3dab9007ff4626
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Oct 9 19:13:19 2017 -0300
+
+    [ep2] Rider completed (global barrier missing yet), will test now
+
+commit e180e5e2a0ff1c5de3a1986f91037ed0f39dbf9d
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 17:12:47 2017 -0300
+
+    [ep2] Now waits for threads to exit before destroying velodrome
+
+commit ae16fd94ba3835624d93a06b059c45d0032a6936
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 13:44:32 2017 -0300
+
+    [ep2] Velodrome now frees allocated space for placings vector
+
+commit 30bfaa5f5ebe91f1b4425b7a3f9db6df5baba63e
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 13:38:24 2017 -0300
+
+    [ep2] Riders now wait for start barrier and start successfuly
+
+commit d2dda88ba9b5af59c6c9fdca55feb7f4ff1f585e
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 13:21:06 2017 -0300
+
+    [ep2] Placings matrix allocation fixed
+
+commit 47872f48ba57de3cdbc0e74fe3cdd7d80ea01617
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 13:11:24 2017 -0300
+
+    [ep2] Now at least compiles
+
+commit 68d9c761d7ddc42b2f6de6e7372729a7c44c1ff6
+Merge: 16eb687 c986efb
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 13:01:12 2017 -0300
+
+    [ep2] Merged with branch master
+
+commit c986efb63e70cfb8f47dcb66c572a38506024d00
+Author: andersonandrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Oct 9 12:50:15 2017 -0300
+
+    Correcting pointers errors
+
+commit 16eb687113c82e69c00518375540513ae7df046b
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 9 12:37:00 2017 -0300
+
+    [ep2] Added debug prints & debug executable
+
+commit bbd7d2b93924abf1656e789467d7cf8ed162e0f8
+Merge: 4be0323 a55b1da
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 8 19:16:21 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 4be0323a5eca0c0c97974d6a9e3dbe909459ebfc
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Oct 8 19:16:16 2017 -0300
+
+    [ep2] Added rider_in_front to velodrome, coninued rider
+
+commit a55b1daca36a46936519a04275b1973620274e7d
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Oct 8 19:12:52 2017 -0300
+
+    [ep2] Doing the scoring(), using (mark_placing, complete_turn, is_sprint).
+
+commit 156ec12448a8acf7996ca33a7680f3c856c0a237
+Merge: 1563b75 cfba00c
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Oct 7 21:56:42 2017 -0300
+
+    Merge branch 'master' of https://github.com/BrunoBBS/MAC0422
+    
+    Conflicts:
+            ep2-bruno-victor/documentation/relatorio-ep2-trio.tex
+
+commit cfba00c2d7c5a04a3336ce953aca72841b5d37b1
+Merge: 9161e71 f19ff2c
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sat Oct 7 17:00:28 2017 -0300
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 9161e718a1ca5c503564a487c4e009f6aef27a69
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sat Oct 7 17:00:22 2017 -0300
+
+    [ep2] Continue work on other device
+
+commit f19ff2c1e3741b3f17c3881395bf562eddb63f36
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 7 14:50:11 2017 -0300
+
+    [ep2] Now compiling properly
+
+commit e775077550fcecb8613d9db604175a105643f791
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 7 13:50:22 2017 -0300
+
+    [ep2] Changed Makefile for pthread_barrier support
+
+commit b17896da292386ff344d7b98e9d93993c675ed7b
+Merge: df64a79 f2a01b1
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 7 13:48:21 2017 -0300
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit f2a01b1f5ecd06f79214d5329651b9785063d271
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Sat Oct 7 13:35:09 2017 -0300
+
+    [ep2] Started main rider code
+
+commit df64a797df197e19060ff24152086ff56e095201
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 7 11:07:37 2017 -0300
+
+    [ep2] Added SFML compiling option to makefile
+
+commit 58d09d9b090d8219496171596d9fffba3f8ec688
+Merge: bbfa68d 8d613cf
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Oct 5 11:39:07 2017 -0300
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit bbfa68d652ea8808520913427cd9a8a5398e8b5d
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Oct 5 11:39:02 2017 -0300
+
+    [ep2] Fix some declarations
+
+commit 8d613cf3ff2427dbad8260938fb8191b1d06e87b
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 5 11:30:02 2017 -0300
+
+    [ep1] Added start barrier
+
+commit 8ac32a49d1b395dbefa03384624b80838c30cb59
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 5 10:36:31 2017 -0300
+
+    [ep2] Added thread starts
+
+commit 8a64750355f50820c729ffb6d858ba44cdf30aa5
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Wed Oct 4 21:44:29 2017 -0300
+
+    [ep2] Updating the documentation (threads, synchronization barriers, semaphore, riders, race and the problem).
+
+commit 2867b2d1f2d6f26b89ae764edff04b649fd7e160
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Oct 5 09:56:22 2017 -0300
+
+    [ep2] Change folder name
+
+commit 1563b754af1e364af2bb82c80c6a1b79eb852c42
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Wed Oct 4 21:44:29 2017 -0300
+
+    [ep2] Updating the documentation (threads, synchronization barriers, semaphore, riders, race and the problem).
+
+commit 926a858b5725c49c74a451fdb6fc879844c9d846
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Fri Sep 29 20:58:58 2017 -0300
+
+    [ep2] Creating the documentation (tex file)
+
+commit 8255423a62ee9e87e89e4067f5b24da2c2023dac
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Sep 21 16:33:04 2017 -0300
+
+    [ep2] Add vim swap to gitignore
+
+commit 6ea14d1326b27e9232eabaaf506944557d1d22d2
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Wed Sep 20 18:23:19 2017 -0300
+
+    Added gitignore and it now compiles
+
+commit 90cd21ea37fdeb0b782fc3ce5530268c3b882e86
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Wed Sep 20 18:12:16 2017 -0300
+
+    [ep2] Created rider.h
+
+commit 2ad72490274761a4b15dcc691750db66d6a8f2c8
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Sep 19 17:35:52 2017 -0300
+
+    [ep2] Added basic typedef
+
+commit d79afe355dbc247450b2b4f571aaf587e4b7997c
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Sep 19 16:54:12 2017 -0300
+
+    [ep2] Created ep2 folder
