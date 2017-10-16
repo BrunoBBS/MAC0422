@@ -30,6 +30,7 @@ void create_velodrome(
     velodrome->a_score = malloc(rider_cnt * sizeof(uint));
     sem_init(&velodrome->velodrome_sem, 0, 1);
     sem_init(&velodrome->rand_sem, 0, 1);
+    sem_init(&velodrome->print_sem, 0, 1);
     sem_init(&velodrome->score_sem, 0, 0);
 
     for (int i = 0; i < rider_cnt; i++) {
@@ -280,17 +281,20 @@ int compare_scores(const void* rider_a, const void* rider_b)
 }
 
 void print_info(uint *id, Velodrome velodrome_ptr, int lap) {
+    sem_wait(&velodrome_ptr->print_sem);
     printf("Classification lap %d : ", lap);//velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
     for (int i = 0; i < velodrome_ptr->a_rider_cnt; i++) {
         printf(" %d", id[i]);
     }
     printf("\n");
+    sem_post(&velodrome_ptr->print_sem);
     // But if the broked?
 }
 
 
 void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap) {
     qsort(scores, velodrome_ptr->rider_cnt, sizeof(struct Rider), compare_scores);
+    sem_wait(&velodrome_ptr->print_sem);
     printf("---------------------------------\n ", lap);
     printf("Atention! Total scores lap %d \n", lap);
     for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
@@ -301,6 +305,7 @@ void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap) {
         printf(" %2d", scores[i].score);
     }
     printf("\n---------------------------------\n");
+    sem_post(&velodrome_ptr->print_sem);
     // But, if the broked?
 
 }

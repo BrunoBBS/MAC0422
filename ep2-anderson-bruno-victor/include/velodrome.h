@@ -60,6 +60,9 @@ struct Velodrome
     // This is the barrier for riders to wait for start
     pthread_barrier_t start_barrier;
 
+    // Sync prints
+    sem_t print_sem;
+
     // All riders write on the same array
     sem_t velodrome_sem;
 

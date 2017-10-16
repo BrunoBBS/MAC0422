@@ -45,7 +45,7 @@ void step(char dir, Rider rider, Velodrome vel)
     int new_meter = (meter + 1) % vel->length;
     // Exit track if broken
     char move_p[3];
-    
+
     switch (dir)
     {
         case 'r':
@@ -71,11 +71,11 @@ void step(char dir, Rider rider, Velodrome vel)
     int new_lane = lane;
 
     int tries = 3;
-    
+
     for (int i = 0; i < 3 && !final_dir && tries > 0; i++)
     {
         char move_to = move_p[i];
-        int rider_id = -1; 
+        int rider_id = -1;
 
         if (move_to == 'r' && lane + 1 == 10)
             continue;
@@ -101,19 +101,16 @@ void step(char dir, Rider rider, Velodrome vel)
             {
                 i--;
                 tries--;
-                printf("Rider %d is waiting for %d\n", rider->id, rider_id);
                 sem_post(&vel->velodrome_sem);
                 sem_wait(&vel->arrive[rider_id]);
                 sem_post(&vel->arrive[rider_id]);
                 sem_wait(&vel->velodrome_sem);
-                printf("Wait ended for %d\n", rider->id);
             }
         }
     }
 
     if (!final_dir)
     {
-        printf("%d didn't walk\n", rider->id);
         new_meter = meter;
         new_lane = lane;
         // Compensate dist added after step
@@ -149,7 +146,6 @@ void* coordinator(void* args)
             if (!vel->riders[i].broken && !vel->riders[i].finished) {
                 int val;
                 sem_getvalue(&vel->arrive[i], &val);
-                //printf("Waiting %d: %d\n", i, val);
                 sem_wait(&vel->arrive[i]);
                 sem_post(&vel->arrive[i]);
             }
@@ -159,12 +155,10 @@ void* coordinator(void* args)
                 sem_wait(&vel->arrive[i]);
         }
         mark_overtake(vel);
-        //printf("B1\n");
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken && !vel->riders[j].finished)
                 sem_post(&vel->continue_flag[j]);
         }
-        //printf("B2\n");
     }
 }
 
@@ -212,9 +206,11 @@ void* ride(void* args)
                 myself->speed = change_speed(myself);
             mark_lap(myself, myself->total_dist / vel->length);
             if (lap > 10 && lap % 15 == 0 && will_break(myself)) {
-                printf("******************************\n");
-                printf("Atention! -> Rider %d crashed!\n", myself->id);
-                printf("******************************\n");
+                sem_wait(&vel->print_sem);
+                printf("*************************************\n");
+                printf("* Attention! -> Rider %4d crashed! *\n", myself->id);
+                printf("*************************************\n");
+                sem_post(&vel->print_sem);
                 if (globals.e)
                     printf(
                         "rider:l%3d -> Rider %d died!\n", __LINE__, myself->id);
@@ -251,11 +247,12 @@ void* ride(void* args)
             nanosleep(&sleep_time, NULL);
         }
     }
+    if (globals.e && !myself->broken)
+        printf("rider:l%3d -> Rider %d finished\n", __LINE__, myself->id);
     step('b', myself, vel);
     if (!myself->broken)
         myself->finished = true;
-    if (myself->broken)
-        sem_post(&vel->arrive[myself->id]);
+    sem_post(&vel->arrive[myself->id]);
     vel->a_rider_cnt--;
     if (globals.e)
         printf("rider:l%3d -> Rider %d terminated\n", __LINE__, myself->id);
