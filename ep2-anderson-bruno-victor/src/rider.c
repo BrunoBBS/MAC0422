@@ -91,14 +91,12 @@ void step(char dir, Rider rider, Velodrome vel)
         if ((rider_id = vel->pista[new_meter][new_lane]) == -1)
             final_dir = move_to;
 
-        if (rider_id >= 0 && rider_id != rider->id &&
-                !vel->riders[rider_id].broken &&
-                !vel->riders[rider_id].finished)
-        {
+        if (rider_id >= 0 && rider_id != rider->id
+            && !vel->riders[rider_id].broken
+            && !vel->riders[rider_id].finished) {
             int res;
             sem_getvalue(&vel->arrive[rider_id], &res);
-            if (!res)
-            {
+            if (!res) {
                 i--;
                 tries--;
                 sem_post(&vel->velodrome_sem);
@@ -115,13 +113,11 @@ void step(char dir, Rider rider, Velodrome vel)
         new_lane = lane;
         // Compensate dist added after step
         rider->total_dist--;
-    }
-    else if (final_dir == 'r')
+    } else if (final_dir == 'r')
         new_lane = lane + 1;
     else if (final_dir == 'l')
         new_lane = lane - 1;
-    else if (final_dir == 'b')
-    {
+    else if (final_dir == 'b') {
         vel->pista[meter][lane] = -1;
         sem_post(&vel->velodrome_sem);
         return;
@@ -278,7 +274,7 @@ char change_lane(Rider rider)
 {
     sem_wait(&rider->velodrome->rand_sem);
     bool will_change = rand() % 100 < ch_lane_chance; // Will be changing lanes?
-    char p_lane = rand() % 100 < 50 ? 'r' : 'l';   // Which side if it will
+    char p_lane = rand() % 100 < 50 ? 'r' : 'l';      // Which side if it will
     sem_post(&rider->velodrome->rand_sem);
 
     if (will_change && p_lane == 'l' && rider->lane > 0)
