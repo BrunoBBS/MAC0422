@@ -3,6 +3,10 @@ Para compilar o binário e movê-lo para o diretório atual (Diretório em que e
 $ make
 $ make move
 
-Para executar a shell basta usar:
+Para executar o programa basta usar:
 
-$ ./ep2 <args>
+$ ./ep2 <d n v>
+
+Onde:	d é o tamanho da pista em metros;
+	n é o número de ciclistas;
+	v é o número de voltas da corrida.
