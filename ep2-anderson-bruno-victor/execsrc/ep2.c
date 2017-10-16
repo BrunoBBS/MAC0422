@@ -27,10 +27,12 @@ int main(int argc, char** argv)
     globals.r = false;
 
     if (argc == 5)
+    {
         if (argv[4][0] == 'd')
             globals.d = true;
         else if (argv[4][0] == 'e')
             globals.e = true;
+    }
 
     srand(time(0));
     Velodrome velodrome = NULL;

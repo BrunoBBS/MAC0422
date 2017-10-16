@@ -85,6 +85,8 @@ void* debug_print_thread(void* velodrome_ptr)
         sleep_time.tv_nsec = 100000000;
         nanosleep(&sleep_time, NULL);
     }
+
+    return NULL;
 }
 
 int main(int argc, char** argv)

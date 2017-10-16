@@ -176,13 +176,13 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
 int max_rider_speed(Velodrome* velodrome_ptr, Rider rider)
 {
     Velodrome velodrome = *velodrome_ptr;
-    int max_speed = V90KM;
     // Get the meter immediately in front of the rider
     int next_meter = (get_pos(rider) + 1) % velodrome->length;
 
     int id = velodrome->pista[next_meter][rider->lane] >= 0;
     if (id >= 0)
         return velodrome->riders[id].speed;
+    return 0;
 }
 
 Rider rider_in_front(Rider behind)

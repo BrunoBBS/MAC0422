@@ -13,7 +13,7 @@ CFLAGS=-Wall -std=gnu11
 DEBUGF:=-g
 RELEASEF:=-O2
 
-LIBS:=-lreadline -lpthread
+LIBS:=-lpthread
 CEXT:=c
 HEXT:=h
 

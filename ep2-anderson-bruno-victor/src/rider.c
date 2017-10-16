@@ -157,6 +157,7 @@ void* coordinator(void* args)
                 sem_post(&vel->continue_flag[j]);
         }
     }
+    return NULL;
 }
 
 // Main function of rider
