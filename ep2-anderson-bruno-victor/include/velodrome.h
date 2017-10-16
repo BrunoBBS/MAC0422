@@ -112,7 +112,7 @@ bool can_rider_break(Velodrome *velodrome_ptr);
 // Mark sprints
 void mark_sprint(Rider rider, int lap);
 
-    // Mark overtakes
+// Mark overtakes
 void mark_overtake(Velodrome velodrome);
 
 // Mark lap
@@ -133,4 +133,6 @@ void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap);
 // Print infos how scores or positions in the end of run
 void print_end_of_run (struct Rider *scores, Velodrome velodrome_ptr);
 
+// Print map for debug option
+void print_map (Velodrome velodrome);
 #endif

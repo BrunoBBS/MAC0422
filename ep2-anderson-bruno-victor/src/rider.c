@@ -152,6 +152,10 @@ void* coordinator(void* args)
                 sem_wait(&vel->arrive[i]);
         }
         mark_overtake(vel);
+
+        if (globals.d)
+            print_map(vel);
+
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken && !vel->riders[j].finished)
                 sem_post(&vel->continue_flag[j]);

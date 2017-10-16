@@ -377,3 +377,34 @@ void print_end_of_run (struct Rider *scores, Velodrome velodrome_ptr) {
     printf("\n==================================\n");
     sem_post(&velodrome_ptr->print_sem);
 }
+
+void print_map (Velodrome velodrome)
+{
+    sem_wait(&velodrome->print_sem);
+    
+    printf("pista       ->");
+    for (int i = 0; i < 10; i++)
+    {
+        printf(" %4d", i);
+    }
+    printf("\n");
+
+    for (int m = 0; m < velodrome->length; m++)
+    {
+        if (!(m % 10) || m == velodrome->length - 1)
+            printf("meter: %4d ->", m);
+        else
+            printf("              ");
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (velodrome->pista[m][i] >= 0)
+                printf("|%4d", velodrome->pista[m][i]);
+            else
+                printf("|    ");
+        }
+        printf("|\n");
+    }
+    printf("\n");
+    sem_post(&velodrome->print_sem);
+}
