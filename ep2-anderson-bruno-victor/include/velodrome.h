@@ -131,6 +131,6 @@ void print_info(int *id, Velodrome velodrome_ptr, int lap, int lap_cnt);
 void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap);
 
 // Print infos how scores or positions in the end of run
-void print_end_of_run (Velodrome velodrome_ptr);
+void print_end_of_run (struct Rider *scores, Velodrome velodrome_ptr);
 
 #endif
