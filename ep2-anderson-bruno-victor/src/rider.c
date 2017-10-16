@@ -64,17 +64,18 @@ void step(char dir, Rider rider, Velodrome vel)
             move_p[2] = 'l';
             break;
     }
-    char final_dir = '\0';
+    char final_dir = dir == 'b' ? 'b' : '\0';
 
     sem_wait(&vel->velodrome_sem);
 
     int new_lane = lane;
+
+    int tries = 3;
     
-    for (int i = 0; i < 3 && !final_dir; i++)
+    for (int i = 0; i < 3 && !final_dir && tries; i++)
     {
         char move_to = move_p[i];
-        int rider_id = -1;
-        
+        int rider_id = -1; 
 
         if (move_to == 'r' && lane + 1 == 10)
             continue;
@@ -90,19 +91,20 @@ void step(char dir, Rider rider, Velodrome vel)
         if ((rider_id = vel->pista[new_meter][new_lane]) == -1)
             final_dir = move_to;
 
-        if (rider_id >= 0)
+        if (rider_id >= 0 && rider_id != rider->id)
         {
             int res;
             sem_getvalue(&vel->arrive[rider_id], &res);
             if (!res)
             {
                 i--;
+                tries--;
+                printf("sta Rider %d waiting for %d\n", rider->id, rider_id);
                 sem_post(&vel->velodrome_sem);
-                printf("yolo %d\n", rider->id);
                 sem_wait(&vel->arrive[rider_id]);
-                printf("yay %d\n", rider->id);
                 sem_post(&vel->arrive[rider_id]);
                 sem_wait(&vel->velodrome_sem);
+                printf("end Rider %d\n", rider->id);
             }
         }
     }
@@ -114,10 +116,15 @@ void step(char dir, Rider rider, Velodrome vel)
         // Compensate dist added after step
         rider->total_dist--;
     }
-    else if (dir == 'r')
+    else if (final_dir == 'r')
         new_lane = lane + 1;
-    else if (dir == 'l')
+    else if (final_dir == 'l')
         new_lane = lane - 1;
+    else if (final_dir == 'b')
+    {
+        vel->pista[meter][lane] = -1;
+        return;
+    }
 
     vel->pista[meter][lane] = -1;
     vel->pista[new_meter][new_lane] = rider->id;
