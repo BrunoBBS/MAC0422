@@ -1,4 +1,4 @@
-Para compilar o binário e movê-lo para o diretório atual (Diretório em que esse arquivo se encontra), basta usar os dois comandos:
+Para compilar o binário e movê-lo para o diretório atual (Diretório em que esse arquivo se encontra), basta usar esses três comandos:
 
 $ make configure
 $ make
