@@ -229,8 +229,21 @@ void mark_lap(Rider rider, int lap)
     velodrome->placings_v[lap - 1][velodrome->s_indexes[lap - 1]++] = rider->id;
     sem_wait(&rider->velodrome->score_sem);
 
-    if (velodrome->s_indexes[lap - 1] == velodrome->a_rider_cnt){
-        print_info(velodrome->placings_v[lap - 1], rider->velodrome, lap);
+
+    bool behind = false;
+    for (int i = 0; i < velodrome->rider_cnt;i++)
+    {
+        struct Rider rider2 = velodrome->riders[i];
+        if (!rider2.broken)
+            if(rider2.total_dist < rider->total_dist)
+            {
+                behind = true;
+                break;
+            }
+    }
+
+    if (!behind){
+        print_info(velodrome->placings_v[lap - 1], rider->velodrome, lap, velodrome->s_indexes[lap - 1]);
         if (!(lap % 10) && lap > 0) {
             for (int i = 0; i < velodrome->rider_cnt; i++) {
                 velodrome->a_score[i] = velodrome->riders[i];
@@ -284,10 +297,10 @@ int compare_scores(const void* rider_a, const void* rider_b)
     return 0;
 }
 
-void print_info(int *id, Velodrome velodrome_ptr, int lap) {
+void print_info(int *id, Velodrome velodrome_ptr, int lap, int lap_cnt) {
     sem_wait(&velodrome_ptr->print_sem);
     printf("Classification lap %2d : ", lap);
-    for (int i = 0; i < velodrome_ptr->rider_cnt; i++) {
+    for (int i = 0; i < lap_cnt; i++) {
         if (!velodrome_ptr->riders[id[i]].broken) printf(" %2d", id[i]);
     }
     printf("\n");
