@@ -136,10 +136,10 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
     velodrome->placings = NULL;
 
     // Frees the placings stack
-    for (int i = 0; i < velodrome->lap_cnt; i++) {
-        free(velodrome->placings_v[i]);
-        velodrome->placings_v[i] = NULL;
-    }
+    /*for (int i = 0; i < velodrome->lap_cnt; i++) {*/
+        /*free(velodrome->placings_v[i]);*/
+        /*velodrome->placings_v[i] = NULL;*/
+    /*}*/
     free(velodrome->s_indexes);
     velodrome->s_indexes = NULL;
     free(velodrome->placings_v);
