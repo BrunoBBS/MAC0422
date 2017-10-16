@@ -275,7 +275,6 @@ void mark_overtake(Velodrome velodrome)
 */
 int compare_scores(const void* rider_a, const void* rider_b)
 {
-
     Rider a = ((Rider)rider_a);
     Rider b = ((Rider)rider_b);
     if (a->score > b->score)
@@ -287,30 +286,37 @@ int compare_scores(const void* rider_a, const void* rider_b)
 
 void print_info(int *id, Velodrome velodrome_ptr, int lap) {
     sem_wait(&velodrome_ptr->print_sem);
-    printf("Classification lap %d : ", lap);//velodrome_ptr->riders[id[0]].total_dist % velodrome_ptr->length);
-    for (int i = 0; i < velodrome_ptr->a_rider_cnt; i++) {
-        printf(" %d", id[i]);
+    printf("Classification lap %2d : ", lap);
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++) {
+        if (!velodrome_ptr->riders[id[i]].broken) printf(" %2d", id[i]);
     }
     printf("\n");
     sem_post(&velodrome_ptr->print_sem);
-    // But if the broken?
 }
 
 
 void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap) {
     qsort(scores, velodrome_ptr->rider_cnt, sizeof(struct Rider), compare_scores);
     sem_wait(&velodrome_ptr->print_sem);
-    printf("---------------------------------\n ", lap);
-    printf("Atention! Total scores lap %d \n", lap);
+    printf("---------------------------------\n");
+    printf("Attention! Total scores lap %d \n Active riders \n", lap);
     for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
-        printf(" %2d", scores[i].id);
+        if(!scores[i].broken) printf(" %2d", scores[i].id);
     }
     printf("\n");
     for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
-        printf(" %2d", scores[i].score);
+        if(!scores[i].broken) printf(" %2d", scores[i].score);
+    }
+    printf("\n---------------------------------\n");
+
+    printf(" Riders crashed \n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(scores[i].broken) printf(" %2d", scores[i].id);
+    }
+    printf("\n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(scores[i].broken) printf(" %2d", scores[i].score);
     }
     printf("\n---------------------------------\n");
     sem_post(&velodrome_ptr->print_sem);
-    // But, if the broked?
-
 }
