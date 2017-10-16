@@ -113,6 +113,7 @@ void step(char dir, Rider rider, Velodrome vel)
 
     if (!final_dir)
     {
+        printf("%d didn't walk\n", rider->id);
         new_meter = meter;
         new_lane = lane;
         // Compensate dist added after step
@@ -125,6 +126,7 @@ void step(char dir, Rider rider, Velodrome vel)
     else if (final_dir == 'b')
     {
         vel->pista[meter][lane] = -1;
+        sem_post(&vel->velodrome_sem);
         return;
     }
 
