@@ -91,9 +91,10 @@ void step(char dir, Rider rider, Velodrome vel)
         if ((rider_id = vel->pista[new_meter][new_lane]) == -1)
             final_dir = move_to;
 
-        if (rider_id >= 0 && rider_id != rider->id
-            && !vel->riders[rider_id].broken
-            && !vel->riders[rider_id].finished) {
+        if (rider_id >= 0 && rider_id < vel->rider_cnt
+                && rider_id != rider->id
+                && !vel->riders[rider_id].broken
+                && !vel->riders[rider_id].finished) {
             int res;
             sem_getvalue(&vel->arrive[rider_id], &res);
             if (!res) {
