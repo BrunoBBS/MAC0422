@@ -121,6 +121,9 @@ void destroy_velodrome(Velodrome* velodrome_ptr)
     // Join coordinator
     pthread_join(velodrome->coordinator_t, &ret);
 
+    // Take the status of end of run
+    print_end_of_run(velodrome_ptr);
+
     // Free track
     for (int i = 0; i < velodrome->length; i++) {
         //printf("free pista[%d]: 0x%lx\n", i, velodrome->pista[i]);
@@ -333,5 +336,35 @@ void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap) {
         if(scores[i].broken) printf(" %2d", scores[i].score);
     }
     printf("\n---------------------------------\n");
+    sem_post(&velodrome_ptr->print_sem);
+}
+
+void print_end_of_run (Velodrome velodrome_ptr) {
+    //qsort(scores, velodrome_ptr->rider_cnt, sizeof(struct Rider), compare_scores);
+    sem_wait(&velodrome_ptr->print_sem);
+    printf("\n==================================\n");
+    printf("TOTAL SCORES - FINAL LAP \n Active riders \n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(!velodrome_ptr->a_score[i].broken) printf(" %2d", velodrome_ptr->a_score[i].id);
+    }
+    printf("\n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(!velodrome_ptr->a_score[i].broken) printf(" %2d", velodrome_ptr->a_score[i].score);
+    }
+    printf(" Instant arrival \n ");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(!velodrome_ptr->a_score[i].broken) printf(" %2d", velodrome_ptr->a_score[i].total_time);
+    }
+    printf("\n==================================\n");
+
+    printf(" Riders crashed - Lap crashed\n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(velodrome_ptr->a_score[i].broken) printf(" %2d", velodrome_ptr->a_score[i].id);
+    }
+    printf("\n");
+    for (int i = 0; i < velodrome_ptr->rider_cnt; i++){
+        if(velodrome_ptr->a_score[i].broken) printf(" %2d", (velodrome_ptr->a_score[i].total_dist / velodrome_ptr->length)+1);
+    }
+    printf("\n==================================\n");
     sem_post(&velodrome_ptr->print_sem);
 }
