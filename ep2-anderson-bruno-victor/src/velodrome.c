@@ -31,7 +31,7 @@ void create_velodrome(
     sem_init(&velodrome->velodrome_sem, 0, 1);
     sem_init(&velodrome->rand_sem, 0, 1);
     sem_init(&velodrome->print_sem, 0, 1);
-    sem_init(&velodrome->score_sem, 0, 0);
+    sem_init(&velodrome->score_sem, 0, 1);
 
     for (int i = 0; i < rider_cnt; i++) {
         sem_init(&velodrome->arrive[i], 0, 0);
@@ -221,29 +221,30 @@ void mark_lap(Rider rider, int lap)
 
     Velodrome velodrome = rider->velodrome;
 
+    sem_wait(&rider->velodrome->score_sem);
     if (!(lap % 10) && lap > 0) {
         mark_sprint(rider, lap);
     }
 
-    sem_post(&rider->velodrome->score_sem);
     velodrome->placings_v[lap - 1][velodrome->s_indexes[lap - 1]++] = rider->id;
-    sem_wait(&rider->velodrome->score_sem);
 
 
     bool behind = false;
     for (int i = 0; i < velodrome->rider_cnt;i++)
     {
-        struct Rider rider2 = velodrome->riders[i];
-        if (!rider2.broken)
-            if(rider2.total_dist < rider->total_dist)
-            {
-                behind = true;
-                break;
-            }
+        if (i == rider->id)
+            continue;
+        Rider rider2 = &velodrome->riders[i];
+        if (!rider2->broken && rider2->total_dist <= rider->total_dist)
+        {
+            behind = true;
+            break;
+        }
     }
 
     if (!behind){
-        print_info(velodrome->placings_v[lap - 1], rider->velodrome, lap, velodrome->s_indexes[lap - 1]);
+        print_info(velodrome->placings_v[lap - 1], rider->velodrome, lap,
+                velodrome->s_indexes[lap - 1]);
         if (!(lap % 10) && lap > 0) {
             for (int i = 0; i < velodrome->rider_cnt; i++) {
                 velodrome->a_score[i] = velodrome->riders[i];
@@ -251,6 +252,7 @@ void mark_lap(Rider rider, int lap)
             print_scores(velodrome->a_score, rider->velodrome, lap);
         }
     }
+    sem_post(&rider->velodrome->score_sem);
 }
 
 void mark_overtake(Velodrome velodrome)
@@ -301,7 +303,7 @@ void print_info(int *id, Velodrome velodrome_ptr, int lap, int lap_cnt) {
     sem_wait(&velodrome_ptr->print_sem);
     printf("Classification lap %2d : ", lap);
     for (int i = 0; i < lap_cnt; i++) {
-        if (!velodrome_ptr->riders[id[i]].broken) printf(" %2d", id[i]);
+        printf(" %2d", id[i]);
     }
     printf("\n");
     sem_post(&velodrome_ptr->print_sem);

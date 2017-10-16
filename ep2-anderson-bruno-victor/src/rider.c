@@ -192,6 +192,7 @@ void* ride(void* args)
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
     int lap = 1;
+    int marked = -1;
     while (lap < vel->lap_cnt) {
         if (get_pos(myself) == 0 && myself->step_time == 0) {
             lap = myself->total_dist / vel->length;
@@ -200,7 +201,11 @@ void* ride(void* args)
                     myself->id, lap);
             if (myself->total_dist > vel->length - 1)
                 myself->speed = change_speed(myself);
-            mark_lap(myself, myself->total_dist / vel->length);
+            if (marked != lap)
+            {
+                mark_lap(myself, myself->total_dist / vel->length);
+                marked = lap;
+            }
             if (lap > 10 && lap % 15 == 0 && will_break(myself)) {
                 sem_wait(&vel->print_sem);
                 printf("*************************************\n");
