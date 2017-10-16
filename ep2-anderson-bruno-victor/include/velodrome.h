@@ -85,9 +85,10 @@ struct Velodrome
     // Random generator semaphor
     sem_t rand_sem;
 
-    // Scores semaphore
+    // Score's semaphore
     sem_t score_sem;
 
+    // Score's rider controller 
     struct Rider *a_score;
 };
 
