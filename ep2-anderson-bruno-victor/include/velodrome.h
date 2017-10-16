@@ -80,7 +80,7 @@ struct Velodrome
 
     // Stack of placings by round
     int *s_indexes;
-    uint **placings_v;
+    int **placings_v;
 
     // Random generator semaphor
     sem_t rand_sem;
@@ -125,7 +125,7 @@ bool is_sprint(Velodrome *velodrome_ptr, Rider rider);
 int compare_scores(const void * a, const void * b);
 
 // Print infos how scores or positions
-void print_info(uint *id, Velodrome velodrome_ptr, int lap); 
+void print_info(int *id, Velodrome velodrome_ptr, int lap); 
 
 void print_scores(struct Rider *scores, Velodrome velodrome_ptr, int lap);
 

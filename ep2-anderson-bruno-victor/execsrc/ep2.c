@@ -37,12 +37,5 @@ int main(int argc, char** argv)
 
     create_velodrome(&velodrome, vel_len, rider_cnt, lap_cnt);
 
-    while (velodrome->a_rider_cnt > 0) {
-        for (int i = 0; i < velodrome->rider_cnt; i++) {
-            if (velodrome->riders[i].broken)
-                pthread_join(velodrome->riders[i].rider_t, NULL);
-        }
-    }
-
     destroy_velodrome(&velodrome);
 }
