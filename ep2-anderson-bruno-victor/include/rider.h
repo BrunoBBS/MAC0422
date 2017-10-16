@@ -50,6 +50,7 @@ struct Rider
     bool finished;
     int score;
     // Absolute position
+    int total_time;
     int total_dist;
     int lane;
     int step_time;

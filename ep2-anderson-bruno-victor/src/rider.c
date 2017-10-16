@@ -189,6 +189,7 @@ void* ride(void* args)
     myself->speed = V30KM;
 
     // wait start
+    myself->total_time = 0;
     pthread_barrier_wait(&vel->start_barrier);
     if (globals.e)
         printf("rider:l%3d -> Rider %d started!\n", __LINE__, myself->id);
@@ -228,7 +229,10 @@ void* ride(void* args)
 
         // go!!
         if (myself->step_time < curr_spd)
+        {
             myself->step_time += vel->round_time;
+            myself->total_time += vel->round_time;
+        }
         else if (myself->step_time >= curr_spd) {
             char dir = change_lane(myself);
             if (dir != 's') {
