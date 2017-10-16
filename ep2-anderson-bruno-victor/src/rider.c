@@ -98,7 +98,9 @@ void step(char dir, Rider rider, Velodrome vel)
             {
                 i--;
                 sem_post(&vel->velodrome_sem);
+                printf("yolo %d\n", rider->id);
                 sem_wait(&vel->arrive[rider_id]);
+                printf("yay %d\n", rider->id);
                 sem_post(&vel->arrive[rider_id]);
                 sem_wait(&vel->velodrome_sem);
             }
@@ -138,15 +140,13 @@ void* coordinator(void* args)
                 sem_post(&vel->arrive[i]);
             }
         }
-    if (globals.e)
-        printf("rider:l%3d -> rider count %d\n", __LINE__, vel->a_rider_cnt);
         for (int i = 0; i < vel->rider_cnt; i++) {
-            if (!vel->riders[i].broken)
+            if (!vel->riders[i].broken && !vel->riders[i].finished)
                 sem_wait(&vel->arrive[i]);
         }
         mark_overtake(vel);
         for (int j = 0; j < vel->rider_cnt; j++) {
-            if (!vel->riders[j].broken)
+            if (!vel->riders[j].broken && !vel->riders[j].finished)
                 sem_post(&vel->continue_flag[j]);
         }
     }
@@ -205,8 +205,6 @@ void* ride(void* args)
                 // TODO die
                 step('b', myself, vel);
                 myself->broken = true;
-                sem_post(&vel->arrive[myself->id]);
-                vel->a_rider_cnt -= 1;
                 break;
             }
         }
@@ -238,8 +236,12 @@ void* ride(void* args)
             nanosleep(&sleep_time, NULL);
         }
     }
-    myself->finished = true;
-    sem_post(&vel->arrive[myself->id]);
+    if (!myself->broken)
+        myself->finished = true;
+    int res;
+    sem_getvalue(&vel->arrive[myself->id], &res);
+    if (!res)
+        sem_post(&vel->arrive[myself->id]);
     vel->a_rider_cnt--;
     if (globals.e)
         printf("rider:l%3d -> Rider %d terminated\n", __LINE__, myself->id);
