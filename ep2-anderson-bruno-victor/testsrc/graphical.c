@@ -21,7 +21,7 @@ struct winsize wins;
 void print_vel(Velodrome velodrome)
 {
     sem_wait(&velodrome->velodrome_sem);
-    
+
     int i = 0;
     while (i < velodrome->lap_cnt) {
         for (int rider = 0; rider < velodrome->rider_cnt; rider++) {
@@ -36,7 +36,7 @@ void print_vel(Velodrome velodrome)
         fprintf(stderr, "\n");
         i += wins.ws_col;
     }
-    
+
     for (int j = 0; j < 61; j++)
         printf("* ");
     printf("\n");
@@ -90,8 +90,8 @@ void* debug_print_thread(void* velodrome_ptr)
 int main(int argc, char** argv)
 {
     uint vel_len = 10;
-    uint rider_cnt = 5;
-    uint lap_cnt = 10;
+    uint rider_cnt = 20;
+    uint lap_cnt = 30;
 
     srand(time(0));
 
