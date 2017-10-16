@@ -6,8 +6,11 @@ $ make move
 
 Para executar o programa basta usar:
 
-$ ./ep2 <d n v>
+$ ./ep2 <t> <n> <v> [d]
 
-Onde:	d é o tamanho da pista em metros;
+Onde:	t é o tamanho da pista em metros;
 	n é o número de ciclistas;
 	v é o número de voltas da corrida.
+	d é o argumento opcional de debugging
+
+O relatório e slides estão na pasta 'documentation'. Para mais detalhes vide relatório.
