@@ -45,24 +45,23 @@ void step(char dir, Rider rider, Velodrome vel)
     int new_meter = (meter + 1) % vel->length;
     // Exit track if broken
     char move_p[3];
-    
-    switch (dir)
-    {
-        case 'r':
-            move_p[0] = 'r';
-            move_p[1] = 'l';
-            move_p[2] = 'f';
-            break;
-        case 'l':
-            move_p[0] = 'l';
-            move_p[1] = 'r';
-            move_p[2] = 'f';
-            break;
-        case 'f':
-            move_p[0] = 'f';
-            move_p[1] = 'r';
-            move_p[2] = 'l';
-            break;
+
+    switch (dir) {
+    case 'r':
+        move_p[0] = 'r';
+        move_p[1] = 'l';
+        move_p[2] = 'f';
+        break;
+    case 'l':
+        move_p[0] = 'l';
+        move_p[1] = 'r';
+        move_p[2] = 'f';
+        break;
+    case 'f':
+        move_p[0] = 'f';
+        move_p[1] = 'r';
+        move_p[2] = 'l';
+        break;
     }
     char final_dir = dir == 'b' ? 'b' : '\0';
 
@@ -71,11 +70,10 @@ void step(char dir, Rider rider, Velodrome vel)
     int new_lane = lane;
 
     int tries = 3;
-    
-    for (int i = 0; i < 3 && !final_dir && tries > 0; i++)
-    {
+
+    for (int i = 0; i < 3 && !final_dir && tries > 0; i++) {
         char move_to = move_p[i];
-        int rider_id = -1; 
+        int rider_id = -1;
 
         if (move_to == 'r' && lane + 1 == 10)
             continue;
@@ -91,14 +89,12 @@ void step(char dir, Rider rider, Velodrome vel)
         if ((rider_id = vel->pista[new_meter][new_lane]) == -1)
             final_dir = move_to;
 
-        if (rider_id >= 0 && rider_id != rider->id &&
-                !vel->riders[rider_id].broken &&
-                !vel->riders[rider_id].finished)
-        {
+        if (rider_id >= 0 && rider_id != rider->id
+            && !vel->riders[rider_id].broken
+            && !vel->riders[rider_id].finished) {
             int res;
             sem_getvalue(&vel->arrive[rider_id], &res);
-            if (!res)
-            {
+            if (!res) {
                 i--;
                 tries--;
                 printf("Rider %d is waiting for %d\n", rider->id, rider_id);
@@ -111,20 +107,18 @@ void step(char dir, Rider rider, Velodrome vel)
         }
     }
 
-    if (!final_dir)
-    {
+    if (!final_dir) {
         new_meter = meter;
         new_lane = lane;
         // Compensate dist added after step
         rider->total_dist--;
-    }
-    else if (final_dir == 'r')
+    } else if (final_dir == 'r')
         new_lane = lane + 1;
     else if (final_dir == 'l')
         new_lane = lane - 1;
-    else if (final_dir == 'b')
-    {
+    else if (final_dir == 'b') {
         vel->pista[meter][lane] = -1;
+        sem_post(&vel->velodrome_sem);
         return;
     }
 
@@ -147,7 +141,7 @@ void* coordinator(void* args)
             if (!vel->riders[i].broken && !vel->riders[i].finished) {
                 int val;
                 sem_getvalue(&vel->arrive[i], &val);
-                //printf("Waiting %d: %d\n", i, val);
+                // printf("Waiting %d: %d\n", i, val);
                 sem_wait(&vel->arrive[i]);
                 sem_post(&vel->arrive[i]);
             }
@@ -157,12 +151,12 @@ void* coordinator(void* args)
                 sem_wait(&vel->arrive[i]);
         }
         mark_overtake(vel);
-        //printf("B1\n");
+        // printf("B1\n");
         for (int j = 0; j < vel->rider_cnt; j++) {
             if (!vel->riders[j].broken && !vel->riders[j].finished)
                 sem_post(&vel->continue_flag[j]);
         }
-        //printf("B2\n");
+        // printf("B2\n");
     }
 }
 
@@ -279,7 +273,7 @@ char change_lane(Rider rider)
 {
     sem_wait(&rider->velodrome->rand_sem);
     bool will_change = rand() % 100 < ch_lane_chance; // Will be changing lanes?
-    char p_lane = rand() % 100 < 50 ? 'r' : 'l';   // Which side if it will
+    char p_lane = rand() % 100 < 50 ? 'r' : 'l';      // Which side if it will
     sem_post(&rider->velodrome->rand_sem);
 
     if (will_change && p_lane == 'l' && rider->lane > 0)
