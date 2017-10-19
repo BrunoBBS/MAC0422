@@ -1,10 +1,10 @@
 #ifndef __TYPEDEF_HPP__
 #define __TYPEDEF_HPP__
 
-struct
+struct globals
 {
-    bool d = false;
-    bool e = false;
-} globals;
+    static bool d;
+    static bool e;
+};
 
 #endif

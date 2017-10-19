@@ -1,10 +1,13 @@
 #include "ep_base.hpp"
 #include "util.hpp"
+#include "memory.hpp"
 
 #include <stdexcept>
 
 // Construtor
-EP::EP () :
+EP::EP (std::string p_mem_filename,
+        std::string v_mem_filename) :
+    p_mem_filename(p_mem_filename), v_mem_filename(v_mem_filename),
     free_space_manager(1), page_replace_manager(1)
 {
 }
@@ -144,10 +147,36 @@ void EP::load_file (std::string filename)
         }
     }
 
+    input_file.close();
+
+    memory = std::shared_ptr<Memory> (
+            new Memory(tot_mem, vir_mem,
+                p_mem_filename, v_mem_filename));
+
+    if (!memory->good())
+    {
+        memory.reset();
+        std::cerr << "Não foi possível acessar os arquivos '" <<
+           p_mem_filename << "' e/ou '" << v_mem_filename << "'\n";
+        return;
+    }
+
+    std::cout << "Arquivo '" << filename << "' carregado com sucesso\n";
+
+    if (globals::e)
+    {
+        std::cout <<
+            processes.size() << " processos carregados\n";
+        std::cout <<
+            comp_events.size() << " eventos de compactação carregados\n";
+    }
+
+    // Saves input structures
     phys_mem = tot_mem;
     virt_mem = vir_mem;
     alloc_size = alloc_s;
     page_size = pages_s;
+    compress_evn = comp_events;
     process_list = processes;
 }
 

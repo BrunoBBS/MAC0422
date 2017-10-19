@@ -1,6 +1,9 @@
 #ifndef __EP_BASE_HPP__
 #define __EP_BASE_HPP__
 
+#include "typedef.hpp"
+
+#include "memory.hpp"
 #include "process.hpp"
 
 #include "space_manager.hpp"
@@ -22,7 +25,8 @@ class PageReplacer;
 class EP
 {
     public:
-        EP();
+        EP(std::string p_mem_filename = "/tmp/ep3.mem",
+                std::string v_mem_filename = "/tmp/ep3.vir");
 
         // Loads input file
         void load_file(std::string filename);
@@ -43,6 +47,10 @@ class EP
         bool add_page_replacer(int option_number, PageReplacer *replacer);
 
     private:
+        // Memory object
+        std::string p_mem_filename;
+        std::string v_mem_filename;
+        std::shared_ptr<Memory> memory;
 
         // Allowed managers
         std::map<int, std::unique_ptr<SpaceManager> > space_managers;
@@ -63,6 +71,9 @@ class EP
         int alloc_size;
         // Page size
         int page_size;
+
+        // Compress memory events
+        std::vector<int> compress_evn;
 
         // List of processes
         std::vector<Process> process_list;

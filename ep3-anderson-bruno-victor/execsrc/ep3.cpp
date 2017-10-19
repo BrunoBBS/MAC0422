@@ -87,9 +87,9 @@ int main ()
                 "extra     (extra)\n";
         else if (c_parts[0] == "extra")
         {
-            globals.e = !globals.e;
+            globals::e = !globals::e;
             std::cout << "Extra prints are now " <<
-                (globals.e ? "on" : "off") <<
+                (globals::e ? "on" : "off") <<
                 "\n";
         }
         else if (c_parts[0] == "sai" || c_parts[0] == "exit")

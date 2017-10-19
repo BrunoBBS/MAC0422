@@ -10,6 +10,8 @@ class PageReplacer
     public:
         PageReplacer(EP &ep, int man_id);
 
+        virtual void access(int pos) = 0;
+
     private:
         int man_id;
 };
