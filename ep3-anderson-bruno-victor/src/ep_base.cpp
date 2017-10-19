@@ -172,3 +172,33 @@ void EP::run(std::string interval)
         " -> Function run not implemented."
         << std::endl;
 }
+
+// Insert space manager option
+bool EP::add_space_manager(int option_number, SpaceManager *manager)
+{
+    if (!manager)
+        return false;
+
+    std::pair<std::map<int, std::unique_ptr<SpaceManager> >::iterator, bool>
+        ret = space_managers.insert(
+                std::pair<int, std::unique_ptr<SpaceManager> > (
+                 option_number,
+                 std::unique_ptr<SpaceManager> (manager)));
+
+    return ret.second;
+}
+
+// Insert page replacer option
+bool EP::add_page_replacer(int option_number, PageReplacer *replacer)
+{
+    if (!replacer)
+        return false;
+
+    std::pair<std::map<int, std::unique_ptr<PageReplacer> >::iterator, bool>
+        ret = page_replacers.insert(
+                std::pair<int, std::unique_ptr<PageReplacer> > ( 
+                    option_number,
+                    std::unique_ptr<PageReplacer> (replacer)));
+
+    return ret.second;
+}

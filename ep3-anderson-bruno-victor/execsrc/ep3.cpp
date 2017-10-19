@@ -9,6 +9,12 @@
 
 #include <vector>
 
+// Create options
+void initialize (EP &ep)
+{
+}
+
+
 // Main function
 int main ()
 {
@@ -17,6 +23,9 @@ int main ()
 
     // Base EP class
     EP ep; 
+
+    // Initialize
+    initialize (ep);
 
     // While not exited
     while (true)

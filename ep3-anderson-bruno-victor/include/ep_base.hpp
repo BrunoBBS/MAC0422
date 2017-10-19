@@ -3,13 +3,21 @@
 
 #include "process.hpp"
 
+#include "space_manager.hpp"
+#include "page_replacer.hpp"
+
 #include <iostream>
 #include <fstream>
 
 #include <string>
 
+#include <memory>
 #include <algorithm>
 #include <vector>
+#include <map>
+
+class SpaceManager;
+class PageReplacer;
 
 class EP
 {
@@ -28,7 +36,17 @@ class EP
         // Runs simulator
         void run(std::string interval);
 
+        // Insert space manager option
+        bool add_space_manager(int option_number, SpaceManager *manager);
+
+        // Insert page replacer option
+        bool add_page_replacer(int option_number, PageReplacer *replacer);
+
     private:
+
+        // Allowed managers
+        std::map<int, std::unique_ptr<SpaceManager> > space_managers;
+        std::map<int, std::unique_ptr<PageReplacer> > page_replacers;
 
         // Currently selected managers
         int free_space_manager;
