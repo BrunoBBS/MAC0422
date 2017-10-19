@@ -1,6 +1,8 @@
 #include "ep_base.hpp"
 #include "util.hpp"
 
+#include <stdexcept>
+
 // Construtor
 EP::EP () :
     free_space_manager(1), page_replace_manager(1)
