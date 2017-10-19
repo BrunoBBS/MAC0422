@@ -19,7 +19,7 @@ Memory::Memory(int p_qty, int v_qty,
         return;
     }
 
-    v_mem_file.open(p_mem_filename, mode);
+    v_mem_file.open(v_mem_filename, mode);
     
     if (!p_mem_file.good())
     {
