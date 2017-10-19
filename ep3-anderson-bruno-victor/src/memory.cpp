@@ -21,10 +21,10 @@ Memory::Memory(int p_qty, int v_qty,
 
     v_mem_file.open(v_mem_filename, mode);
     
-    if (!p_mem_file.good())
+    if (!v_mem_file.good())
     {
         std::cerr << "Error opening virtual memory file '" <<
-            p_mem_filename << "'\n";
+            v_mem_filename << "'\n";
         is_ok = false;
         return;
     }
