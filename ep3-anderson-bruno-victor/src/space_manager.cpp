@@ -1,7 +1,11 @@
 #include "space_manager.hpp"
 
-SpaceManager::SpaceManager (EP &ep, int man_id) :
-    man_id(man_id)
+SpaceManager::SpaceManager (EP &ep, std::string name) :
+    name(name)
 {
-    ep.add_space_manager(man_id, this);
+}
+
+std::string SpaceManager::get_name()
+{
+    return name;
 }

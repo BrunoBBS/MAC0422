@@ -8,10 +8,12 @@ class EP;
 class SpaceManager
 {
     public:
-        SpaceManager(EP &ep, int man_id);
+        SpaceManager(EP &ep, std::string name);
+
+        std::string get_name();
 
     private:
-        int man_id;
+        std::string name;
 };
 
 #endif

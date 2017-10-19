@@ -8,12 +8,14 @@ class EP;
 class PageReplacer
 {
     public:
-        PageReplacer(EP &ep, int man_id);
+        PageReplacer(EP &ep, std::string name);
+
+        std::string get_name();
 
         virtual void access(int pos) = 0;
 
     private:
-        int man_id;
+        std::string name;
 };
 
 #endif
