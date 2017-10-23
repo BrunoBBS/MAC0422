@@ -7,4 +7,6 @@ struct globals
     static bool e;
 };
 
+typedef char byte;
+
 #endif
