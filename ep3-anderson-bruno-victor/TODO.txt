@@ -19,7 +19,7 @@ d8888  d88P  Y88b       d88P  d8888   d8888         d88P  d88P  Y88b d88P  Y88b 
           - Optimal
           - FIFO
           - Least Recently Used 2nd version
-Bruno     - Least Recently Used 4th version
+          - Least Recently Used 4th version
 
 Seiji     - Base
 Andrei    - Report
