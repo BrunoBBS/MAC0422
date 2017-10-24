@@ -9,4 +9,8 @@ struct globals
 
 typedef char byte;
 
+class EP;
+class PageReplacer;
+class SpaceManager;
+
 #endif

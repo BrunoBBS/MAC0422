@@ -1,6 +1,11 @@
 #include "ep_base.hpp"
+#include "memory.hpp"
 #include "typedef.hpp"
 #include "util.hpp"
+
+#include "space_managers/best_fit.hpp"
+
+#include "page_replacers/optimal.hpp"
 
 #include <stdio.h>
 
@@ -12,6 +17,13 @@
 // Create options
 void initialize (EP &ep)
 {
+    std::shared_ptr<Memory> memory = ep.mem_handler();
+
+    // Add space managers
+    ep.add_space_manager(1, new SpaceManagers::BestFit(ep));
+
+    // Add page replacers
+    ep.add_page_replacer(1, new PageReplacers::Optimal(ep));
 }
 
 
@@ -26,6 +38,10 @@ int main ()
 
     // Initialize
     initialize (ep);
+
+    // Select managers
+    ep.select_free_space_manager("1");
+    ep.select_page_replace_manager("1");
 
     // While not exited
     while (true)
@@ -65,7 +81,7 @@ int main ()
                     "Seleciona o algoritmo de substituição de páginas\n"
                     << "Usage: substitui <num>\n";
             else
-                ep.select_free_space_manager(c_parts[1]);
+                ep.select_page_replace_manager(c_parts[1]);
         }
         else if (c_parts[0] == "executa" || c_parts[0] == "run")
         {
@@ -74,7 +90,7 @@ int main ()
                     "Executa o simulador\n"
                     << "Usage: executa <intervalo>\n";
             else
-                ep.select_free_space_manager(c_parts[1]);
+                ep.run(c_parts[1]);
         }
         else if (c_parts[0] == "ajuda" || c_parts[0] == "help")
             std::cout << "Comandos disponíveis:\n" <<

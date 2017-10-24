@@ -1,6 +1,8 @@
 #ifndef __PROCESS_HPP__
 #define __PROCESS_HPP__
 
+#include "typedef.hpp"
+
 #include <string>
 #include <vector>
 
@@ -33,10 +35,18 @@ class Process
         // Resets state of process
         void reset();
 
+        // Set pid
+        inline void set_pid(uint pid) { this->pid = pid; }
+
+        // Set pid
+        inline uint get_pid() { return pid; }
+
     private:
         /* * * * * * * * * * *
          * Fixed properties  *
          * * * * * * * * * * */
+        // Unique process identifier
+        byte uid;
         // Process initialization time
         int init_time;
         // Process finalization time
@@ -47,6 +57,12 @@ class Process
         std::string name;
         // Memory accesses
         std::vector<MemoryAccess> mem_accesses;
+
+        /* * * * * * * * * * * *
+         * Dynamic properties  *
+         * * * * * * * * * * * */
+        // Process id in the system
+        uint pid;
 };
 
 #endif

@@ -181,27 +181,91 @@ void EP::load_file (std::string filename)
 }
 
 // Selects free space manager
-void EP::select_free_space_manager (std::string manager)
+void EP::select_free_space_manager (std::string manager_s)
 {
-    std::cout << __FILE__ << ":" << __LINE__ <<
-        " -> Function select_free_space_manager not implemented."
-        << std::endl;
+    int manager;
+    bool valid = true;
+    try {
+        manager = std::stoi(manager_s);
+    }
+    catch (std::invalid_argument e)
+    {
+        valid = false;
+    }
+
+    std::map<int, std::shared_ptr<SpaceManager> >::iterator location;
+
+    if (valid &&
+            (location = space_managers.find(manager)) == space_managers.end())
+        valid = false;
+
+    if (!valid)
+    {
+        std::cerr << "Algoritmo de gerenciamento de espaço livre '" <<
+            manager_s << "' inválido\n";
+        return;
+    }
+
+    std::cout << "Algoritmo de gerenciamento de espaço livre '" <<
+        location->second->get_name() << "' selecionado\n";
+
+    free_space_manager = manager;
 }
 
 // Selects page replace manager
-void EP::select_page_replace_manager (std::string manager)
+void EP::select_page_replace_manager (std::string manager_s)
 {
-    std::cout << __FILE__ << ":" << __LINE__ <<
-        " -> Function select_page_replace_manager not implemented."
-        << std::endl;
+    int manager;
+    bool valid = true;
+    try {
+        manager = std::stoi(manager_s);
+    }
+    catch (std::invalid_argument e)
+    {
+        valid = false;
+    }
+
+    std::map<int, std::shared_ptr<PageReplacer> >::iterator location;
+
+    if (valid &&
+            (location = page_replacers.find(manager)) == page_replacers.end())
+        valid = false;
+
+    if (!valid)
+    {
+        std::cerr << "Algoritmo de substituição de páginas '" <<
+            manager_s << "' inválido\n";
+        return;
+    }
+
+    std::cout << "Algoritmo de substituição de páginas '" <<
+        location->second->get_name() << "' selecionado\n";
+    
+    page_replace_manager = manager;
 }
 
 // Runs simulator
-void EP::run(std::string interval)
+void EP::run(std::string interval_s)
 {
-    std::cout << __FILE__ << ":" << __LINE__ <<
-        " -> Function run not implemented."
-        << std::endl;
+    int interval;
+    try {
+        interval = std::stoi(interval_s);
+    }
+    catch (std::invalid_argument e)
+    {
+        std::cerr << "Intervalo inválido '" << interval_s << "'\n";
+        return;
+    }
+
+    std::shared_ptr<PageReplacer> page_replacer;
+    std::shared_ptr<SpaceManager> space_manager;
+
+    page_replacer = page_replacers.at(page_replace_manager);
+    space_manager = space_managers.at(free_space_manager);
+
+    space_manager->set_page_replacer(page_replacer);
+
+    uint t = 0;
 }
 
 // Insert space manager option
@@ -210,11 +274,11 @@ bool EP::add_space_manager(int option_number, SpaceManager *manager)
     if (!manager)
         return false;
 
-    std::pair<std::map<int, std::unique_ptr<SpaceManager> >::iterator, bool>
+    std::pair<std::map<int, std::shared_ptr<SpaceManager> >::iterator, bool>
         ret = space_managers.insert(
-                std::pair<int, std::unique_ptr<SpaceManager> > (
-                 option_number,
-                 std::unique_ptr<SpaceManager> (manager)));
+                std::pair<int, std::shared_ptr<SpaceManager> > (
+                    option_number,
+                    std::shared_ptr<SpaceManager> (manager)));
 
     return ret.second;
 }
@@ -225,11 +289,11 @@ bool EP::add_page_replacer(int option_number, PageReplacer *replacer)
     if (!replacer)
         return false;
 
-    std::pair<std::map<int, std::unique_ptr<PageReplacer> >::iterator, bool>
+    std::pair<std::map<int, std::shared_ptr<PageReplacer> >::iterator, bool>
         ret = page_replacers.insert(
-                std::pair<int, std::unique_ptr<PageReplacer> > ( 
+                std::pair<int, std::shared_ptr<PageReplacer> > ( 
                     option_number,
-                    std::unique_ptr<PageReplacer> (replacer)));
+                    std::shared_ptr<PageReplacer> (replacer)));
 
     return ret.second;
 }

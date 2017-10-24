@@ -19,9 +19,6 @@
 #include <vector>
 #include <map>
 
-class SpaceManager;
-class PageReplacer;
-
 class EP
 {
     public:
@@ -32,19 +29,22 @@ class EP
         void load_file(std::string filename);
 
         // Selects free space manager
-        void select_free_space_manager(std::string manager);
+        void select_free_space_manager(std::string manager_s);
 
         // Selects page replace manager
-        void select_page_replace_manager(std::string manager);
+        void select_page_replace_manager(std::string manager_s);
 
         // Runs simulator
-        void run(std::string interval);
+        void run(std::string interval_s);
 
         // Insert space manager option
         bool add_space_manager(int option_number, SpaceManager *manager);
 
         // Insert page replacer option
         bool add_page_replacer(int option_number, PageReplacer *replacer);
+
+        // Get memory handler
+        inline std::shared_ptr<Memory> mem_handler() { return memory; }
 
     private:
         // Memory object
@@ -53,8 +53,8 @@ class EP
         std::shared_ptr<Memory> memory;
 
         // Allowed managers
-        std::map<int, std::unique_ptr<SpaceManager> > space_managers;
-        std::map<int, std::unique_ptr<PageReplacer> > page_replacers;
+        std::map<int, std::shared_ptr<SpaceManager> > space_managers;
+        std::map<int, std::shared_ptr<PageReplacer> > page_replacers;
 
         // Currently selected managers
         int free_space_manager;
