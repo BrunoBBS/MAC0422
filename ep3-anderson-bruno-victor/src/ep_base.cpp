@@ -171,6 +171,9 @@ void EP::load_file (std::string filename)
             comp_events.size() << " eventos de compactação carregados\n";
     }
 
+    // Now we loaded a file
+    file_loaded = true;
+
     // Saves input structures
     phys_mem = tot_mem;
     virt_mem = vir_mem;
@@ -247,6 +250,12 @@ void EP::select_page_replace_manager (std::string manager_s)
 // Runs simulator
 void EP::run(std::string interval_s)
 {
+    if (!file_loaded)
+    {
+        std::cerr << "Nenhum arquivo carregado!\n";
+        return;
+    }
+
     int interval;
     try {
         interval = std::stoi(interval_s);

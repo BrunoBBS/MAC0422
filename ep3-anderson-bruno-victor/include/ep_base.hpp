@@ -60,6 +60,9 @@ class EP
         int free_space_manager;
         int page_replace_manager;
         
+        // Is any file loaded?
+        bool file_loaded = false;
+
         /* * * * * * * * * * *
          * Loaded from input *
          * * * * * * * * * * */
