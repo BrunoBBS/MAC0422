@@ -1,0 +1,14 @@
+=====Memory Managers=====
+          - Best Fit
+          - Worst Fit
+          - Quick Fit
+
+=====Page Managers=====
+          - Optimal
+          - FIFO
+          - Least Recently Used 2nd version
+Bruno     - Least Recently Used 4th version
+
+Seiji     - Base
+Andrei    - Report
+Everybody - Presentation
