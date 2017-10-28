@@ -60,9 +60,8 @@ void EP::load_file (std::string filename)
 
     // Reads remaining lines in file
     int line_n = 1;
-    std::vector<uint> comp_events;
     std::vector<Process> processes;
-    std::map<uint, std::vector<std::pair<uint, int> > > m_accesses;
+    std::map<uint, std::vector<Event> > events;
 
     uint uid = 0;
 
@@ -92,8 +91,21 @@ void EP::load_file (std::string filename)
             if (parts[1] != "COMPACTAR")
                 valid_line = false;
 
+            // If line is valid
             if (valid_line)
-                comp_events.push_back(time);
+            {
+                // Generate compress event
+                Event evn;
+                evn.type = COMPRESS;
+                evn.uid = -1;
+                evn.pos = -1;
+
+                // Add to events
+                std::map<uint, std::vector<Event> >::iterator evn_time =
+                    events.insert({time, std::vector<Event> ()}).first;
+
+                evn_time->second.push_back(evn);
+            }
         }
 
         // Parse process
@@ -116,6 +128,20 @@ void EP::load_file (std::string filename)
             if (valid_line)
                 name = parts[3];
 
+            {
+                // Generate process start event
+                Event evn;
+                evn.type = START;
+                evn.uid = uid;
+                evn.pos = -1;
+
+                // Add to events
+                std::map<uint, std::vector<Event> >::iterator evn_time =
+                    events.insert({t0, std::vector<Event> ()}).first;
+
+                evn_time->second.push_back(evn);
+            }
+
             for (unsigned int i = 4;
                     valid_line && i < parts.size() - 1; i += 2)
             {
@@ -129,17 +155,36 @@ void EP::load_file (std::string filename)
                 {
                     valid_line = false;
                 }
-                
-                std::map<uint, std::vector<std::pair<uint, int> > >::iterator
-                    access_time = m_accesses.insert({
-                            time,
-                            std::vector<std::pair<uint, int> > ()}).first;
 
-                access_time->second.push_back({uid++, position});
+                // Generate memory access event
+                Event evn;
+                evn.type = ACCESS;
+                evn.uid = uid;
+                evn.pos = position;
+
+                // Add to events
+                std::map<uint, std::vector<Event> >::iterator evn_time =
+                    events.insert({time, std::vector<Event> ()}).first;
+
+                evn_time->second.push_back(evn);
+            }
+            
+            {
+                // Generate process end event
+                Event evn;
+                evn.type = END;
+                evn.uid = uid;
+                evn.pos = -1;
+
+                // Add to events
+                std::map<uint, std::vector<Event> >::iterator evn_time =
+                    events.insert({tf, std::vector<Event> ()}).first;
+
+                evn_time->second.push_back(evn);
             }
 
             if (valid_line)
-                processes.push_back(Process(t0, tf, b, uid, name));
+                processes.push_back(Process(t0, tf, b, uid++, name));
         }
         else
         {
@@ -175,20 +220,27 @@ void EP::load_file (std::string filename)
         std::cout <<
             processes.size() << " processos carregados\n";
         std::cout <<
-            comp_events.size() << " eventos de compactação carregados\n";
+            events.size() << " eventos carregados\n";
     }
 
     // Now we loaded a file
     file_loaded = true;
+
+    // Sort events by type
+    for (std::pair<uint, std::vector<Event> > evn_vect : events)
+        std::sort(evn_vect.second.begin(), evn_vect.second.end(),
+                [](Event const &a, Event const &b)
+                {
+                    return a.type > b.type; 
+                });
 
     // Saves input structures
     phys_mem = tot_mem;
     virt_mem = vir_mem;
     alloc_size = alloc_s;
     page_size = pages_s;
-    compress_evn = comp_events;
+    evn = events;
     process_list = processes;
-    mem_accesses = m_accesses;
 }
 
 // Selects free space manager
@@ -286,41 +338,55 @@ void EP::run(std::string interval_s)
     // Current time
     uint t = 0;
 
-    // Iterator of memory accesses
-    std::map<uint, std::vector<std::pair<uint, int> > >::iterator next_acc;
-    next_acc = mem_accesses.begin();
-    
-    // Iterator 
-    std::vector<uint>::iterator next_com;
-    next_com = compress_evn.begin();
+    // Iterator of relevant timestamps
+    std::map<uint, std::vector<Event> >::iterator next_rel_time;
+    next_rel_time = evn.begin();
 
-    // While there are still memory accesses or compression events
-    while (next_acc != mem_accesses.end())
+    // While there are still relevant events
+    while (next_rel_time != evn.end())
     {
         // Warns page replacer that a clock instant has elapsed
         page_replacer->clock();
 
-        // If there are still memory accesses to do and if next access is now
-        if (next_acc != mem_accesses.end() && next_acc->first == t)
+        // If there are events to process
+        if (next_rel_time->first == t)
         {
-            std::vector<std::pair<uint, int> > &accesses_now =
-                next_acc->second;
+            std::vector<Event> &events = next_rel_time->second;
+
             // Run each access
-            for (std::pair<uint, int> access : accesses_now)
-                space_manager->write(access.second,
-                        process_list[access.first].get_pid(), access.first);
+            for (Event event : events)
+            {
+                switch (event.type)
+                {
+                    case START:
+                        space_manager->start_process(
+                                process_list[event.uid]);
+                        break;
+                    case ACCESS:
+                        space_manager->write(event.pos,
+                                process_list[event.uid].get_pid(),
+                                event.uid);
+                        break;
+                    case END:
+                        space_manager->end_process(
+                                process_list[event.uid]);
+                        break;
+                    case COMPRESS:
+                        {
+                        }
+                        break;
+                    default:
+                        {
+                            std::cerr << "Tipo de evento " << event.type
+                                << " não é conhecido!\n";
+                            return;
+                        }
+                        break;
+                }
+            }
 
-            // Go to next access
-            next_acc++;
-        }
-
-        // If there is still any compressions to do and next compression is now
-        if (next_com != compress_evn.end() && *next_com == t)
-        {
-            // TODO: Compress stuff
-
-            // Go to next compression
-            next_com++;
+            // Go to next relevant time
+            next_rel_time++;
         }
 
         // Moves to next instant

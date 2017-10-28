@@ -20,6 +20,28 @@
 #include <map>
 #include <set>
 
+// Available event types - uses integers so we can order by type
+enum EventType
+{
+    START    = 0,
+    ACCESS   = 1,
+    END      = 2,
+    COMPRESS = 3,
+};
+
+// Struct representing an event
+struct Event
+{
+    // Event type
+    EventType type;
+
+    // UID of the process related to this event (-1 if there isn't any)
+    int uid;
+    
+    // Position associated to this event (-1 if no position is associated)
+    int pos;
+};
+
 class EP
 {
     public:
@@ -44,6 +66,9 @@ class EP
         // Insert page replacer option
         bool add_page_replacer(int option_number, PageReplacer *replacer);
 
+        /* * * * * * * * * * * * * *
+         * Some important getters  *
+         * * * * * * * * * * * * * */
         // Get memory handler
         inline std::shared_ptr<Memory> mem_handler() { return memory; }
         
@@ -88,11 +113,8 @@ class EP
         // Page size
         int page_size;
 
-        // Compress memory events
-        std::vector<uint> compress_evn;
-        
-        // Compress memory events
-        std::map<uint, std::vector<std::pair<uint, int> > > mem_accesses;
+        // Events
+        std::map<uint, std::vector<Event> > evn;
 
         // List of processes
         std::vector<Process> process_list;
