@@ -46,6 +46,18 @@ class EP
 
         // Get memory handler
         inline std::shared_ptr<Memory> mem_handler() { return memory; }
+        
+        // Get virtual memory size
+        inline int virt_size() { return virt_mem; }
+
+        // Get physical memory size
+        inline int phys_size() { return phys_mem; }
+
+        // Get allocation unit size
+        inline int get_alloc_size() { return alloc_size; }
+        
+        // Get page size
+        inline int get_page_size() { return page_size; }
 
     private:
         // Memory object
