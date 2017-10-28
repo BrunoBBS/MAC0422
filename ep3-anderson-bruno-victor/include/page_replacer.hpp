@@ -22,11 +22,17 @@ class PageReplacer
         // Gets space manager name
         std::string get_name();
 
+        // Sets up the space manager
+        virtual void init() {}
+        
         // Writes value to address in virtual memory 
         virtual bool write(int pos, char val) = 0;
 
         // Notifies that clock cycle has passed
         virtual void clock() {}
+
+        // Destructs space manager
+        virtual void end() {}
 
     protected:
         // EP base object

@@ -3,18 +3,23 @@
 SpaceManagers::WorstFit::WorstFit(EP &ep) :
     SpaceManager(ep, "Worst Fit"),
     free_cnt(1)
+{}
+
+SpaceManagers::WorstFit::~WorstFit()
+{}
+
+void SpaceManagers::WorstFit::init()
 {
     // Start anchor starts and ends at block -1
     s_anchor.init = -1;
     s_anchor.size = 0;
+    s_anchor.next = &e_anchor;
 
     // End anchor starts and ends at block next to last usable block
     e_anchor.init = ep.virt_size() / ep.get_alloc_size();
     e_anchor.size = 0;
+    e_anchor.next = nullptr;
 }
-
-SpaceManagers::WorstFit::~WorstFit()
-{}
 
 int SpaceManagers::WorstFit::allocate(int size)
 {

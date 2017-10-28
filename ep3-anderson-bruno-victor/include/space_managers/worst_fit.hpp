@@ -12,6 +12,8 @@ namespace SpaceManagers
         public:
             WorstFit(EP &ep);
             ~WorstFit();
+            
+            void init();
 
         private:
             int allocate(int size);

@@ -36,6 +36,9 @@ Memory::Memory(int p_qty, int v_qty,
 
     for (int i = 0; i < v_qty; i++)
         v_mem_file << (char) -1;
+
+    p_mem_file.flush();
+    v_mem_file.flush();
 }
 
 Memory::~Memory()
@@ -70,6 +73,7 @@ bool Memory::access(int pos, mem_t mem_type, byte val)
     file.seekg(pos);
 
     file << val;
+    file.flush();
 
     return true;
 }
@@ -115,6 +119,9 @@ bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
         dst_file.seekg(dst_s);
         dst_file << val;
     }
+
+    src_file.flush();
+    dst_file.flush();
 
     return true;
 }

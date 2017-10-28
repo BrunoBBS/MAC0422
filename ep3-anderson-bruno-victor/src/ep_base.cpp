@@ -335,6 +335,9 @@ void EP::run(std::string interval_s)
 
     space_manager->set_page_replacer(page_replacer);
 
+    space_manager->init();
+    page_replacer->init();
+
     // Current time
     uint t = 0;
 
@@ -392,6 +395,9 @@ void EP::run(std::string interval_s)
         // Moves to next instant
         t++;
     }
+
+    space_manager->end();
+    page_replacer->end();
 }
 
 // Insert space manager option

@@ -37,17 +37,23 @@ class SpaceManager
 
         // Set page replacer
         bool set_page_replacer(std::shared_ptr<PageReplacer> replacer);
+        
+        // Sets up the space manager
+        virtual void init() {}
+
+        // Destructs space manager
+        virtual void end() {}
 
     protected:
         // EP base object
-        EP &ep;
+        EP &ep;        
 
         // Returns position of the start of the process
         virtual int allocate(int size) = 0;
         
         // Free process allocated in pos
         virtual void free(int pos) = 0;
-
+        
         // Page replacer handle
         std::shared_ptr<PageReplacer> page_replacer;
     
