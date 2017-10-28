@@ -60,8 +60,11 @@ void EP::load_file (std::string filename)
 
     // Reads remaining lines in file
     int line_n = 1;
-    std::vector<int> comp_events;
+    std::vector<uint> comp_events;
     std::vector<Process> processes;
+    std::map<uint, std::vector<std::pair<uint, int> > > m_accesses;
+
+    uint uid = 0;
 
     while (std::getline(input_file, line))
     {
@@ -113,26 +116,30 @@ void EP::load_file (std::string filename)
             if (valid_line)
                 name = parts[3];
 
-            std::vector<MemoryAccess> m_accesses;
-
             for (unsigned int i = 4;
                     valid_line && i < parts.size() - 1; i += 2)
             {
-                MemoryAccess m_access;
+                uint position, time;
                 try
                 {
-                    m_access.position = std::stoi(parts[i]);
-                    m_access.time = std::stoi(parts[i + 1]);
+                    position = std::stoi(parts[i]);
+                    time = std::stoi(parts[i + 1]);
                 }
                 catch (std::invalid_argument e)
                 {
                     valid_line = false;
                 }
-                m_accesses.push_back(m_access);
+                
+                std::map<uint, std::vector<std::pair<uint, int> > >::iterator
+                    access_time = m_accesses.insert({
+                            time,
+                            std::vector<std::pair<uint, int> > ()}).first;
+
+                access_time->second.push_back({uid++, position});
             }
 
             if (valid_line)
-                processes.push_back(Process(t0, tf, b, name, m_accesses));
+                processes.push_back(Process(t0, tf, b, uid, name));
         }
         else
         {
@@ -181,6 +188,7 @@ void EP::load_file (std::string filename)
     page_size = pages_s;
     compress_evn = comp_events;
     process_list = processes;
+    mem_accesses = m_accesses;
 }
 
 // Selects free space manager
@@ -266,6 +274,7 @@ void EP::run(std::string interval_s)
         return;
     }
 
+    // Sets up page replacer and space manager
     std::shared_ptr<PageReplacer> page_replacer;
     std::shared_ptr<SpaceManager> space_manager;
 
@@ -274,7 +283,49 @@ void EP::run(std::string interval_s)
 
     space_manager->set_page_replacer(page_replacer);
 
+    // Current time
     uint t = 0;
+
+    // Iterator of memory accesses
+    std::map<uint, std::vector<std::pair<uint, int> > >::iterator next_acc;
+    next_acc = mem_accesses.begin();
+    
+    // Iterator 
+    std::vector<uint>::iterator next_com;
+    next_com = compress_evn.begin();
+
+    // While there are still memory accesses or compression events
+    while (next_acc != mem_accesses.end())
+    {
+        // Warns page replacer that a clock instant has elapsed
+        page_replacer->clock();
+
+        // If there are still memory accesses to do and if next access is now
+        if (next_acc != mem_accesses.end() && next_acc->first == t)
+        {
+            std::vector<std::pair<uint, int> > &accesses_now =
+                next_acc->second;
+            // Run each access
+            for (std::pair<uint, int> access : accesses_now)
+                space_manager->write(access.second,
+                        process_list[access.first].get_pid(), access.first);
+
+            // Go to next access
+            next_acc++;
+        }
+
+        // If there is still any compressions to do and next compression is now
+        if (next_com != compress_evn.end() && *next_com == t)
+        {
+            // TODO: Compress stuff
+
+            // Go to next compression
+            next_com++;
+        }
+
+        // Moves to next instant
+        t++;
+    }
 }
 
 // Insert space manager option
@@ -283,13 +334,8 @@ bool EP::add_space_manager(int option_number, SpaceManager *manager)
     if (!manager)
         return false;
 
-    std::pair<std::map<int, std::shared_ptr<SpaceManager> >::iterator, bool>
-        ret = space_managers.insert(
-                std::pair<int, std::shared_ptr<SpaceManager> > (
-                    option_number,
-                    std::shared_ptr<SpaceManager> (manager)));
-
-    return ret.second;
+    return space_managers.insert(
+            {option_number, std::shared_ptr<SpaceManager> (manager)}).second;
 }
 
 // Insert page replacer option
@@ -298,11 +344,6 @@ bool EP::add_page_replacer(int option_number, PageReplacer *replacer)
     if (!replacer)
         return false;
 
-    std::pair<std::map<int, std::shared_ptr<PageReplacer> >::iterator, bool>
-        ret = page_replacers.insert(
-                std::pair<int, std::shared_ptr<PageReplacer> > ( 
-                    option_number,
-                    std::shared_ptr<PageReplacer> (replacer)));
-
-    return ret.second;
+    return page_replacers.insert(
+            {option_number, std::shared_ptr<PageReplacer> (replacer)}).second;
 }

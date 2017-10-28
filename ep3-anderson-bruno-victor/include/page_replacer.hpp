@@ -25,6 +25,9 @@ class PageReplacer
         // Writes value to address in virtual memory 
         virtual bool write(int pos, char val) = 0;
 
+        // Notifies that clock cycle has passed
+        virtual void clock() {}
+
     protected:
         // EP base object
         EP &ep;

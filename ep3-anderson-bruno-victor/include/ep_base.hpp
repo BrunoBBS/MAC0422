@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <set>
 
 class EP
 {
@@ -76,7 +77,10 @@ class EP
         int page_size;
 
         // Compress memory events
-        std::vector<int> compress_evn;
+        std::vector<uint> compress_evn;
+        
+        // Compress memory events
+        std::map<uint, std::vector<std::pair<uint, int> > > mem_accesses;
 
         // List of processes
         std::vector<Process> process_list;

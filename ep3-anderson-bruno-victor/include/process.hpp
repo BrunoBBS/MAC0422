@@ -6,17 +6,10 @@
 #include <string>
 #include <vector>
 
-struct MemoryAccess
-{
-    int time;
-    int position;
-};
-
 class Process
 {
     public:
-        Process (int t0, int tf, int b, std::string name,
-                std::vector<MemoryAccess> accesses);
+        Process (int t0, int tf, int b, uint uid, std::string name);
 
         /* * * * * *
          * Getters *
@@ -30,8 +23,6 @@ class Process
         // Get process name
         std::string get_proc_name();
 
-        // Memory access iterator
-        std::vector<MemoryAccess>::iterator accesses_iterator();
         // Resets state of process
         void reset();
 
@@ -40,6 +31,9 @@ class Process
 
         // Set pid
         inline uint get_pid() { return pid; }
+
+        // Set uid
+        inline uint get_uid() { return uid; }
 
     private:
         /* * * * * * * * * * *
@@ -55,14 +49,17 @@ class Process
         int mem_amount;
         // Process name
         std::string name;
-        // Memory accesses
-        std::vector<MemoryAccess> mem_accesses;
 
         /* * * * * * * * * * * *
          * Dynamic properties  *
          * * * * * * * * * * * */
         // Process id in the system
         uint pid;
+
+        /* * * * * * * * * * *
+         * Static properties *
+         * * * * * * * * * * */
+        static uint next_uid;
 };
 
 #endif
