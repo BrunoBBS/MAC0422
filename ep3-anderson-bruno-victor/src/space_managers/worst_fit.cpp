@@ -10,8 +10,12 @@ SpaceManagers::WorstFit::~WorstFit()
 
 void SpaceManagers::WorstFit::init()
 {
+    // Free processes that were not freed properly
+    while (free_cnt > 1)
+        free(s_anchor.next->init);
+
     // Start anchor starts and ends at block -1
-    s_anchor.init = -1;
+    s_anchor.init = 0;
     s_anchor.size = 0;
     s_anchor.next = &e_anchor;
 
@@ -31,7 +35,7 @@ int SpaceManagers::WorstFit::allocate(int size)
     int min_req = (size / ep.get_alloc_size()) +
         (size % ep.get_alloc_size() ? 1 : 0);
 
-    // Size of bigger free space block available (in allocation unit number)
+    // Size of biggest free space block available (in allocation unit number)
     int max_size = -1;
 
     // Pointer to the item whose block after it is the biggest
@@ -45,7 +49,7 @@ int SpaceManagers::WorstFit::allocate(int size)
         int curr_sz = current->next->init - (current->init + current->size);
 
         // If process fits and is space is bigger than previous maximum
-        if (curr_sz <= min_req && curr_sz > max_size)
+        if (curr_sz >= min_req && curr_sz > max_size)
         {
             // Update best alternative
             max_size = curr_sz;
@@ -81,7 +85,10 @@ void SpaceManagers::WorstFit::free(int pos)
     // Fail if address is invalid
     if (start_b < 0 || start_b >= ep.virt_size() / ep.get_alloc_size() ||
             pos % ep.get_alloc_size())
+    {
+        std::cerr << "Invalid address " << pos << "!\n";
         return;
+    }
 
     // Search for block preceding the one we want to free
     mem_block *prec_free = nullptr;
@@ -97,7 +104,10 @@ void SpaceManagers::WorstFit::free(int pos)
 
     // If block was not found, fail
     if (!prec_free)
+    {
+        std::cerr << "No memory allocated at " << pos << "!\n";
         return;
+    }
 
     // If it was, remove it from linked list
     mem_block *tmp = prec_free->next;
@@ -107,4 +117,51 @@ void SpaceManagers::WorstFit::free(int pos)
     tmp->init = tmp->size = 0;
     tmp->next = nullptr;
     delete tmp;
+
+    // Finally, we have one less free space
+    free_cnt--;
+}
+
+void SpaceManagers::WorstFit::dprint()
+{
+    std::vector<std::string> mem_block_desc;
+
+    mem_block *current = &s_anchor;
+    for (int space = 0; space <= free_cnt; space++, current = current->next)
+    {
+        if (!space || space == free_cnt)
+            mem_block_desc.push_back("Anchor");
+        else
+        {
+            std::ostringstream desc;
+            desc << "i: " << current->init << " sz: " << current->size;
+            mem_block_desc.push_back(desc.str());
+        }
+    }
+
+    for (uint block = 0; block < mem_block_desc.size(); block++)
+    {
+        int len = mem_block_desc[block].size();
+        for (int c = 0; c < len + 4; c++)
+            std::cout << "*";
+        std::cout << "   ";
+    }
+    std::cout << "\n";
+
+    for (uint block = 0; block < mem_block_desc.size(); block++)
+    {
+        std::cout << "* " << mem_block_desc[block] << " *";
+        if (block != mem_block_desc.size() - 1)
+            std::cout << "-->";
+    }
+    std::cout << "\n";
+
+    for (uint block = 0; block < mem_block_desc.size(); block++)
+    {
+        int len = mem_block_desc[block].size();
+        for (int c = 0; c < len + 4; c++)
+            std::cout << "*";
+        std::cout << "   ";
+    }
+    std::cout << "\n";
 }

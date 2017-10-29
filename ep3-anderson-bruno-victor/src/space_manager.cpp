@@ -45,6 +45,9 @@ bool SpaceManager::start_process(Process &process)
     // If process does not fit memory, failed to insert
     if (start_loc == -1)
         return false;
+
+    if (globals::e)
+        dprint();
     
     // Generate new process id and set process id
     uint pid = new_id();
@@ -75,7 +78,10 @@ bool SpaceManager::end_process(Process &process)
         return false;
 
     // Free up memory
-    this->free(process.get_used_mem());
+    this->free(location->second);
+
+    if (globals::e)
+        dprint();
 
     // And erase entry in pid table
     pid_offset_table.erase(location);

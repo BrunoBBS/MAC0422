@@ -54,6 +54,9 @@ class SpaceManager
         // Free process allocated in pos
         virtual void free(int pos) = 0;
         
+        // Debug printing
+        virtual void dprint() {}
+        
         // Page replacer handle
         std::shared_ptr<PageReplacer> page_replacer;
     
