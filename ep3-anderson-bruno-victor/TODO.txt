@@ -11,15 +11,15 @@ d8888  d88P  Y88b       d88P  d8888   d8888         d88P  d88P  Y88b d88P  Y88b 
 
 
 ===== Memory Managers =====
-          - Best Fit
-          - Worst Fit
-          - Quick Fit
+Andrei    - Best Fit
+Seiji     - Worst Fit
+Scholl    - Quick Fit
 
 ===== Page Managers =====
-          - Optimal
-          - FIFO
-          - Least Recently Used 2nd version
-          - Least Recently Used 4th version
+Seiji     - Optimal
+Scholl    - FIFO
+Andrei    - Least Recently Used 2nd version
+Scholl    - Least Recently Used 4th version
 
 Seiji     - Base
 Andrei    - Report
