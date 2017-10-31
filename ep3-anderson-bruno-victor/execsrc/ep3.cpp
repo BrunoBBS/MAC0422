@@ -54,7 +54,7 @@ int main ()
     ep.select_page_replace_manager("1");
 
     // While not exited
-    while (true)
+    while (!std::cin.eof())
     {
         // Read line
         std::cout << "[ep3]: ";
