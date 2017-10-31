@@ -26,11 +26,11 @@ class Process
         // Resets state of process
         void reset();
 
-        // Set pid
-        inline void set_pid(uint pid) { this->pid = pid; }
+        // Set offset
+        inline void set_offset(int offset) { this->offset = offset; }
 
-        // Set pid
-        inline uint get_pid() { return pid; }
+        // Set offset
+        inline uint get_offset() { return offset; }
 
         // Set uid
         inline uint get_uid() { return uid; }
@@ -53,8 +53,8 @@ class Process
         /* * * * * * * * * * * *
          * Dynamic properties  *
          * * * * * * * * * * * */
-        // Process id in the system
-        uint pid;
+        // Process memory offset
+        int offset;
 
         /* * * * * * * * * * *
          * Static properties *

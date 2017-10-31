@@ -367,7 +367,7 @@ void EP::run(std::string interval_s)
                         break;
                     case ACCESS:
                         space_manager->write(event.pos,
-                                process_list[event.uid].get_pid(),
+                                process_list[event.uid],
                                 event.uid);
                         break;
                     case END:

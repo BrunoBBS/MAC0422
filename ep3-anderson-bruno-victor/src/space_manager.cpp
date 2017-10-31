@@ -11,21 +11,14 @@ std::string SpaceManager::get_name()
     return name;
 }
 
-bool SpaceManager::write(int pos, uint pid, char val)
+bool SpaceManager::write(int pos, Process &proc, char val)
 {
     // If space manager is not set
     if (!page_replacer)
         return false;
 
-    // Find where the process is at the memory
-    std::map<int, int>::iterator location = pid_offset_table.find(pid);
-
-    // If the process is not in the table, just exit
-    if (location == pid_offset_table.end())
-        return false;
-
     // Translate address to virtual memory
-    int new_address = pos + location->second;
+    int new_address = pos + proc.get_offset();
 
     // Send write request to page replacer
     page_replacer->write(new_address, val);
@@ -48,13 +41,9 @@ bool SpaceManager::start_process(Process &process)
 
     if (globals::e)
         dprint();
-    
-    // Generate new process id and set process id
-    uint pid = new_id();
-    process.set_pid(pid);
 
-    // Add entry to pid table
-    pid_offset_table.insert({pid, start_loc});
+    // Sets memory offset
+    process.set_offset(start_loc);
 
     proc_cnt++;
 
@@ -67,24 +56,11 @@ bool SpaceManager::end_process(Process &process)
     if (!page_replacer)
         return false;
 
-    // Get process PID
-    uint pid = process.get_pid();
-
-    // Find where the process is at the memory
-    std::map<int, int>::iterator location = pid_offset_table.find(pid);
-
-    // If the process is not in the table, just exit
-    if (location == pid_offset_table.end())
-        return false;
-
     // Free up memory
-    this->free(location->second);
+    free(process.get_offset());
 
     if (globals::e)
         dprint();
-
-    // And erase entry in pid table
-    pid_offset_table.erase(location);
 
     proc_cnt--;
 
@@ -101,14 +77,4 @@ bool SpaceManager::set_page_replacer(std::shared_ptr<PageReplacer> replacer)
     page_replacer = replacer;
 
     return true;
-}
-
-uint SpaceManager::new_id()
-{
-    // Find next unused id
-    while (pid_offset_table.find(next_id) != pid_offset_table.end())
-        next_id++;
-
-    // Returns new id and begins search on the next one
-    return next_id++;
 }

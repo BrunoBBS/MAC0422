@@ -27,7 +27,7 @@ class SpaceManager
         std::string get_name();
 
         // Access memory
-        bool write(int pos, uint pid, char val);
+        bool write(int pos, Process &proc, char val);
 
         // Start process
         bool start_process(Process &process);
@@ -61,17 +61,8 @@ class SpaceManager
         std::shared_ptr<PageReplacer> page_replacer;
     
     private:
-        // Get new process id
-        uint new_id();
-
-        // Next id
-        uint next_id = 1;
-
         // Number of processes
         uint proc_cnt = 0;
-
-        // Processes table
-        std::map<int, int> pid_offset_table; 
 
         // Space manager name
         std::string name;
