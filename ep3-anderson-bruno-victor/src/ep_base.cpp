@@ -112,6 +112,7 @@ void EP::load_file (std::string filename)
         else if (parts.size() > 3 && !(parts.size() % 2))
         {
             int t0, tf, b;
+            t0 = tf = b = 0;
             std::string name;
 
             try
@@ -146,6 +147,7 @@ void EP::load_file (std::string filename)
                     valid_line && i < parts.size() - 1; i += 2)
             {
                 uint position, time;
+                position = time = 0;
                 try
                 {
                     position = std::stoi(parts[i]);
