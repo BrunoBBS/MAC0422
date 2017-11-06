@@ -71,7 +71,7 @@ class EP
          * * * * * * * * * * * * * */
         // Get memory handler
         inline std::shared_ptr<Memory> mem_handler() { return memory; }
-        
+
         // Get virtual memory size
         inline int virt_size() { return virt_mem; }
 
@@ -80,9 +80,12 @@ class EP
 
         // Get allocation unit size
         inline int get_alloc_size() { return alloc_size; }
-        
+
         // Get page size
         inline int get_page_size() { return page_size; }
+
+        // Get event list
+        std::map<uint, std::vector<Event> > get_events() { return evn; }
 
     private:
         // Memory object
