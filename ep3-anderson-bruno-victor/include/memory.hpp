@@ -6,6 +6,9 @@
 #include <fstream>
 #include <iostream>
 
+/*
+ * Used to define if access will be to physical memory or virtual memory
+ */
 enum mem_t
 {
     PHYS,

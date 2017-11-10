@@ -24,15 +24,18 @@ class PageReplacer
 
         // Sets up the space manager
         virtual void init() {}
-        
-        // Writes value to address in virtual memory 
+
+        // Writes value to address in virtual memory
         virtual bool write(int pos, char val) = 0;
 
-        // Notifies that clock cycle has passed
+        // Notifies that a clock cycle has passed
         virtual void clock() {}
 
         // Destructs space manager
         virtual void end() {}
+
+        // Gets page fault count
+        inline int get_page_fault_cnt() { return page_fault_cnt; }
 
     protected:
         // EP base object
@@ -40,6 +43,9 @@ class PageReplacer
 
         // Memory handler
         std::shared_ptr<Memory> memory;
+
+        // Page fault counter
+        int page_fault_cnt;
 
     private:
         // Page replacer name

@@ -5,15 +5,18 @@
 
 namespace SpaceManagers
 {
-    class QuickFit : public SpaceManager 
-    {
-        public:
-            QuickFit(EP &ep);
+class QuickFit : public SpaceManager
+{
+  public:
+    QuickFit(EP &ep);
+    ~QuickFit();
 
-        private:
-            int allocate(int size);
-            void free(int pos);
-    };
+    void init();
+
+  private:
+    int allocate(int size);
+    void free(int pos);
+};
 }
 
 #endif

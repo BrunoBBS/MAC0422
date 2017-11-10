@@ -9,7 +9,7 @@
 #-------------------------------------------------
 
 CC:=g++
-CFLAGS=-Wall -std=c++11
+CFLAGS=-Wall -std=c++11 -fdiagnostics-color=always
 DEBUGF:=-g
 RELEASEF:=-O2
 
