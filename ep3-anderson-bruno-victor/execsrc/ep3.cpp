@@ -22,8 +22,6 @@
 // Create options
 void initialize (EP &ep)
 {
-    std::shared_ptr<Memory> memory = ep.mem_handler();
-
     // Add space managers
     ep.add_space_manager(1, new SpaceManagers::BestFit(ep));
     ep.add_space_manager(2, new SpaceManagers::WorstFit(ep));

@@ -3,7 +3,6 @@
 PageReplacer::PageReplacer (EP &ep,
         std::string name) :
     ep(ep),
-    memory(ep.mem_handler()),
     name(name)
 {
 }

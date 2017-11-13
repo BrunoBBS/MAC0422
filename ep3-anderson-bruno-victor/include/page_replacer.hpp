@@ -41,9 +41,6 @@ class PageReplacer
         // EP base object
         EP &ep;
 
-        // Memory handler
-        std::shared_ptr<Memory> memory;
-
         // Page fault counter
         int page_fault_cnt;
 

@@ -53,6 +53,7 @@ Memory::~Memory()
 // Write memory position
 bool Memory::access(int pos, mem_t mem_type, byte val)
 {
+    if (!is_ok) return false;
     if (!val_pos(pos, mem_type))
     {
         std::cerr << "Can't access pos " << pos << " from " <<
@@ -81,6 +82,7 @@ bool Memory::access(int pos, mem_t mem_type, byte val)
 // Copy memory area
 bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
 {
+    if (!is_ok) return false;
     int src_s = src;
     int src_e = src + size;
     int dst_s = dst;
@@ -129,6 +131,7 @@ bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
 // Validade memory position
 bool Memory::val_pos(int pos, mem_t mem_type)
 {
+    if (!is_ok) return false;
     return !(pos < 0 || pos >= ((mem_type == PHYS) ? p_mem_size : v_mem_size));
 } 
 

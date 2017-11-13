@@ -6,16 +6,21 @@ PageReplacers::Fifo::Fifo(EP &ep) : PageReplacer(ep, "FIFO")
 
 bool PageReplacers::Fifo::write(int pos, byte val)
 {
-    memory->access(translate_addr(pos), PHYS, val);
+    ep.mem_handler()->access(translate_addr(pos), PHYS, val);
     return true;
 }
 
 void PageReplacers::Fifo::init()
 {
     this->n_pages = ep.virt_size() / ep.get_page_size();
-    this->page_size = this->n_pages;
+    this->page_size = ep.get_page_size();
+    this->n_frames = (ep.phys_size() / page_size);
     this->page_table.resize(this->n_pages);
-    this->free_frames.resize(ep.phys_size() / this->page_size);
+    this->free_frames.resize(n_frames);
+    for (int i = 0; i<n_pages;i++)
+    {
+        free_frames[i] = i;
+    }
     // Initializes every page
     int i = 0;
     for (auto curr_page : page_table)
@@ -46,13 +51,13 @@ void PageReplacers::Fifo::place_page(Page page)
 {
     int frame_index;
     // If there is no free frame in physical memory, remove aq page
-    if (free_frames.size() == 0)
+    if (page_queue.size() == n_frames)
         remove_page(page_queue.back());
 
     // Find first position free in physical memory
     frame_index = free_frames.back();
     free_frames.pop_back();
-    memory->copy(page.virt_addr_index * page_size, frame_index * page_size,
+    ep.mem_handler()->copy(page.virt_addr_index * page_size, frame_index * page_size,
                  VIRT, PHYS, page_size);
     page.page_frame = frame_index;
     page.presence_bit = 1;
@@ -64,7 +69,7 @@ void PageReplacers::Fifo::remove_page(Page page)
 {
     // Copies the page frame content to virtual memory if needed
     if (page.M)
-        memory->copy(page.page_frame * page_size,
+        ep.mem_handler()->copy(page.page_frame * page_size,
                      page.virt_addr_index * page_size, PHYS, VIRT, page_size);
     // TODO: colocar -1  na memoria (fazer uma função no memory.hpp)
     free_frames.push_back(page.page_frame);

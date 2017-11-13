@@ -243,6 +243,8 @@ void EP::load_file (std::string filename)
     page_size = pages_s;
     evn = events;
     process_list = processes;
+
+    memory = std::shared_ptr<Memory>(new Memory(tot_mem, vir_mem));
 }
 
 // Selects free space manager

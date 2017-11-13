@@ -19,10 +19,12 @@ class Fifo : public PageReplacer
     void init();
 
   private:
-    // The number of pages the virtual memory is devided in
+    // The number of pages the virtual memory is devided
     int n_pages;
     // Local copy of page_size
     int page_size;
+    // The number of page frames the physical memory is divided
+    int n_frames;
 
     struct page
     {
