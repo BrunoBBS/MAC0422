@@ -1,7 +1,11 @@
 #include "space_managers/best_fit.hpp"
 
 SpaceManagers::BestFit::BestFit(EP &ep) :
-    SpaceManager(ep, "Best Fit")
+    SpaceManager(ep, "Best Fit"),
+    free_cnt(1)
+{}
+
+SpaceManagers::BestFit::~BestFit()
 {}
 
 void SpaceManagers::BestFit::init()
@@ -32,7 +36,7 @@ int SpaceManagers::BestFit::allocate(int size)
         (size % ep.get_alloc_size() ? 1 : 0);
 
     // Size of biggest free space block available (in allocation unit number)
-    int max_size = -1;
+    int max_size = 10000000000000;
 
     // Pointer to the item whose block after it is the biggest
     mem_block *max_prev = nullptr;
