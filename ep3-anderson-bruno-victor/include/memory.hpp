@@ -33,6 +33,10 @@ class Memory
         // Copy memory area
         bool copy(int src, int dst, mem_t src_t, mem_t dst_t, int size); 
 
+        // Effectively deletes a process from memory by writing -1 on every byte
+        // in that memory area
+        bool wipe(int pos, mem_t mem_type, int size); 
+
     private:
 
         // Validate memory position
