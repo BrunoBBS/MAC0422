@@ -3,12 +3,12 @@
 #include "ep_base.hpp"
 #include "page_replacer.hpp"
 
-namespace PageReplacers
-{
-class Lru4 : public PageReplacer
-{
-  public:
-    Lru4(EP &ep);
+#include <list>
+
+namespace PageReplacers {
+class Lru4 : public PageReplacer {
+public:
+    Lru4(EP& ep);
 
     bool write(int pos, byte val);
 
@@ -22,23 +22,32 @@ class Lru4 : public PageReplacer
      */
     void clock();
 
-  private:
+private:
     // The number of pages the virtual memory is devided in
     int n_pages;
     // Local copy of page_size
     int page_size;
+    // The number of page frames the physical memory is divided
+    int n_frames;
 
-    struct page
-    {
+    struct page {
         // Page's virtual address index (is its index in page_table)
         // so the starting virtual address of the page is index * page_size
         int virt_addr_index;
-        // Page's address in physical memory
-        int page_frame;
+        // Page's starting address in physical memory
+        int phys_addr;
         // Page is in physical memory flag
         bool presence_bit;
+        // Counter to decide which page is removed from physical memory
+        char counter;
         // Read and modified flags
         bool R, M;
+
+        // Operator overload for comparison in list
+        inline bool operator==(const page& a)
+        {
+            return a.virt_addr_index;
+        }
     };
 
     typedef struct page Page;
@@ -46,9 +55,12 @@ class Lru4 : public PageReplacer
     // Table that stores all pages;
     std::vector<Page> page_table;
 
-    // Physical memory tracking stack. Useded to know what page_frames are free to
-    // put new pages.
+    // Physical memory tracking stack. Useded to know what page_frames are free
+    // to put new pages.
     std::vector<int> free_frames;
+
+    // Queue of pages in physical memory
+    std::list<Page> page_queue;
 
     /*
      * Translates a virtual memory address to a physical one.
@@ -77,7 +89,8 @@ class Lru4 : public PageReplacer
     void remove_page(Page page);
 
     /*
-     * Selects a page for removal from physical memory accordingo to LRU v4 rules and algotihm
+     * Selects a page for removal from physical memory accordingo to LRU v4
+     * rules and algotihm
      *
      * Returns: The page object to be removed
      */

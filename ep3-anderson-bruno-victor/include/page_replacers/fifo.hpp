@@ -31,8 +31,8 @@ class Fifo : public PageReplacer
         // Page's virtual address index (is its index in page_table)
         // so the starting virtual address of the page is index * page_size
         int virt_addr_index;
-        // Page's address in physical memory
-        int page_frame;
+        // Page's starting address in physical memory
+        int phys_addr;
         // Page is in physical memory flag
         bool presence_bit;
         // Read and modified flags

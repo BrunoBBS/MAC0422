@@ -79,6 +79,38 @@ bool Memory::access(int pos, mem_t mem_type, byte val)
     return true;
 }
 
+bool Memory::wipe(int pos, mem_t mem_type, int size)
+{
+    if (!is_ok) return false;
+    if (!val_pos(pos, mem_type))
+    {
+        std::cerr << "Can't access pos " << pos << " from " <<
+            ((mem_type == PHYS) ? "Physical" : "Virtual") << " memory\n";
+        std::cerr << "Out of range!";
+        notify_oor(pos, mem_type);
+        return false;
+    }
+
+    int finish_pos = pos + size;
+
+    std::fstream *file_p;
+
+    if (mem_type == PHYS)
+        file_p = &p_mem_file;
+    else
+        file_p = &v_mem_file;
+
+    std::fstream &file = *file_p;
+    file.seekg(pos);
+
+    for (; pos < finish_pos; pos++)
+    {
+        file << -1;
+    }
+    file.flush();
+    return true;
+}
+
 // Copy memory area
 bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
 {

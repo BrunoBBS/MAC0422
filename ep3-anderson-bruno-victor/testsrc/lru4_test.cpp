@@ -5,7 +5,7 @@
 
 #include "space_managers/worst_fit.hpp"
 
-#include "page_replacers/fifo.hpp"
+#include "page_replacers/lru_4.hpp"
 
 #include <stdio.h>
 
@@ -21,7 +21,7 @@ void initialize(EP &ep)
     ep.add_space_manager(2, new SpaceManagers::WorstFit(ep));
 
     // Add page replacers
-    ep.add_page_replacer(2, new PageReplacers::Fifo(ep));
+    ep.add_page_replacer(2, new PageReplacers::Lru4(ep));
 }
 
 // Main function
