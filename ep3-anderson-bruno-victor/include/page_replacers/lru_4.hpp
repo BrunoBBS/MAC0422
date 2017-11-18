@@ -5,10 +5,12 @@
 
 #include <list>
 
-namespace PageReplacers {
-class Lru4 : public PageReplacer {
-public:
-    Lru4(EP& ep);
+namespace PageReplacers
+{
+class Lru4 : public PageReplacer
+{
+  public:
+    Lru4(EP &ep);
 
     bool write(int pos, byte val);
 
@@ -22,7 +24,7 @@ public:
      */
     void clock();
 
-private:
+  private:
     // The number of pages the virtual memory is devided in
     int n_pages;
     // Local copy of page_size
@@ -30,7 +32,8 @@ private:
     // The number of page frames the physical memory is divided
     int n_frames;
 
-    struct page {
+    struct page
+    {
         // Page's virtual address index (is its index in page_table)
         // so the starting virtual address of the page is index * page_size
         int virt_addr_index;
@@ -44,7 +47,7 @@ private:
         bool R, M;
 
         // Operator overload for comparison in list
-        inline bool operator==(const page& a)
+        inline bool operator==(const page &a)
         {
             return a.virt_addr_index;
         }
@@ -59,7 +62,7 @@ private:
     // to put new pages.
     std::vector<int> free_frames;
 
-    // Queue of pages in physical memory
+    // List of pages in physical memory
     std::list<Page> page_queue;
 
     /*
