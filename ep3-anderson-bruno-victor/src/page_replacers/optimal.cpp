@@ -16,12 +16,12 @@ void PageReplacers::Optimal::init()
     // List all events in time order
     event_list.empty();
     instant_references.empty();
-    for (auto time_map : ep.get_events())
+    for (auto &time_map : ep.get_events())
     {
         // Add reference from time to list index
         instant_references.insert({time_map.first, event_list.size()});
         // Add events to list
-        for (auto event : time_map.second)
+        for (auto &event : time_map.second)
             event_list.push_back(event);
     }
 
@@ -43,7 +43,7 @@ bool PageReplacers::Optimal::write(int pos, byte val)
 
 bool PageReplacers::Optimal::loaded(int page)
 {
-    if (page < 0 || page >= page_table.size())
+    if (page < 0 || ((uint) page) >= page_table.size())
         throw std::invalid_argument("[OPTIMAL] Page " + std::to_string(page)
                 + " is not valid!\n");
 
@@ -52,7 +52,7 @@ bool PageReplacers::Optimal::loaded(int page)
 
 void PageReplacers::Optimal::load_page(int page)
 {
-    if (page < 0 || page >= page_table.size())
+    if (page < 0 || ((uint) page) >= page_table.size())
         throw std::invalid_argument("[OPTIMAL] Page " + std::to_string(page)
                 + " is not valid!\n");
 
@@ -86,7 +86,7 @@ void PageReplacers::Optimal::load_page(int page)
     index += ep.get_run_event();
 
     // Start from next event
-    for (index++; index < event_list.size() &&
+    for (index++; ((uint) index) < event_list.size() &&
             candidate_cnt > 1; index++)
     {
         // Get the event
@@ -120,7 +120,8 @@ void PageReplacers::Optimal::load_page(int page)
     // When no more accesses will be done or only one candidate is left,
     // replace any of the remaining candidates
     int to_replace = -1;
-    for (int candidate = 0; candidate < pages_status.size(); candidate++)
+    for (int candidate = 0; ((uint) candidate) < pages_status.size();
+            candidate++)
     {
         if (pages_status[candidate])
         {

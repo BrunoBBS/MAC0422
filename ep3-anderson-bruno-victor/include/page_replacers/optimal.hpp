@@ -26,7 +26,7 @@ namespace PageReplacers
 
             // Page table (physical_page = page_table[virtual_page])
             std::vector<int> page_table;
-            
+
             // Reverse page table (virtual_page = r_page_table[physical_page])
             //  - For more efficient page switching
             std::vector<int> r_page_table;
@@ -40,7 +40,7 @@ namespace PageReplacers
 
             // Checks if a given virtual page is loaded in the physical memory
             bool loaded(int page);
-            
+
             // Load given virtual page into the physical memory
             void load_page(int page);
 

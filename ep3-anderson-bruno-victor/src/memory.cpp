@@ -51,7 +51,7 @@ Memory::~Memory()
 }
 
 // Write memory position
-bool Memory::access(int pos, mem_t mem_type, byte val)
+bool Memory::access(int pos, mem_t mem_type, byte val, int size)
 {
     if (!is_ok) return false;
     if (!val_pos(pos, mem_type))
@@ -73,7 +73,8 @@ bool Memory::access(int pos, mem_t mem_type, byte val)
     std::fstream &file = *file_p;
     file.seekg(pos);
 
-    file << val;
+    for (int i = 0; i < size; i++)
+        file << val;
     file.flush();
 
     return true;

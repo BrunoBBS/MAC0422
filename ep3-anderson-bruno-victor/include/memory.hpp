@@ -28,7 +28,7 @@ class Memory
         inline bool good() { return is_ok; }
 
         // Write memory position
-        bool access(int pos, mem_t mem_type, byte val);
+        bool access(int pos, mem_t mem_type, byte val, int size = 1);
 
         // Copy memory area
         bool copy(int src, int dst, mem_t src_t, mem_t dst_t, int size); 
