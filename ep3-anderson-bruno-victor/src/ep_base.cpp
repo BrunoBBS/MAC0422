@@ -111,7 +111,7 @@ void EP::load_file (std::string filename)
         // Parse process
         else if (parts.size() > 3 && !(parts.size() % 2))
         {
-            int t0, tf, b;
+            uint t0, tf, b;
             t0 = tf = b = 0;
             std::string name;
 
@@ -157,6 +157,25 @@ void EP::load_file (std::string filename)
                 {
                     valid_line = false;
                 }
+
+                // Fail if memory access is not from t0 to tf
+                if (time < t0 || time > tf)
+                {
+                    std::cerr << "Acesso de memória inválido (fora de [" <<
+                        t0 << ", " << tf << "])\n";
+                    valid_line = false;
+                    continue;
+                }
+
+                // Fail if access is outside process range
+                if (position >= b)
+                {
+                    std::cerr << "Processo não pode acessar posição " <<
+                        position << "\n";
+                    valid_line = false;
+                    continue;
+                }
+
 
                 // Generate memory access event
                 Event evn;
