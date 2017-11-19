@@ -330,6 +330,8 @@ void EP::run(std::string interval_s)
         return;
     }
 
+    running = true;
+
     // Sets up page replacer and space manager
     std::shared_ptr<PageReplacer> page_replacer;
     std::shared_ptr<SpaceManager> space_manager;
@@ -355,10 +357,15 @@ void EP::run(std::string interval_s)
         // Warns page replacer that a clock instant has elapsed
         page_replacer->clock();
 
+        curr_instant = t;
+
         // If there are events to process
         if (next_rel_time->first == t)
         {
             std::vector<Event> &events = next_rel_time->second;
+           
+            // Current event on this instant being accessed
+            curr_event = 0;
 
             // Run each access
             for (Event event : events)
@@ -385,10 +392,13 @@ void EP::run(std::string interval_s)
                         {
                             std::cerr << "Tipo de evento " << event.type
                                 << " não é conhecido!\n";
+                            running = false;
                             return;
                         }
                         break;
                 }
+
+                curr_event++;
             }
 
             // Go to next relevant time
@@ -401,6 +411,8 @@ void EP::run(std::string interval_s)
 
     space_manager->end();
     page_replacer->end();
+
+    running = false;
 }
 
 // Insert space manager option
