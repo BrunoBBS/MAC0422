@@ -14,7 +14,7 @@ std::string SpaceManager::get_name()
 bool SpaceManager::write(int pos, Process &proc, char val)
 {
     // If space manager is not set
-    if (!page_replacer)
+    if (!page_replacer || proc.get_offset() == -1)
         return false;
 
     // Translate address to virtual memory
@@ -35,9 +35,13 @@ bool SpaceManager::start_process(Process &process)
     // Tries to allocate memory for process
     int start_loc = allocate(process.get_used_mem());
 
-    // If process does not fit memory, failed to insert
-    if (start_loc == -1)
+    // If process does not fit in memory, failed to insert
+    if (start_loc == -1) {
+        std::cerr << "Failed to start process " << process.get_proc_name() <<
+            "!\n";
+        process.set_offset(-1);
         return false;
+    }
 
     if (globals::e)
         dprint();
