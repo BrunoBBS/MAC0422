@@ -8,6 +8,7 @@ PageReplacers::Lru4::Lru4(EP &ep)
 
 bool PageReplacers::Lru4::write(int pos, byte val)
 {
+    std::cout << "Accessing pos : " << pos << std::endl;
     ep.mem_handler()->access(translate_addr(pos), PHYS, val);
     return true;
 }
@@ -27,7 +28,6 @@ void PageReplacers::Lru4::init()
     int i = 0;
     for (auto &curr_page : page_table)
     {
-        std::cout << i << std::endl;
         curr_page.R = curr_page.M = curr_page.presence_bit = 0;
         curr_page.virt_addr_index = i++;
     }
@@ -37,6 +37,8 @@ int PageReplacers::Lru4::translate_addr(int virtual_addr)
 {
     // Calculates which page the address refers to
     int page_index = virtual_addr / page_size;
+    if (page_index > n_pages)
+        return -1;
     // Calculates page relative address
     int offset = virtual_addr % page_size;
     Page page = page_table[page_index];
@@ -100,7 +102,9 @@ PageReplacers::Lru4::Page PageReplacers::Lru4::select_page()
         if (page.counter < smallest->counter)
             smallest = &page;
     }
+    std::cout << "page list size b: "<< page_queue.size() << "\n";
     page_queue.remove(*smallest);
+    std::cout << "page list size b: "<< page_queue.size() << "\n";
     return *smallest;
 }
 
@@ -110,9 +114,9 @@ void PageReplacers::Lru4::clock()
     int add = 0;
     for (auto &page : page_queue)
     {
-        std::cout << page.phys_addr << std::endl;
-        add = (page.R ? 1 : 0) << sizeof(char);
-        page.counter >>= 1;
+        add = (page.R ? 1 : 0) << sizeof(char)*7;
+        page.counter >>= 2;
+        std::cout << std::bitset<8>(page.counter) << std::endl;
         page.counter += add;
         page.R = false;
         std::cout << page.virt_addr_index << " : "
