@@ -19,8 +19,8 @@ void SpaceManagers::WorstFit::init()
     s_anchor.size = 0;
     s_anchor.next = &e_anchor;
 
-    // End anchor starts and ends at block next to last usable block
-    e_anchor.init = ep.virt_size() / ep.get_alloc_size();
+    // End anchor starts and ends at end of address space
+    e_anchor.init = ep.virt_size();
     e_anchor.size = 0;
     e_anchor.next = nullptr;
 }
@@ -31,12 +31,15 @@ int SpaceManagers::WorstFit::allocate(int size)
     if (size <= 0)
         return -1;
 
-    // Minimum allocation units required for specified size
-    int min_req = (size / ep.get_alloc_size()) +
-        (size % ep.get_alloc_size() ? 1 : 0);
+    // Minimum size for the process
+    int min_req = ((size / ep.get_alloc_size()) +
+        (size % ep.get_alloc_size() ? 1 : 0)) * ep.get_alloc_size();
 
-    // Size of biggest free space block available (in allocation unit number)
+    // Size of biggest free space block available (in bytes)
     int max_size = -1;
+
+    // Start address of biggest free space block available
+    int max_begin = -1;
 
     // Pointer to the item whose block after it is the biggest
     mem_block *max_prev = nullptr;
@@ -45,8 +48,24 @@ int SpaceManagers::WorstFit::allocate(int size)
     mem_block *current = &s_anchor;
     for (int space = 0; space < free_cnt; space++, current = current->next)
     {
-        // Calculate current free space
-        int curr_sz = current->next->init - (current->init + current->size);
+        // Calculate beginning of free space (Aligning to memory pages and
+        // allocation units)
+        int beginning = current->init + current->size;
+        int rest;
+        if (rest = (beginning % ep.get_page_size()))
+            beginning += ep.get_page_size() - rest;
+        
+        if (rest = (beginning % ep.get_alloc_size()))
+            beginning += ep.get_alloc_size() - rest;
+
+        
+        // Calculate end of free space (Aligning to memory pages)
+        int end = current->next->init;
+        if (rest = (end % ep.get_page_size()))
+            end -= rest;
+
+        // Calculate current free space size
+        int curr_sz = end - beginning;
 
         // If process fits and is space is bigger than previous maximum
         if (curr_sz >= min_req && curr_sz > max_size)
@@ -54,6 +73,7 @@ int SpaceManagers::WorstFit::allocate(int size)
             // Update best alternative
             max_size = curr_sz;
             max_prev = current;
+            max_begin = beginning; 
         }
     }
 
@@ -63,7 +83,7 @@ int SpaceManagers::WorstFit::allocate(int size)
 
     // Create new block
     mem_block *new_block = new mem_block;
-    new_block->init = max_prev->init + max_prev->size;
+    new_block->init = max_begin;
     new_block->size = min_req;
     
     // Add new block to linked list
@@ -73,17 +93,17 @@ int SpaceManagers::WorstFit::allocate(int size)
     // We have now one more possible free space
     free_cnt++;
 
-    // Return converted memory address
-    return new_block->init * ep.get_alloc_size();
+    // Return block memory address
+    return new_block->init;
 }
 
 void SpaceManagers::WorstFit::free(int pos)
 {
-    // Calculate start block
-    int start_b = pos / ep.get_alloc_size();
+    // Block starting address
+    int start_addr = pos;
     
     // Fail if address is invalid
-    if (start_b < 0 || start_b >= ep.virt_size() / ep.get_alloc_size() ||
+    if (start_addr < 0 || start_addr >= ep.virt_size() ||
             pos % ep.get_alloc_size())
     {
         std::cerr << "Invalid address " << pos << "!\n";
@@ -95,7 +115,7 @@ void SpaceManagers::WorstFit::free(int pos)
     mem_block *current = &s_anchor;
     for (int space = 0; space < free_cnt; space++, current = current->next)
     {
-        if (current->next->init == start_b)
+        if (current->next->init == start_addr)
         {
             prec_free = current;
             break;
