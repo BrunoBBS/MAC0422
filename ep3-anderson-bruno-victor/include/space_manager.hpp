@@ -43,6 +43,9 @@ class SpaceManager
 
         // Destructs space manager
         virtual void end() {}
+        
+        // Compresses memory
+        virtual void compress() {}
 
     protected:
         // EP base object

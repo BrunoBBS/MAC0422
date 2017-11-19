@@ -379,8 +379,7 @@ void EP::run(std::string interval_s)
                                 process_list[event.uid]);
                         break;
                     case COMPRESS:
-                        {
-                        }
+                        space_manager->compress();
                         break;
                     default:
                         {
