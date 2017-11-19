@@ -10,10 +10,6 @@ SpaceManagers::WorstFit::~WorstFit()
 
 void SpaceManagers::WorstFit::init()
 {
-    // Free processes that were not freed properly
-    while (free_cnt > 1)
-        free(s_anchor.next->init);
-
     // Start anchor starts and ends at block -1
     s_anchor.init = 0;
     s_anchor.size = 0;
@@ -23,6 +19,13 @@ void SpaceManagers::WorstFit::init()
     e_anchor.init = ep.virt_size();
     e_anchor.size = 0;
     e_anchor.next = nullptr;
+}
+
+void SpaceManagers::WorstFit::end()
+{
+    // Free processes that were not freed properly
+    while (free_cnt > 1)
+        free(s_anchor.next->init);
 }
 
 int SpaceManagers::WorstFit::allocate(int size)
@@ -52,20 +55,20 @@ int SpaceManagers::WorstFit::allocate(int size)
         // allocation units)
         int beginning = current->init + current->size;
         int rest;
-        if (rest = (beginning % ep.get_page_size()))
+        if ((rest = (beginning % ep.get_page_size())))
             beginning += ep.get_page_size() - rest;
         
-        if (rest = (beginning % ep.get_alloc_size()))
+        if ((rest = (beginning % ep.get_alloc_size())))
             beginning += ep.get_alloc_size() - rest;
 
         
         // Calculate end of free space (Aligning to memory pages and allocation
         // units)
         int end = current->next->init;
-        if (rest = (end % ep.get_page_size()))
+        if ((rest = (end % ep.get_page_size())))
             end -= rest;
         
-        if (rest = (end % ep.get_alloc_size()))
+        if ((rest = (end % ep.get_alloc_size())))
             end -= rest;
 
         // Calculate current free space size
