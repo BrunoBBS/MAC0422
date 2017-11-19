@@ -31,9 +31,15 @@ void PageReplacers::Optimal::init()
     // Remove all references from the page tables
     page_table.empty();
     page_table.resize(virt_page_cnt);
+    std::fill(page_table.begin(), page_table.end(), -1);
     
     r_page_table.empty();
     r_page_table.resize(phys_page_cnt);
+    std::fill(r_page_table.begin(), r_page_table.end(), -1);
+
+    // Wipe clean memory values
+    ep.mem_handler()->wipe(0, PHYS, ep.phys_size());
+    ep.mem_handler()->wipe(0, VIRT, ep.virt_size());
 }
 
 bool PageReplacers::Optimal::write(int pos, byte val)
@@ -62,14 +68,14 @@ void PageReplacers::Optimal::load_page(int page)
         // Just assign page:
 
         // Forward reference
-        page_table[page] = next_free_page--;
+        page_table[page] = next_free_page;
         // Back reference
         r_page_table[next_free_page] = page;
 
         // And copy contents from virtual to physical memory
         ep.mem_handler()->copy(
                 page * page_size,
-                next_free_page * page_size,
+                (next_free_page--) * page_size,
                 VIRT, PHYS, page_size);
         return;
     }
