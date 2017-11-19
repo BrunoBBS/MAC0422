@@ -59,9 +59,13 @@ int SpaceManagers::WorstFit::allocate(int size)
             beginning += ep.get_alloc_size() - rest;
 
         
-        // Calculate end of free space (Aligning to memory pages)
+        // Calculate end of free space (Aligning to memory pages and allocation
+        // units)
         int end = current->next->init;
         if (rest = (end % ep.get_page_size()))
+            end -= rest;
+        
+        if (rest = (end % ep.get_alloc_size()))
             end -= rest;
 
         // Calculate current free space size
