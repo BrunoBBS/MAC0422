@@ -152,6 +152,8 @@ void PageReplacers::Optimal::load_page(int page)
     page_table[r_page_table[to_replace]] = -1;
     page_table[page] = to_replace;
     r_page_table[to_replace] = page;
+    
+    page_fault_cnt++;
 }
 
 int PageReplacers::Optimal::translate_address(int virt)
