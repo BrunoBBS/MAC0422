@@ -60,7 +60,7 @@ void PageReplacers::Optimal::load_page(int page)
 {
     if (page < 0 || ((uint) page) >= page_table.size())
         throw std::invalid_argument("[OPTIMAL] Page " + std::to_string(page)
-                + " is not valid!\n");
+                + " is not valid! Failed to load!\n");
 
     // If there are any free pages in the physical memory
     if (next_free_page >= 0)

@@ -1,0 +1,11 @@
+Para compilar o binário e movê-lo para o diretório atual (Diretório em que esse arquivo se encontra), basta usar esses três comandos:
+
+$ make configure
+$ make
+$ make move
+
+Para executar o programa basta usar:
+
+$ ./ep3
+
+O relatório e slides estão na pasta 'documentation'. Para mais detalhes vide relatório.
