@@ -36,7 +36,7 @@ int main()
     // Select managers
     ep.select_free_space_manager("2");
     ep.select_page_replace_manager("2");
-    ep.load_file("tst/5");
+    ep.load_file("tst/2");
     globals::e = true;
     ep.run("100");
 }

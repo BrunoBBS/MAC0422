@@ -67,7 +67,7 @@ class Fifo : public PageReplacer
      *
      * Receives: a page object
      */
-    void place_page(Page page);
+    void place_page(Page *page);
 
     /*
      * Removes a given page from pysical and writes to virtual memory if needed
@@ -76,7 +76,7 @@ class Fifo : public PageReplacer
      *
      * Receives: a page object
      */
-    void remove_page(Page page);
+    void remove_page(Page *page);
 };
 }
 
