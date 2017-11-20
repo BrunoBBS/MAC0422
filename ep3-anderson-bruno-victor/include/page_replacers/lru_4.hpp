@@ -42,14 +42,22 @@ class Lru4 : public PageReplacer
         // Page is in physical memory flag
         bool presence_bit;
         // Counter to decide which page is removed from physical memory
-        char counter;
+        unsigned char counter;
         // Read and modified flags
         bool R, M;
 
         // Operator overload for comparison in list
         inline bool operator==(const page &a)
         {
-            return a.virt_addr_index;
+            return this->virt_addr_index == a.virt_addr_index;
+        }
+        inline bool operator>(const page &a)
+        {
+            return this->virt_addr_index > a.virt_addr_index;
+        }
+        inline bool operator<(const page &a)
+        {
+            return this->virt_addr_index < a.virt_addr_index;
         }
     };
 
