@@ -35,7 +35,10 @@ class Memory
 
         // Effectively deletes a process from memory by writing -1 on every byte
         // in that memory area
-        bool wipe(int pos, mem_t mem_type, int size); 
+        bool wipe(int pos, mem_t mem_type, int size);
+
+        // Prints state of the memory
+        void print(int row_size = 16);
 
     private:
 

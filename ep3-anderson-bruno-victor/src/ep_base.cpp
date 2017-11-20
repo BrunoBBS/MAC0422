@@ -424,6 +424,28 @@ void EP::run(std::string interval_s)
             next_rel_time++;
         }
 
+        // Print on intervals
+        if (interval > 0 && !(t % interval))
+        {
+            std::string interval_title = "Starting print of instant " +
+                std::to_string(t);
+            
+            std::cout << std::endl;
+
+            for (int i = 0; i < interval_title.size() + 4; i++)
+                std::cout << "*";
+
+            std::cout << std::endl;
+            
+            std::cout << "* " << interval_title << " *" << std::endl;
+
+            for (int i = 0; i < interval_title.size() + 4; i++)
+                std::cout << "*";
+            
+            std::cout << std::endl << std::endl;
+
+            memory->print();
+        }
         // Moves to next instant
         t++;
     }
