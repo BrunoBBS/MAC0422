@@ -15,6 +15,7 @@ namespace SpaceManagers
             ~BestFit();
             
             void init();
+            void end();
 
         private:
             int allocate(int size);
