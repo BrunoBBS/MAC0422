@@ -88,7 +88,7 @@ class Lru4 : public PageReplacer
      *
      * Receives: a page object
      */
-    void place_page(Page page);
+    void place_page(Page *page);
 
     /*
      * Removes a given page from pysical and writes to virtual memory if needed
@@ -97,7 +97,7 @@ class Lru4 : public PageReplacer
      *
      * Receives: a page object
      */
-    void remove_page(Page page);
+    void remove_page(Page *page);
 
     /*
      * Selects a page for removal from physical memory accordingo to LRU v4
@@ -105,7 +105,7 @@ class Lru4 : public PageReplacer
      *
      * Returns: The page object to be removed
      */
-    Page select_page();
+    Page *select_page();
 };
 }
 

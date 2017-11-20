@@ -43,12 +43,13 @@ int PageReplacers::Lru4::translate_addr(int virtual_addr)
     if (!page.presence_bit) {
         // Page Fault!
         page_fault_cnt++;
-        place_page(page);
+        place_page(&page);
     }
+    std::cout << "TRANSLATED ADDRESSS : " << page.phys_addr + offset << "\n";
     return page.phys_addr + offset;
 }
 
-void PageReplacers::Lru4::place_page(Page page)
+void PageReplacers::Lru4::place_page(Page *page)
 {
     int frame_index;
     // If there is no free frame in physical memory, remove aq page
@@ -59,30 +60,33 @@ void PageReplacers::Lru4::place_page(Page page)
     // Find first position free in physical memory
     frame_index = free_frames.back();
     free_frames.pop_back();
-    ep.mem_handler()->copy(page.virt_addr_index * page_size,
-        frame_index * page_size, VIRT, PHYS, page_size - 1);
-    page.phys_addr = frame_index * page_size;
-    page.presence_bit = 1;
-    page.counter = 0;
-    page.R = 1;
-    page.M = 0;
-    page_queue.push_back(page);
+    std::cout << "copy to : " << frame_index * page_size<< " until : " << frame_index * page_size + page_size << std::endl;
+    ep.mem_handler()->copy(page->virt_addr_index * page_size,
+        frame_index * page_size, VIRT, PHYS, page_size);
+    page->phys_addr = frame_index * page_size;
+    std::cout << "PHYSICAL ADDDDRESSS : " << page->phys_addr << "\n";
+    page->presence_bit = 1;
+    page->counter = 0;
+    page->R = 1;
+    page->M = 0;
+    page_queue.push_back(*page);
 }
 
-void PageReplacers::Lru4::remove_page(Page page)
+void PageReplacers::Lru4::remove_page(Page *page)
 {
     // Copies the page frame content to virtual memory if needed
-    if (page.M)
-        ep.mem_handler()->copy(page.phys_addr, page.virt_addr_index * page_size,
-            PHYS, VIRT, page_size - 1);
-    ep.mem_handler()->wipe(page.phys_addr, PHYS, page_size - 1);
-    free_frames.push_back(page.phys_addr / page_size);
-    page.phys_addr = 0;
-    page.presence_bit = 0;
-    page.R = page.M = 0;
+    if (page->M)
+        ep.mem_handler()->copy(page->phys_addr, page->virt_addr_index * page_size,
+            PHYS, VIRT, page_size);
+    std::cout << "wipe : " << page->phys_addr << std::endl;
+    ep.mem_handler()->wipe(page->phys_addr, PHYS, page_size);
+    free_frames.push_back(page->phys_addr / page_size);
+    page->phys_addr = 0;
+    page->presence_bit = 0;
+    page->R = page->M = 0;
 }
 
-PageReplacers::Lru4::Page PageReplacers::Lru4::select_page()
+PageReplacers::Lru4::Page *PageReplacers::Lru4::select_page()
 {
     Page* smallest = &page_queue.front();
     for (auto& page : page_queue) {
@@ -90,7 +94,7 @@ PageReplacers::Lru4::Page PageReplacers::Lru4::select_page()
             smallest = &page;
     }
     page_queue.remove(*smallest);
-    return *smallest;
+    return smallest;
 }
 
 void PageReplacers::Lru4::clock()
