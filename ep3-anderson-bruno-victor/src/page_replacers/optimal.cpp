@@ -163,5 +163,5 @@ int PageReplacers::Optimal::translate_address(int virt)
     if (!loaded(page))
         load_page(page);
 
-    return page_table[page];
+    return page_table[page] * page_size;
 }
