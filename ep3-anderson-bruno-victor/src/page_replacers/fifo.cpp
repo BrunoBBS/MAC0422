@@ -39,7 +39,6 @@ int PageReplacers::Fifo::translate_addr(int virtual_addr)
     // Checks page presence in physical memory
     if (!page.presence_bit) {
         // Page Fault!
-        std::cerr << "Page Fault!" << std::endl;
         page_fault_cnt++;
         place_page(&page);
     }
@@ -69,8 +68,6 @@ void PageReplacers::Fifo::place_page(Page* page)
 
 void PageReplacers::Fifo::remove_page(Page* page)
 {
-    std::cerr << "Removing Page from PF : " << page->phys_addr / page_size
-              << std::endl;
     // Copies the page frame content to virtual memory if needed
     if (page->M)
         ep.mem_handler()->copy(page->phys_addr,
