@@ -1,5 +1,7 @@
 #include "memory.hpp"
 
+#include  <iomanip>
+
 Memory::Memory(int p_qty, int v_qty,
         std::string p_mem_filename,
         std::string v_mem_filename) :
@@ -74,7 +76,7 @@ bool Memory::access(int pos, mem_t mem_type, byte val, int size)
     file.seekg(pos);
 
     for (int i = 0; i < size; i++)
-        file << val;
+        file << (byte) val;
     file.flush();
 
     return true;
@@ -159,6 +161,61 @@ bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
     dst_file.flush();
 
     return true;
+}
+
+void Memory::print(int row_size)
+{
+    // Make so row size is even
+    row_size /= 2;
+    row_size *= 2;
+
+    // Print virtual memory
+    std::cout << " * * * * * * * * * *" << std::endl;
+    std::cout << " * Virtual Memory  *" << std::endl;
+    std::cout << " * * * * * * * * * *" << std::endl << std::endl;
+
+    for (int addr = 0; addr < v_mem_size; addr += row_size)
+    {
+        std::cout << "0x" << std::setfill('0') <<
+            std::setw(sizeof(int) * 2) << std::hex << addr;
+        std::cout << "    ";
+        for (int byte_addr = addr; byte_addr < addr + row_size &&
+                byte_addr < v_mem_size; byte_addr += 2)
+        {
+            v_mem_file.seekg(byte_addr);
+            std::cout << std::setfill('0') << std::setw(2) <<
+                std::hex << (int) v_mem_file.peek();
+            std::cout << std::setfill('0') << std::setw(2) <<
+                std::hex << (int) v_mem_file.peek();
+            std::cout << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+
+    // Print physical memory
+    std::cout << " * * * * * * * * * *" << std::endl;
+    std::cout << " * Physical Memory *" << std::endl;
+    std::cout << " * * * * * * * * * *" << std::endl << std::endl;
+    
+    for (int addr = 0; addr < p_mem_size; addr += row_size)
+    {
+        std::cout << "0x" << std::setfill('0') <<
+            std::setw(sizeof(int) * 2) << std::hex << addr;
+        std::cout << "    ";
+        for (int byte_addr = addr; byte_addr < addr + row_size &&
+                byte_addr < p_mem_size; byte_addr += 2)
+        {
+            p_mem_file.seekg(byte_addr);
+            std::cout << std::setfill('0') << std::setw(2) <<
+                std::hex << (int) p_mem_file.peek();
+            std::cout << std::setfill('0') << std::setw(2) <<
+                std::hex << (int) p_mem_file.peek();
+            std::cout << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 // Validade memory position

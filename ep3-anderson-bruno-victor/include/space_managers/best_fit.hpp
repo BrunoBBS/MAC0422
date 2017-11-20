@@ -15,11 +15,13 @@ namespace SpaceManagers
             ~BestFit();
             
             void init();
+            void end();
+
+            void dprint();
 
         private:
             int allocate(int size);
             void free(int pos);
-            void dprint();
 
             struct mem_block {
                 // Start of memory block
