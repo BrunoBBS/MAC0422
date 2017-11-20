@@ -40,6 +40,8 @@ void PageReplacers::Optimal::init()
     // Wipe clean memory values
     ep.mem_handler()->wipe(0, PHYS, ep.phys_size());
     ep.mem_handler()->wipe(0, VIRT, ep.virt_size());
+
+    page_fault_cnt = 0;
 }
 
 bool PageReplacers::Optimal::write(int pos, byte val)
@@ -50,8 +52,7 @@ bool PageReplacers::Optimal::write(int pos, byte val)
 bool PageReplacers::Optimal::loaded(int page)
 {
     if (page < 0 || ((uint) page) >= page_table.size())
-        throw std::invalid_argument("[OPTIMAL] Page " + std::to_string(page)
-                + " is not valid!\n");
+        return false;
 
     return page_table[page] >= 0;
 }
@@ -59,8 +60,7 @@ bool PageReplacers::Optimal::loaded(int page)
 void PageReplacers::Optimal::load_page(int page)
 {
     if (page < 0 || ((uint) page) >= page_table.size())
-        throw std::invalid_argument("[OPTIMAL] Page " + std::to_string(page)
-                + " is not valid! Failed to load!\n");
+        return;
 
     // If there are any free pages in the physical memory
     if (next_free_page >= 0)
