@@ -427,24 +427,50 @@ void EP::run(std::string interval_s)
         // Print on intervals
         if (interval > 0 && !(t % interval))
         {
+            // Start of print
             std::string interval_title = "Starting print of instant " +
                 std::to_string(t);
             
             std::cout << std::endl;
 
-            for (int i = 0; i < interval_title.size() + 4; i++)
+            for (uint i = 0; i < interval_title.size() + 4; i++)
                 std::cout << "*";
 
             std::cout << std::endl;
             
             std::cout << "* " << interval_title << " *" << std::endl;
 
-            for (int i = 0; i < interval_title.size() + 4; i++)
+            for (uint i = 0; i < interval_title.size() + 4; i++)
                 std::cout << "*";
             
             std::cout << std::endl << std::endl;
 
+            // Print memory
             memory->print();
+
+            // Print allocated blocks
+            std::cout << " * * * * * * * * * * *" << std::endl;
+            std::cout << " * Allocated Blocks  *" << std::endl;
+            std::cout << " * * * * * * * * * * *" << std::endl << std::endl;
+            space_manager->dprint();
+            
+            // End of print
+            std::string interval_footer = "Ending print of instant " +
+                std::to_string(t);
+            
+            std::cout << std::endl;
+
+            for (uint i = 0; i < interval_footer.size() + 4; i++)
+                std::cout << "*";
+
+            std::cout << std::endl;
+            
+            std::cout << "* " << interval_footer << " *" << std::endl;
+
+            for (uint i = 0; i < interval_footer.size() + 4; i++)
+                std::cout << "*";
+            
+            std::cout << std::endl << std::endl;
         }
         // Moves to next instant
         t++;
