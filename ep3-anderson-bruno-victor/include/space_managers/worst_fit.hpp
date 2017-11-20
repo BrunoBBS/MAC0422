@@ -17,6 +17,8 @@ namespace SpaceManagers
             void init();
             void end();
 
+            void compress();
+
             void dprint();
 
         private:

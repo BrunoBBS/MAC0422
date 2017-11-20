@@ -28,6 +28,53 @@ void SpaceManagers::WorstFit::end()
         free(s_anchor.next->init);
 }
 
+void SpaceManagers::WorstFit::compress()
+{
+    // Do for each memory block
+    mem_block *current_block = &s_anchor;
+    while (current_block->next)
+    {
+        // If is not an anchor
+        if (current_block->next->size)
+        {
+            // Calculate minimum possible address for next block
+            int min_next = current_block->init + current_block->size;
+
+            // Align to page and allocation unit
+            int rest;
+            if ((rest = (min_next % ep.get_page_size())))
+                min_next += ep.get_page_size() - rest;
+            
+            if ((rest = (min_next % ep.get_alloc_size())))
+                min_next += ep.get_alloc_size() - rest;
+
+            // If address has changed
+            if (min_next < current_block->next->init)
+            {
+                // Move process forward
+                Process &process = ep.get_process(current_block->next->uid);
+                int prev_offset = process.get_offset();
+                int prev_end = process.get_offset() + process.get_used_mem();
+                process.set_offset(min_next);
+                int next_offset = process.get_offset();
+                int next_end = process.get_offset() + process.get_used_mem();
+
+                ep.mem_handler()->copy(prev_offset, next_offset,
+                        VIRT, VIRT, process.get_used_mem());
+
+                int wipe_from =
+                    next_end > prev_offset ? next_end : prev_offset;
+                int wipe_to = prev_end;
+
+                ep.mem_handler()->wipe(wipe_from, VIRT, wipe_to - wipe_from);
+            }
+        }
+
+        // Get next block
+        current_block = current_block->next;
+    }
+}
+
 int SpaceManagers::WorstFit::allocate(int size, int uid)
 {
     // Can't allocate 0 or less bytes
