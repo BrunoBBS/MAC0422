@@ -1,0 +1,458 @@
+commit 6b3b866462f5240ee72271983d222bfa7a1a97cb
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 06:14:48 2017 -0200
+
+    [ep3] Now Optimal working
+
+commit 17978f3e9683cada65693793f2de82427f2df6b2
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 06:05:28 2017 -0200
+
+    [ep3] ..
+
+commit a53f942180382c76413eb81d329ca2bba0628bb4
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 05:57:34 2017 -0200
+
+    [ep3] Preparing for submission
+
+commit a5c8bc995a37391d904be626488cb95fbcda3dd4
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 05:33:24 2017 -0200
+
+    [ep3] Now optimal count page faults
+
+commit aa55501c8a995a430aa42903280323161a16d7a2
+Merge: ca0bea2 6959fc1
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 02:45:36 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit ca0bea28b48fd286946d360ae1d28f2a3c449e97
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 02:45:28 2017 -0200
+
+    [ep3] Now best and worst fit have compression
+
+commit 6959fc118738bfd193162d16ebde77f16611aaaf
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Nov 20 02:43:11 2017 -0200
+
+    [ep3] Lruv2 cleaned.
+
+commit c668e5fc49eb00f96d3638b3374b4a6831269ca3
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Nov 20 02:37:36 2017 -0200
+
+    [ep3] Lruv2 finished.
+
+commit 15958818b9320636076f336a05cbf5a12410ba7c
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 02:06:21 2017 -0200
+
+    [ep3] Now process memory is -1 when it is killed
+
+commit 59694f433bb7dbede0f5fd7e0383a7da5d8589e2
+Merge: ef48bc8 a520262
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 01:51:55 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit ef48bc86508bd872525a10fe94b1f84160d30938
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 20 01:51:48 2017 -0200
+
+    [ep3] Now allocators know the process id associated
+
+commit a52026215e69def765bd532e293a7ef2a76e406c
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Nov 20 01:49:10 2017 -0200
+
+    [ep3] Removed prints from fifo
+
+commit f392610438e2724a08352711f978bc16d257f641
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Mon Nov 20 01:30:26 2017 -0200
+
+    [ep3] fifo, lru4 bugs resolved
+
+commit 6259b0c6f9346bc077423cc2ce56fa180581a78e
+Merge: 38b8bde 683dac2
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 23:42:06 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 683dac2a56de213e7205db3b898ce84bb68a30a2
+Merge: 03801be e312c93
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Nov 19 23:39:04 2017 -0200
+
+    Merge branch 'master' of https://github.com/BrunoBBS/MAC0422
+
+commit 03801bef9232e112848c519181e01820ca8bde14
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sun Nov 19 23:38:11 2017 -0200
+
+    [ep3] best_fit fixed.
+
+commit e312c9373bb76f6230fccf0a057dfcc157dfa36d
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 23:19:04 2017 -0200
+
+    [ep3] Now printing more data, and more beautifully
+
+commit c9440cb7f863748b9536eacf60ffca3475aaeede
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 23:07:11 2017 -0200
+
+    [ep3] Added memory printing
+
+commit 38b8bde0848f503e6790393dba64128fa15e62a1
+Merge: 1b2855c 4a11998
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 22:23:00 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 1b2855cf3eb65f0069e223988e447165707c8d49
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 22:22:21 2017 -0200
+
+    [ep3] fixed test file 5
+
+commit 4a11998a1f0d83d79430ee8ded4c8b877de6055e
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 22:19:31 2017 -0200
+
+    [ep3] Optimal working properly & fixed test 2
+
+commit 15c07420bf7681815127ed0110e6382a17709503
+Merge: 1d6d278 f1602f4
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 22:07:50 2017 -0200
+
+    Merge branch 'master' of github.com:brunobbs/mac0422
+
+commit 1d6d278d96b270acd54d211b25ace49d48b08191
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 22:07:42 2017 -0200
+
+    [ep3] Lru4 works
+
+commit f1602f48cb91b8b09af7c642f54a2e559ab633e9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 21:56:53 2017 -0200
+
+    [ep3] Now checks for valid access times
+
+commit 9fddebf9366be0d13a930416f2d5d7d5403217a7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 21:47:54 2017 -0200
+
+    [ep3] Fixed some problems
+
+commit c9837bad893f610a66f84ba18b42a72a41bded19
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 19:27:48 2017 -0200
+
+    [ep3] Some fixes
+
+commit 1dbcb0fb36395a4653b4d1d7ce611a38dfbaabc7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 18:21:27 2017 -0200
+
+    [ep3] Implemented Optimal
+
+commit 4ef4943e7ebe6b7ca5b5b7eef5409b3e2e1cf796
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Sun Nov 19 18:16:20 2017 -0200
+
+    [ep3] Debugging lru4
+
+commit 82408ea7452a88e5a895c7268f70ab46d055ce2b
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 16:53:04 2017 -0200
+
+    [ep3] Now accesses are not attempted on non-existing processes
+
+commit ee6d37928e07d91590e9e6927c3688f8db2855c3
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 11:44:58 2017 -0200
+
+    [ep3] Added virtual 'compress' function to space_manager
+
+commit ac9a88be1ad9398c7045fd425423d041b8ec7401
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 11:33:45 2017 -0200
+
+    [ep3] Removed some warnings for worst fit
+
+commit 26d6103d6e296efca69a527d31740a23ccef456d
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 11:29:40 2017 -0200
+
+    [ep3] Now end of allocated space also aligns
+
+commit 9b5f1f2572c6699ba4a714e0420cd1a6385d0da9
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Nov 19 11:25:41 2017 -0200
+
+    [ep3] Worst fit now aligning allocations to memory pages
+
+commit 2066e0047b5e695f3e9ba4bb085943083a3bea66
+Merge: dd2e70c 684e3cb
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Sat Nov 18 21:12:40 2017 -0200
+
+    [ep3] Fixed merge conflict
+
+commit dd2e70c57c345b63a1db537cba5b6b18033722f7
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Sat Nov 18 21:10:18 2017 -0200
+
+    [ep3] Started quickfit
+
+commit 684e3cb6657524c42d46d24b10414f72b139069f
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Nov 18 15:50:43 2017 -0200
+
+    [ep3] Describing the algorithms BestFit, WorstFit, LRUv4 and FIFO.
+
+commit 94fbfccf8f54ef8b4d0435c9bb722c305048db2e
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Wed Nov 15 18:37:04 2017 -0200
+
+    [ep3] implemented lru4, still need debugging
+
+commit e343ab20e4b19a56c116909e377ee289c70a7f4d
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Tue Nov 14 20:39:34 2017 -0200
+
+    [ep3] Fixing Best Fit.
+
+commit 7c16ce0633258ee8884cecd3c15c14da36dbf902
+Author: Bruno Scholl <bruno.scholl@usp.br>
+Date:   Tue Nov 14 16:51:34 2017 -0200
+
+    [ep3] Added wipe function to memory
+
+commit bbd2cb42e90143d757829fb385740c741f0825dd
+Merge: d9a42d2 f87d82e
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Mon Nov 13 20:38:25 2017 -0200
+
+    Merge branch 'master' of github.com:BrunoBBS/MAC0422
+
+commit d9a42d2c3fd73a6b5fe43c3a97df155c495afad1
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Mon Nov 13 20:38:19 2017 -0200
+
+    [ep3] Fixed mem, started lru4, started fifo debugging
+
+commit f87d82edd22acd0e72d65b79057054a5990d18e4
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Mon Nov 13 14:40:10 2017 -0200
+
+    [ep3] Main funcions of lru2
+
+commit 444f1b9a98952b3c3be0138c4cd7d3ae7cdc26df
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Sat Nov 11 22:05:05 2017 -0200
+
+    [ep3] Puting in the report the information about the folders and files.
+
+commit 18d81b473b3e9e979e8764a255102b8f42bf46f3
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Fri Nov 10 21:31:05 2017 -0200
+
+    [ep3] Doing the BestFit space manager.
+
+commit d5739d5342024706dd37cbef0a190d3e68f2be63
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Fri Nov 10 16:40:24 2017 -0200
+
+    [ep3] Implemented fifo page replacer
+
+commit ca429a9be9ee45c54a1caece387627bdd1081b33
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Nov 6 16:45:22 2017 -0200
+
+    [ep3] Now event list accessible
+
+commit 2d9293d29be6e9a31007dd5d5e75f8950ef736fc
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Fri Nov 3 23:11:52 2017 -0200
+
+    [ep3] Some warnings removed
+
+commit 65380d4056e41990bb4d3dbf3d6a15f8b88ba369
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Tue Oct 31 21:10:42 2017 -0200
+
+    Writing the introduction.
+
+commit de2b24d5020b54170ddcc243cc2a24d03c162df6
+Author: Andrei <a.andreisilva@yahoo.com.br>
+Date:   Tue Oct 31 21:03:03 2017 -0200
+
+    [ep3] Creating the report.
+
+commit c506792a473ce707257be8b3874820f2f5e2bc15
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 31 14:27:02 2017 -0200
+
+    [ep3] Now better offset calculation
+
+commit 6849f5a4d90b8012b9a4d72e6ede22d657bc4846
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 31 13:10:00 2017 -0200
+
+    [ep3] Fixed for EOF
+
+commit d406200581ab883897ae05505a5c3d47b73cbf82
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sun Oct 29 14:44:18 2017 -0200
+
+    [ep3] Worst fit space manager now working as it should
+
+commit d7c49edff789d9f00bc9a50ae1081dfac92730fa
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 28 22:32:27 2017 -0200
+
+    [ep3] TODO atualizado
+
+commit 45366231d31d480fdee27e4aaab5455d9e867c30
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 28 20:45:35 2017 -0200
+
+    [ep3] Init function added & fixed worst fit
+
+commit 72e480ae35dc7bbe04814a009e8a8eee71044210
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 28 19:53:14 2017 -0200
+
+    [ep3] Run function fixed
+
+commit 52999d85521718cda01c5ec389dc2f4d9cb232c8
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 28 18:57:56 2017 -0200
+
+    [ep3] Worst fit done!
+
+commit 84a17ed3a2eb14d17990c1ddfdff1230b1727190
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Sat Oct 28 17:28:04 2017 -0200
+
+    [ep3] Optimized loading and implemented most of 'run'. Also added Base files for all algorithms
+
+commit 6c399837c781ecbd56f0cb602eee20e67c5b6490
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Tue Oct 24 16:56:44 2017 -0200
+
+    [ep3] Fixed TODO
+
+commit ad0fec2404bdb96bb2dc9096cb374bc510ffea39
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Tue Oct 24 16:26:00 2017 -0200
+
+    [ep3] Edited TODO
+
+commit 819ca04ec43fd59a93dbc98b7f8ba8c1d2204848
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Tue Oct 24 16:12:20 2017 -0200
+
+    [ep3] Added TODO file
+
+commit 19205c71e9b749f6d37f771ce27b96461e4cc4d7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 23 22:26:56 2017 -0200
+
+    [ep3] Removed stray source file
+
+commit b76abe12f0bfc76b98ff8ef58b54934b76b0bb64
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 23 22:25:58 2017 -0200
+
+    [ep3] Added file loaded check
+
+commit 0f1b37d7352d6730ccb4c37517a1d1cb62acd0e7
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 23 22:14:25 2017 -0200
+
+    [ep3] Implemented some functions and added some example implementations
+
+commit 165d3a050a84a3d8336a802b33d888f834b38cbd
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Mon Oct 23 16:58:49 2017 -0200
+
+    [ep3] Added functions for memory controller
+
+commit 0c5b3caf1b9b759d836a193169eb8919cad2e470
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 18:09:11 2017 -0200
+
+    [ep3] Now with better structure
+
+commit 1f592ce26f87aa458aef9650e84a4e7eadc62151
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 17:41:38 2017 -0200
+
+    [ep3] Better architecture
+
+commit ed8689efa28b4377d7749151cac1c730b7fa18ee
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 17:19:54 2017 -0200
+
+    [ep3] Corrected memory loading
+
+commit 9f5e1f2dd949696fdb382d948f2492a813064978
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 17:16:24 2017 -0200
+
+    [ep3] Corrected memory loading
+
+commit 013fab2ad40edba04566b60f6786af1356aaf738
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 15:49:13 2017 -0200
+
+    [ep3] Functioning flags
+
+commit 1a5983a9222c0cdf4d1a841fd8a16919901d8a89
+Merge: db4283e 57f0c32
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 13:50:17 2017 -0200
+
+    [ep3] Just removed ep3 binary
+
+commit db4283e8cd57ddfc5f2cd1f856a68d00c5c16fc6
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 13:49:34 2017 -0200
+
+    [ep3] Added base classes for space managers and page replacers
+
+commit 57f0c323dd2d540caf5e2b868f2f3ccca0b4994f
+Author: Bruno B. Scholl <bruno.bbs3@hotmail.com>
+Date:   Thu Oct 19 10:46:34 2017 -0200
+
+    [all] Added .vscode directories to gitignore
+
+commit 6d89cb6095cccd8e831dbd7202b3fa808fdd2764
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 08:38:10 2017 -0200
+
+    [ep3] Removed executable
+
+commit c2772eb9318e8475d7c4325de055590842d19df3
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Thu Oct 19 08:35:45 2017 -0200
+
+    [ep3] Added gitignore and included stdexcept
+
+commit 6d0c576327d1add137f2f3cdc6d6bc623ee72dc0
+Author: Victor Seiji Hariki <victorseijih@gmail.com>
+Date:   Wed Oct 18 12:04:29 2017 -0200
+
+    [ep3] Started EP3. It has main and reads input file
