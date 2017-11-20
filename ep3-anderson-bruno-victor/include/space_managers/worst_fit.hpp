@@ -13,14 +13,14 @@ namespace SpaceManagers
         public:
             WorstFit(EP &ep);
             ~WorstFit();
-            
+
             void init();
             void end();
 
             void dprint();
 
         private:
-            int allocate(int size);
+            int allocate(int size, int uid);
             void free(int pos);
 
             struct mem_block {
@@ -28,6 +28,8 @@ namespace SpaceManagers
                 int init;
                 // Size of memory block
                 int size;
+                // UID of the associated process
+                int uid;
                 // Pointer to next block
                 mem_block *next;
             };

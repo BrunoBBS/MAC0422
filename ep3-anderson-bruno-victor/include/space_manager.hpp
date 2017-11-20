@@ -55,7 +55,7 @@ class SpaceManager
         EP &ep;        
 
         // Returns position of the start of the process
-        virtual int allocate(int size) = 0;
+        virtual int allocate(int size, int uid) = 0;
         
         // Free process allocated in pos
         virtual void free(int pos) = 0; 

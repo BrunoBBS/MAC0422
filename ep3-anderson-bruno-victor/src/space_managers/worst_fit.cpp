@@ -28,7 +28,7 @@ void SpaceManagers::WorstFit::end()
         free(s_anchor.next->init);
 }
 
-int SpaceManagers::WorstFit::allocate(int size)
+int SpaceManagers::WorstFit::allocate(int size, int uid)
 {
     // Can't allocate 0 or less bytes
     if (size <= 0)
@@ -92,6 +92,7 @@ int SpaceManagers::WorstFit::allocate(int size)
     mem_block *new_block = new mem_block;
     new_block->init = max_begin;
     new_block->size = min_req;
+    new_block->uid = uid;
     
     // Add new block to linked list
     new_block->next = max_prev->next;
@@ -161,7 +162,9 @@ void SpaceManagers::WorstFit::dprint()
         else
         {
             std::ostringstream desc;
-            desc << "i: " << current->init << " sz: " << current->size;
+            desc << "i: " << current->init <<
+                " sz: " << current->size <<
+                " uid: " << current->uid;
             mem_block_desc.push_back(desc.str());
         }
     }

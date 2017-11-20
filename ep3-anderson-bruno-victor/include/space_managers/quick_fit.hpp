@@ -79,7 +79,7 @@ class QuickFit : public SpaceManager
 
     void free(int pos);
 
-    int allocate(int size);
+    int allocate(int size, int uid);
 };
 }
 

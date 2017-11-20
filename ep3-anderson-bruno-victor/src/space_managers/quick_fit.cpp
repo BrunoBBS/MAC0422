@@ -8,7 +8,7 @@ void SpaceManagers::QuickFit::init()
 {
 }
 
-int SpaceManagers::QuickFit::allocate(int size)
+int SpaceManagers::QuickFit::allocate(int size, int uid)
 {
     // Can't allocate 0 or less bytes
     if (size <= 0)

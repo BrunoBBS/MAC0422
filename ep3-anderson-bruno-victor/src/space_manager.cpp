@@ -33,7 +33,7 @@ bool SpaceManager::start_process(Process &process)
         return false;
 
     // Tries to allocate memory for process
-    int start_loc = allocate(process.get_used_mem());
+    int start_loc = allocate(process.get_used_mem(), process.get_uid());
 
     // If process does not fit in memory, failed to insert
     if (start_loc == -1) {

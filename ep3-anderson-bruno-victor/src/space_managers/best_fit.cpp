@@ -28,7 +28,7 @@ void SpaceManagers::BestFit::end()
         free(s_anchor.next->init);
 }
 
-int SpaceManagers::BestFit::allocate(int size)
+int SpaceManagers::BestFit::allocate(int size, int uid)
 {
     // Can't allocate 0 or less bytes
     if (size <= 0)
@@ -74,8 +74,6 @@ int SpaceManagers::BestFit::allocate(int size)
         // Calculate current free space size
         int curr_sz = end - beginning;
 
-
-        //HERER !!!!!!
         // If process fits and is space is bigger than previous maximum
         if (curr_sz >= min_req && curr_sz < max_size)
         {
@@ -94,6 +92,7 @@ int SpaceManagers::BestFit::allocate(int size)
     mem_block *new_block = new mem_block;
     new_block->init = max_begin;
     new_block->size = min_req;
+    new_block->uid = uid;
     
     // Add new block to linked list
     new_block->next = max_prev->next;
@@ -164,7 +163,9 @@ std::vector<std::string> mem_block_desc;
         else
         {
             std::ostringstream desc;
-            desc << "i: " << current->init << " sz: " << current->size;
+            desc << "i: " << current->init <<
+                " sz: " << current->size <<
+                " uid: " << current->uid;
             mem_block_desc.push_back(desc.str());
         }
     }
