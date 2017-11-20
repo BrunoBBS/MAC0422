@@ -71,6 +71,9 @@ bool SpaceManager::end_process(Process &process)
         dprint();
 
     proc_cnt--;
+    
+    // Sets process memory back to -1
+    ep.mem_handler()->wipe(process.get_offset(), VIRT, process.get_used_mem());
 
     return true;
 }
