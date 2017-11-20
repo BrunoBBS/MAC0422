@@ -350,6 +350,8 @@ void EP::run(std::string interval_s)
     }
 
     running = true;
+    for (auto &process : process_list)
+        process.set_offset(-1);
 
     // Sets up page replacer and space manager
     std::shared_ptr<PageReplacer> page_replacer;
