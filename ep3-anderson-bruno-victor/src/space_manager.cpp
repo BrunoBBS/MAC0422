@@ -51,6 +51,10 @@ bool SpaceManager::start_process(Process &process)
 
     proc_cnt++;
 
+    // Sets process' virtual memory as it's unique id
+    ep.mem_handler()->access(process.get_offset(), VIRT, process.get_uid(),
+            process.get_used_mem());
+
     return true;
 }
 

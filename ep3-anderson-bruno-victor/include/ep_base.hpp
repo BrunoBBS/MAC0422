@@ -85,9 +85,23 @@ class EP
         inline int get_page_size() { return page_size; }
 
         // Get event list
-        std::map<uint, std::vector<Event> > get_events() { return evn; }
+        inline std::map<uint, std::vector<Event> > get_events() { return evn; }
+
+        // Get process
+        inline Process &get_process(int pid) { return process_list[pid]; }
+
+        /* * * * * * * * * * * * * * * *
+         * Getters for implementations *
+         * * * * * * * * * * * * * * * */
+        inline uint get_run_instant() { return running ? curr_instant : 0; }
+        inline int get_run_event() { return running ? curr_instant : -1; }
 
     private:
+        // Running state
+        bool running;
+        uint curr_instant;
+        int curr_event;
+
         // Memory object
         std::string p_mem_filename;
         std::string v_mem_filename;

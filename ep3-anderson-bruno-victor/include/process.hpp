@@ -30,10 +30,10 @@ class Process
         inline void set_offset(int offset) { this->offset = offset; }
 
         // Set offset
-        inline uint get_offset() { return offset; }
+        inline int get_offset() { return offset; }
 
         // Set uid
-        inline uint get_uid() { return uid; }
+        inline int get_uid() { return uid; }
 
     private:
         /* * * * * * * * * * *

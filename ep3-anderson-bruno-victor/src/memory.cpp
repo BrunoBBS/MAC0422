@@ -51,7 +51,7 @@ Memory::~Memory()
 }
 
 // Write memory position
-bool Memory::access(int pos, mem_t mem_type, byte val)
+bool Memory::access(int pos, mem_t mem_type, byte val, int size)
 {
     if (!is_ok) return false;
     if (!val_pos(pos, mem_type))
@@ -73,7 +73,8 @@ bool Memory::access(int pos, mem_t mem_type, byte val)
     std::fstream &file = *file_p;
     file.seekg(pos);
 
-    file << val;
+    for (int i = 0; i < size; i++)
+        file << val;
     file.flush();
 
     return true;
@@ -105,7 +106,7 @@ bool Memory::wipe(int pos, mem_t mem_type, int size)
 
     for (; pos < finish_pos; pos++)
     {
-        file << -1;
+        file << (byte) -1;
     }
     file.flush();
     return true;
@@ -116,9 +117,9 @@ bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
 {
     if (!is_ok) return false;
     int src_s = src;
-    int src_e = src + size;
+    int src_e = src + size - 1;
     int dst_s = dst;
-    int dst_e = dst + size;
+    int dst_e = dst + size - 1;
 
     if (!val_pos(src_s, src_t) || !val_pos(src_e, src_t))
     {
@@ -146,7 +147,7 @@ bool Memory::copy(int src, int dst, mem_t src_t, mem_t dst_t, int size)
     std::fstream &src_file = *src_file_p;
     std::fstream &dst_file = *dst_file_p;
 
-    for (; src_s < src_e; src_s++, dst_s++)
+    for (; src_s <= src_e; src_s++, dst_s++)
     {
         src_file.seekg(src_s);
         byte val = src_file.peek();
